@@ -1,0 +1,1246 @@
+keyiyo哪个一个<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>四年级 · 纪录片护照</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f4f0;
+      --ink: #111;
+      --muted: #6a6a66;
+      --line: #111;
+      --soft: #e8e8e2;
+      --card: #fafaf7;
+      --stamp: #0b5c3b;
+      --stamp-deep: #074530;
+      --stamp-soft: rgba(11, 92, 59, 0.12);
+      --stamp-mid: rgba(11, 92, 59, 0.28);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --radius: 0;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      color: var(--ink);
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 12% 8%, rgba(0,0,0,0.03), transparent 40%),
+        radial-gradient(circle at 88% 92%, rgba(0,0,0,0.04), transparent 45%);
+      padding-bottom: 88px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* enter */
+    .rise {
+      opacity: 0;
+      transform: translateY(12px);
+      animation: rise 0.7s var(--ease) forwards;
+    }
+    .rise:nth-child(2) { animation-delay: 0.06s; }
+    .rise:nth-child(3) { animation-delay: 0.12s; }
+    .rise:nth-child(4) { animation-delay: 0.18s; }
+    @keyframes rise {
+      to { opacity: 1; transform: none; }
+    }
+
+    header.app-bar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1.5px solid var(--ink);
+      background: rgba(244,244,240,0.92);
+      backdrop-filter: blur(8px);
+    }
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 0.95rem;
+    }
+    .brand span { color: var(--muted); font-weight: 400; margin-left: 8px; font-size: 0.8rem; }
+    .week-chip {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.75rem;
+      border: 1px solid var(--ink);
+      padding: 4px 10px;
+      white-space: nowrap;
+    }
+    .app-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .music-btn {
+      appearance: none;
+      border: 1px solid var(--ink);
+      background: transparent;
+      width: 36px;
+      height: 32px;
+      padding: 0;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      color: var(--ink);
+      transition: background 0.25s var(--ease), color 0.25s var(--ease);
+    }
+    .music-btn:hover { background: var(--ink); color: var(--bg); }
+    .music-btn.is-muted {
+      color: var(--muted);
+      border-color: var(--muted);
+    }
+    .music-btn.is-muted:hover {
+      background: var(--muted);
+      color: var(--bg);
+    }
+    .music-credit {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      max-width: 42vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .music-credit a { color: inherit; }
+
+    nav.tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--ink);
+    }
+    nav.tabs button {
+      appearance: none;
+      border: 0;
+      border-right: 1px solid var(--ink);
+      background: transparent;
+      padding: 12px 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: var(--muted);
+      position: relative;
+      transition: color 0.25s var(--ease), background 0.25s var(--ease);
+    }
+    nav.tabs button:last-child { border-right: 0; }
+    nav.tabs button.active {
+      color: var(--ink);
+      background: var(--card);
+      font-weight: 600;
+    }
+    nav.tabs button.active::after {
+      content: "";
+      position: absolute;
+      left: 20%;
+      right: 20%;
+      bottom: 0;
+      height: 2px;
+      background: var(--ink);
+      transform: scaleX(0);
+      animation: barIn 0.45s var(--ease) forwards;
+    }
+    @keyframes barIn { to { transform: scaleX(1); } }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 16px 32px;
+    }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    h1 {
+      font-size: 1.65rem;
+      margin: 0 0 6px;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+    }
+    .lede {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0 0 22px;
+    }
+
+    /* passport */
+    .passport {
+      border: 1.5px solid var(--ink);
+      background: var(--card);
+      padding: 22px 20px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .passport::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(17,17,17,0.18);
+      pointer-events: none;
+    }
+    .pass-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .pass-id {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .explorer-name {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    .visa-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .visa {
+      border: 1px solid var(--ink);
+      min-height: 108px;
+      padding: 12px;
+      position: relative;
+      background: var(--bg);
+      transition: transform 0.4s var(--ease), background 0.3s;
+    }
+    .visa:hover { transform: translateY(-2px); }
+    .visa.done {
+      background: linear-gradient(165deg, #f7fbf8 0%, #eef6f1 100%);
+      color: var(--stamp-deep);
+      border-color: var(--stamp);
+      box-shadow: inset 0 0 0 1px var(--stamp-mid);
+    }
+    .visa .v-name { font-weight: 700; font-size: 1rem; }
+    .visa .v-muscle {
+      font-size: 0.75rem;
+      color: inherit;
+      opacity: 0.65;
+      margin-top: 4px;
+    }
+    .visa .v-stat {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+      margin-top: 14px;
+    }
+    .visa .stamp-mark {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      width: 54px;
+      height: 54px;
+      opacity: 0;
+      transform: scale(1.35) rotate(-14deg);
+      pointer-events: none;
+    }
+    .visa.done .stamp-mark {
+      animation: stampIn 0.65s var(--ease) forwards;
+    }
+    .visa .stamp-mark svg { width: 100%; height: 100%; display: block; }
+    @keyframes stampIn {
+      0% { opacity: 0; transform: scale(1.4) rotate(-18deg); }
+      55% { opacity: 1; transform: scale(0.96) rotate(-6deg); }
+      100% { opacity: 0.92; transform: scale(1) rotate(-9deg); }
+    }
+
+    .title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 28px 0 12px;
+    }
+    .title-row h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+    }
+    .mono {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* menu cards */
+    .menu-list { display: flex; flex-direction: column; gap: 10px; }
+    .doc-card {
+      border: 1px solid var(--ink);
+      background: var(--card);
+      padding: 14px 14px 12px;
+      display: grid;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.25s var(--ease), transform 0.35s var(--ease);
+      animation: rise 0.55s var(--ease) both;
+    }
+    .doc-card:hover { background: #fff; transform: translateX(3px); }
+    .doc-card.done {
+      border-color: var(--stamp);
+      background: linear-gradient(180deg, #f8fcf9 0%, #f0f7f3 100%);
+      box-shadow: inset 3px 0 0 var(--stamp);
+      position: relative;
+      overflow: hidden;
+    }
+    .doc-card.done::after {
+      content: "";
+      position: absolute;
+      right: -6px;
+      top: -10px;
+      width: 72px;
+      height: 72px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='none' stroke='%230b5c3b' stroke-width='2.2' opacity='0.55'/%3E%3Ccircle cx='50' cy='50' r='36' fill='none' stroke='%230b5c3b' stroke-width='1.2' opacity='0.45' stroke-dasharray='2.5 2'/%3E%3Ctext x='50' y='46' text-anchor='middle' font-family='Georgia,serif' font-size='11' font-weight='700' fill='%230b5c3b' letter-spacing='1'%3ESEEN%3C/text%3E%3Ctext x='50' y='60' text-anchor='middle' font-family='Georgia,serif' font-size='8' fill='%230b5c3b' opacity='0.85'%3E已观看%3C/text%3E%3C/svg%3E") center/contain no-repeat;
+      opacity: 0.88;
+      transform: rotate(12deg);
+      pointer-events: none;
+    }
+    .doc-card.done .doc-title { color: var(--stamp-deep); }
+    .doc-card.done .tag {
+      border-color: var(--stamp);
+      color: var(--stamp);
+      background: var(--stamp-soft);
+    }
+    .doc-card.done .meta { color: #3d6b55; }
+    .doc-card.done .btn {
+      background: var(--stamp);
+      border-color: var(--stamp);
+      color: #f4faf7;
+    }
+    .doc-card .row1 {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .tag {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.68rem;
+      border: 1px solid var(--ink);
+      padding: 2px 6px;
+      white-space: nowrap;
+    }
+    .tag.soft { border-color: var(--muted); color: var(--muted); }
+    .tag.seen {
+      border-color: var(--stamp);
+      color: var(--stamp);
+      background: var(--stamp-soft);
+    }
+    .doc-title { font-weight: 700; font-size: 1.05rem; line-height: 1.35; }
+    .meta { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    button.btn, a.btn {
+      appearance: none;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+      font-family: inherit;
+      font-size: 0.82rem;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: transform 0.25s var(--ease), background 0.2s, color 0.2s;
+    }
+    button.btn:hover, a.btn:hover { transform: translateY(-1px); }
+    button.btn.ghost, a.btn.ghost {
+      background: transparent;
+      color: var(--ink);
+    }
+    button.btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* plate */
+    .plate {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .plate-cell {
+      border: 1.5px solid var(--ink);
+      min-height: 140px;
+      padding: 14px;
+      background: var(--card);
+      cursor: pointer;
+      transition: background 0.3s var(--ease), transform 0.35s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+    .plate-cell:hover { transform: translateY(-2px); }
+    .plate-cell.current::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--ink);
+      animation: pulseLine 2.4s ease-in-out infinite;
+    }
+    .plate-cell.selected {
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .plate-cell.selected .p-muscles,
+    .plate-cell.selected .p-status { color: inherit; opacity: 0.75; }
+    .plate-cell.selected .p-fill { background: rgba(244,244,240,0.25); }
+    .plate-cell.selected .p-fill > i { background: var(--bg); }
+    @keyframes pulseLine {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 1; }
+    }
+    .plate-cell .p-name { font-weight: 700; font-size: 1.1rem; }
+    .plate-cell .p-muscles {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .plate-cell .p-fill {
+      margin-top: 18px;
+      height: 3px;
+      background: var(--soft);
+      overflow: hidden;
+    }
+    .plate-cell .p-fill > i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--ink);
+      transition: width 0.9s var(--ease);
+    }
+    .plate-cell .p-status {
+      margin-top: 8px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.7rem;
+    }
+
+    /* detail / note sheet */
+    .sheet {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(17,17,17,0.35);
+    }
+    .sheet.open { display: flex; }
+    .sheet-panel {
+      width: min(560px, 100%);
+      max-height: 88vh;
+      overflow: auto;
+      background: var(--bg);
+      border: 1.5px solid var(--ink);
+      border-bottom: 0;
+      padding: 18px 16px 24px;
+      transform: translateY(24px);
+      opacity: 0;
+      transition: transform 0.4s var(--ease), opacity 0.35s var(--ease);
+    }
+    .sheet.open .sheet-panel {
+      transform: none;
+      opacity: 1;
+    }
+    .sheet-panel h3 {
+      margin: 0 0 6px;
+      font-size: 1.2rem;
+    }
+    textarea {
+      width: 100%;
+      min-height: 88px;
+      border: 1px solid var(--ink);
+      background: var(--card);
+      padding: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      resize: vertical;
+      margin-top: 8px;
+    }
+    .hint { font-size: 0.8rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+    .stamps-log {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .stamp-row {
+      border-left: 2px solid var(--stamp);
+      padding: 6px 0 6px 12px;
+      animation: rise 0.5s var(--ease) both;
+      background: linear-gradient(90deg, var(--stamp-soft), transparent 70%);
+    }
+    .stamp-row .t { font-weight: 600; color: var(--stamp-deep); }
+    .stamp-row .n { color: var(--muted); font-size: 0.88rem; margin-top: 2px; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 96px;
+      transform: translateX(-50%) translateY(12px);
+      background: var(--stamp-deep);
+      color: #f4faf7;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s, transform 0.4s var(--ease);
+      z-index: 100;
+      max-width: 90vw;
+      border: 1px solid var(--stamp);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ceremony: green passport wax seal */
+    .stamp-ceremony {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(8, 28, 20, 0.42);
+      backdrop-filter: blur(3px);
+    }
+    .stamp-ceremony.show { display: flex; }
+    .stamp-ceremony .seal {
+      width: min(220px, 58vw);
+      height: min(220px, 58vw);
+      opacity: 0;
+      transform: scale(1.55) rotate(-22deg);
+      filter: drop-shadow(0 12px 28px rgba(7, 69, 48, 0.35));
+    }
+    .stamp-ceremony.show .seal {
+      animation: sealPress 0.85s var(--ease) forwards;
+    }
+    @keyframes sealPress {
+      0% { opacity: 0; transform: scale(1.55) rotate(-22deg); }
+      45% { opacity: 1; transform: scale(0.94) rotate(-4deg); }
+      70% { opacity: 1; transform: scale(1.04) rotate(-11deg); }
+      100% { opacity: 1; transform: scale(1) rotate(-8deg); }
+    }
+    .stamp-ceremony .seal-caption {
+      position: absolute;
+      bottom: 18%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #e8f5ee;
+      font-size: 0.9rem;
+      letter-spacing: 0.18em;
+      opacity: 0;
+    }
+    .stamp-ceremony.show .seal-caption {
+      animation: rise 0.5s 0.35s var(--ease) forwards;
+    }
+
+    footer.dock {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 50;
+      border-top: 1.5px solid var(--ink);
+      background: rgba(244,244,240,0.95);
+      backdrop-filter: blur(8px);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.8rem;
+    }
+    footer.dock .swap {
+      font-family: "JetBrains Mono", monospace;
+      border: 1px solid var(--ink);
+      padding: 4px 8px;
+      cursor: pointer;
+      background: transparent;
+      font-size: 0.72rem;
+    }
+
+    .empty {
+      border: 1px dashed var(--muted);
+      padding: 20px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .name-edit {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .name-edit input {
+      flex: 1;
+      min-width: 140px;
+      border: 1px solid var(--ink);
+      background: var(--card);
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="app-bar rise">
+    <div class="brand">DOCUMENTARY PASSPORT <span>四年级 MVP</span></div>
+    <div class="app-bar-right">
+      <span class="music-credit" title="Pixabay Content License">
+        <a href="https://pixabay.com/music/solo-piano-calm-nature-510279/" target="_blank" rel="noopener">Calm Nature · AtlasAudio</a>
+      </span>
+      <button type="button" class="music-btn" id="musicBtn" aria-pressed="false" title="背景音乐开/关">♪</button>
+      <div class="week-chip" id="weekChip">WEEK —</div>
+    </div>
+  </header>
+
+  <audio id="bgMusic" loop preload="auto" playsinline src="audio/atlasaudio-calm-nature-510279.mp3"></audio>
+
+  <nav class="tabs rise" role="tablist">
+    <button type="button" class="active" data-tab="passport">护照</button>
+    <button type="button" data-tab="menu">本周菜单</button>
+    <button type="button" data-tab="plate">四格餐盘</button>
+  </nav>
+
+  <main>
+    <section id="panel-passport" class="panel active">
+      <div class="passport rise">
+        <div class="pass-top">
+          <div>
+            <div class="pass-id">Explorer · Grade 4</div>
+            <div class="explorer-name" id="explorerName">小探险家</div>
+            <div class="name-edit">
+              <input id="nameInput" maxlength="12" placeholder="写上名字" />
+              <button type="button" class="btn ghost" id="saveName">盖名</button>
+            </div>
+          </div>
+          <div class="mono" id="stampCount">0 枚小印</div>
+        </div>
+        <div class="visa-grid" id="visaGrid"></div>
+      </div>
+
+      <div class="title-row">
+        <h2>最近盖印</h2>
+        <span class="mono" id="titleHint">一句话才算看完</span>
+      </div>
+      <div class="stamps-log" id="stampsLog"></div>
+    </section>
+
+    <section id="panel-menu" class="panel">
+      <h1 class="rise">今晚看什么</h1>
+      <p class="lede rise" id="menuLede">本周主线建议如下。在卡片里选一部；去看后回来写一句，再盖印。</p>
+      <div class="title-row">
+        <h2>工作日 · A 档</h2>
+        <span class="mono">≤ 约 30 分钟</span>
+      </div>
+      <div class="menu-list" id="menuA"></div>
+      <div class="title-row">
+        <h2>周末 · B 档</h2>
+        <span class="mono">一集或一部</span>
+      </div>
+      <div class="menu-list" id="menuB"></div>
+    </section>
+
+    <section id="panel-plate" class="panel">
+      <h1 class="rise">四格餐盘</h1>
+      <p class="lede rise">不锁关。只显示本周主线与是否偏食。人文含审美，理财含商业。</p>
+      <div class="plate rise" id="plateGrid"></div>
+      <div class="title-row">
+        <h2>本格片库</h2>
+        <span class="mono" id="plateFilterLabel">全部</span>
+      </div>
+      <div class="menu-list" id="plateList"></div>
+    </section>
+  </main>
+
+  <footer class="dock">
+    <div>
+      本周主线：<strong id="dockFocus">—</strong>
+      · 换口味票 <span id="swapLeft">1</span>
+    </div>
+    <button type="button" class="swap" id="swapBtn" title="本周可改一次主线">换口味</button>
+  </footer>
+
+  <div class="sheet" id="sheet" aria-hidden="true">
+    <div class="sheet-panel" role="dialog">
+      <div class="pass-id" id="sheetCat">—</div>
+      <h3 id="sheetTitle">—</h3>
+      <p class="meta" id="sheetMeta"></p>
+      <p class="hint" id="sheetPin"></p>
+      <div class="actions" style="margin-top:14px">
+        <a class="btn" id="sheetWatch" href="#" target="_blank" rel="noopener">去看</a>
+        <a class="btn ghost" id="sheetAlt" href="#" target="_blank" rel="noopener" hidden>备用入口</a>
+        <button type="button" class="btn ghost" id="sheetClose">关闭</button>
+      </div>
+      <div class="title-row" style="margin-top:20px">
+        <h2>一句话笔记</h2>
+        <span class="mono">盖印条件</span>
+      </div>
+      <textarea id="noteInput" maxlength="120" placeholder="例如：原来火山也是地球的工程师。"></textarea>
+      <p class="hint">写完才能盖印。家长不打分。浅也可以。</p>
+      <div class="actions" style="margin-top:12px">
+        <button type="button" class="btn" id="stampBtn">盖印收工</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="stamp-ceremony" id="stampCeremony" aria-hidden="true">
+    <svg class="seal" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <radialGradient id="inkWash" cx="40%" cy="35%" r="70%">
+          <stop offset="0%" stop-color="#127a4e"/>
+          <stop offset="55%" stop-color="#0b5c3b"/>
+          <stop offset="100%" stop-color="#063528"/>
+        </radialGradient>
+      </defs>
+      <circle cx="100" cy="100" r="92" fill="none" stroke="#0b5c3b" stroke-width="3.5" opacity="0.95"/>
+      <circle cx="100" cy="100" r="84" fill="none" stroke="#0b5c3b" stroke-width="1.4" opacity="0.75"/>
+      <circle cx="100" cy="100" r="76" fill="none" stroke="#0b5c3b" stroke-width="1" stroke-dasharray="3 2.2" opacity="0.55"/>
+      <path d="M100 28 L108 48 L130 48 L112 62 L118 84 L100 72 L82 84 L88 62 L70 48 L92 48 Z" fill="url(#inkWash)" opacity="0.92"/>
+      <text x="100" y="112" text-anchor="middle" fill="#0b5c3b" font-family="Georgia, 'Noto Serif SC', serif" font-size="15" font-weight="700" letter-spacing="3">SEEN</text>
+      <text x="100" y="130" text-anchor="middle" fill="#0b5c3b" font-family="'Noto Serif SC', serif" font-size="13" letter-spacing="4">已观看</text>
+      <text x="100" y="152" text-anchor="middle" fill="#0b5c3b" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="2" opacity="0.8">DOCUMENTARY PASSPORT</text>
+      <circle cx="100" cy="100" r="68" fill="none" stroke="#0b5c3b" stroke-width="0.8" opacity="0.35"/>
+    </svg>
+    <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
+  </div>
+
+  <script src="./data.js"></script>
+  <script>
+    (function () {
+      const STORE_KEY = "doc-passport-g4-v1";
+      const cats = DOC_CATALOG.categories;
+      const titles = DOC_CATALOG.titles;
+      const rotation = DOC_CATALOG.rotation;
+
+      function weekIndex(d) {
+        const t = d || new Date();
+        const start = new Date(t.getFullYear(), 0, 1);
+        const day = Math.floor((t - start) / 86400000);
+        return Math.floor((day + start.getDay()) / 7);
+      }
+
+      function load() {
+        try {
+          return JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+        } catch (_) {
+          return {};
+        }
+      }
+
+      function save(state) {
+        localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      }
+
+      function defaultState() {
+        return {
+          name: "小探险家",
+          stamps: [], // {titleId, note, at, category, muscle}
+          week: weekIndex(),
+          focus: rotation[weekIndex() % rotation.length],
+          swapUsed: false,
+          filter: null,
+        };
+      }
+
+      let state = Object.assign(defaultState(), load());
+      if (state.week !== weekIndex()) {
+        state.week = weekIndex();
+        state.focus = rotation[state.week % rotation.length];
+        state.swapUsed = false;
+        save(state);
+      }
+
+      const $ = (id) => document.getElementById(id);
+
+      function toast(msg) {
+        const el = $("toast");
+        el.textContent = msg;
+        el.classList.add("show");
+        clearTimeout(toast._t);
+        toast._t = setTimeout(() => el.classList.remove("show"), 2200);
+      }
+
+      function catById(id) {
+        return cats.find((c) => c.id === id);
+      }
+
+      function titleById(id) {
+        return titles.find((t) => t.id === id);
+      }
+
+      function stampsFor(catId) {
+        return state.stamps.filter(
+          (s) => s.category === catId || (titleById(s.titleId) || {}).alsoCategory === catId
+        );
+      }
+
+      function visaDone(catId) {
+        // 四年级最低：至少 2 个有效小印，且 A/B 各至少碰到过一次（若该格有对应片）
+        const list = stampsFor(catId);
+        if (list.length < 2) return false;
+        const ids = new Set(list.map((s) => s.titleId));
+        const pool = titles.filter((t) => t.category === catId || t.alsoCategory === catId);
+        const hasA = pool.some((t) => t.slot === "A");
+        const hasB = pool.some((t) => t.slot === "B");
+        const stampedA = pool.some((t) => t.slot === "A" && ids.has(t.id));
+        const stampedB = pool.some((t) => t.slot === "B" && ids.has(t.id));
+        if (hasA && hasB) return stampedA && stampedB;
+        return list.length >= 2;
+      }
+
+      function progress(catId) {
+        const pool = titles.filter((t) => t.category === catId || t.alsoCategory === catId);
+        const done = new Set(stampsFor(catId).map((s) => s.titleId));
+        const n = pool.filter((t) => done.has(t.id)).length;
+        return { n, total: pool.length, pct: pool.length ? Math.round((n / pool.length) * 100) : 0 };
+      }
+
+      function buildWeekMenu() {
+        const focus = state.focus;
+        const A = [];
+        const B = [];
+        const focusA = titles.filter((t) => t.category === focus && t.slot === "A");
+        const focusB = titles.filter((t) => t.category === focus && t.slot === "B");
+        const otherA = titles.filter(
+          (t) => t.slot === "A" && t.category !== focus && (t.role === "main" || t.role === "side")
+        );
+        // 2–3 weekday cards
+        A.push(...focusA.slice(0, 2));
+        if (A.length < 2 && otherA.length) A.push(otherA[0]);
+        if (A.length < 3) {
+          const more = titles.find(
+            (t) => t.slot === "A" && !A.includes(t) && t.role === "side"
+          );
+          if (more) A.push(more);
+        }
+        // weekend: focus first, then must-sees if focus is drive
+        B.push(...focusB.slice(0, 2));
+        if (focus === "drive") {
+          titles
+            .filter((t) => t.role === "must" && !B.includes(t))
+            .forEach((t) => {
+              if (B.length < 3) B.push(t);
+            });
+        } else if (B.length < 2) {
+          const must = titles.find((t) => t.role === "must" && !B.includes(t));
+          if (must) B.push(must);
+        }
+        return { A: unique(A).slice(0, 3), B: unique(B).slice(0, 3) };
+      }
+
+      function unique(arr) {
+        const seen = new Set();
+        return arr.filter((t) => {
+          if (seen.has(t.id)) return false;
+          seen.add(t.id);
+          return true;
+        });
+      }
+
+      function stamped(titleId) {
+        return state.stamps.some((s) => s.titleId === titleId);
+      }
+
+      function miniSealSvg() {
+        return (
+          '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+          '<circle cx="50" cy="50" r="46" fill="none" stroke="#0b5c3b" stroke-width="2.4"/>' +
+          '<circle cx="50" cy="50" r="38" fill="none" stroke="#0b5c3b" stroke-width="1.1" stroke-dasharray="2.2 1.8" opacity="0.7"/>' +
+          '<path d="M50 18 L54 30 L67 30 L57 38 L60 51 L50 44 L40 51 L43 38 L33 30 L46 30 Z" fill="#0b5c3b" opacity="0.9"/>' +
+          '<text x="50" y="66" text-anchor="middle" fill="#0b5c3b" font-size="9" font-weight="700" font-family="Georgia,serif" letter-spacing="1">VISA</text>' +
+          '<text x="50" y="78" text-anchor="middle" fill="#0b5c3b" font-size="7" font-family="serif" opacity="0.85">通关</text>' +
+          "</svg>"
+        );
+      }
+
+      function renderCard(t, i) {
+        const cat = catById(t.category);
+        const done = stamped(t.id);
+        const el = document.createElement("article");
+        el.className = "doc-card" + (done ? " done" : "");
+        el.style.animationDelay = i * 0.05 + "s";
+        el.innerHTML =
+          '<div class="row1"><div class="doc-title"></div><div class="tag"></div></div>' +
+          '<div class="meta"></div><div class="actions"></div>';
+        el.querySelector(".doc-title").textContent = t.title;
+        const tag = el.querySelector(".tag");
+        if (done) {
+          tag.classList.add("seen");
+          tag.textContent = "SEEN · 已观看";
+        } else {
+          tag.textContent =
+            (t.slot === "A" ? "A · " : "B · ") + (cat ? cat.short : "");
+        }
+        el.querySelector(".meta").textContent =
+          t.duration + " · " + t.episodeHint + (t.muscle ? " · " + t.muscle : "");
+        const acts = el.querySelector(".actions");
+        const open = document.createElement("button");
+        open.type = "button";
+        open.className = "btn";
+        open.textContent = done ? "再看 / 笔记" : "打开";
+        open.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openSheet(t);
+        });
+        acts.appendChild(open);
+        el.addEventListener("click", () => openSheet(t));
+        return el;
+      }
+
+      function renderMenu() {
+        const focus = catById(state.focus);
+        $("menuLede").textContent =
+          "本周主线建议：「" +
+          (focus ? focus.name : "") +
+          "」。在 2–3 张卡片里选；换口味票一周一次。";
+        $("dockFocus").textContent = focus ? focus.name : "—";
+        $("swapLeft").textContent = state.swapUsed ? "0" : "1";
+        $("swapBtn").disabled = !!state.swapUsed;
+        $("weekChip").textContent =
+          "W" + String(state.week % 100).padStart(2, "0") + " · " + (focus ? focus.short : "");
+
+        const menu = buildWeekMenu();
+        const a = $("menuA");
+        const b = $("menuB");
+        a.innerHTML = "";
+        b.innerHTML = "";
+        menu.A.forEach((t, i) => a.appendChild(renderCard(t, i)));
+        menu.B.forEach((t, i) => b.appendChild(renderCard(t, i)));
+        if (!menu.A.length) a.innerHTML = '<div class="empty">本周暂无 A 档</div>';
+        if (!menu.B.length) b.innerHTML = '<div class="empty">本周暂无 B 档</div>';
+      }
+
+      function renderPassport() {
+        $("explorerName").textContent = state.name || "小探险家";
+        $("nameInput").value = state.name === "小探险家" ? "" : state.name;
+        $("stampCount").textContent = state.stamps.length + " 枚小印";
+        const grid = $("visaGrid");
+        grid.innerHTML = "";
+        cats.forEach((c) => {
+          const done = visaDone(c.id);
+          const p = progress(c.id);
+          const cell = document.createElement("div");
+          cell.className = "visa" + (done ? " done" : "");
+          if (c.id === state.focus) cell.style.outline = "1px dashed currentColor";
+            cell.innerHTML =
+            '<div class="v-name"></div><div class="v-muscle"></div><div class="v-stat"></div><div class="stamp-mark">' +
+            miniSealSvg() +
+            "</div>";
+          cell.querySelector(".v-name").textContent = c.name;
+          cell.querySelector(".v-muscle").textContent = c.muscles.join(" · ");
+          cell.querySelector(".v-stat").textContent = done
+            ? "签证已盖"
+            : p.n + "/" + p.total + " · " + (c.id === state.focus ? "本周主线" : "进行中");
+          cell.addEventListener("click", () => {
+            state.filter = c.id;
+            save(state);
+            switchTab("plate");
+            renderPlate();
+          });
+          grid.appendChild(cell);
+        });
+
+        const log = $("stampsLog");
+        log.innerHTML = "";
+        const recent = state.stamps.slice().reverse().slice(0, 8);
+        if (!recent.length) {
+          log.innerHTML = '<div class="empty">还没有盖印。去本周菜单选一部吧。</div>';
+          return;
+        }
+        recent.forEach((s, i) => {
+          const t = titleById(s.titleId);
+          const row = document.createElement("div");
+          row.className = "stamp-row";
+          row.style.animationDelay = i * 0.04 + "s";
+          row.innerHTML = '<div class="t"></div><div class="n"></div>';
+          row.querySelector(".t").textContent =
+            (t ? t.title : s.titleId) + " · " + (s.muscle || "");
+          row.querySelector(".n").textContent = s.note;
+          log.appendChild(row);
+        });
+      }
+
+      function renderPlate() {
+        const grid = $("plateGrid");
+        grid.innerHTML = "";
+        cats.forEach((c) => {
+          const p = progress(c.id);
+          const cell = document.createElement("div");
+          cell.className =
+            "plate-cell" +
+            (c.id === state.focus ? " current" : "") +
+            (state.filter === c.id ? " selected" : "");
+          cell.innerHTML =
+            '<div class="p-name"></div><div class="p-muscles"></div><div class="p-fill"><i></i></div><div class="p-status"></div>';
+          cell.querySelector(".p-name").textContent = c.short;
+          cell.querySelector(".p-muscles").textContent = c.muscles.join(" / ");
+          requestAnimationFrame(() => {
+            cell.querySelector(".p-fill > i").style.width = p.pct + "%";
+          });
+          let status = visaDone(c.id) ? "饱 · 签证可盖" : "进行中 " + p.pct + "%";
+          if (c.id === state.focus) status = "本周主线 · " + status;
+          cell.querySelector(".p-status").textContent = status;
+          cell.addEventListener("click", () => {
+            state.filter = state.filter === c.id ? null : c.id;
+            save(state);
+            renderPlate();
+          });
+          grid.appendChild(cell);
+        });
+
+        const filter = state.filter;
+        $("plateFilterLabel").textContent = filter
+          ? catById(filter).name + " · 再点清空"
+          : "点格子筛选";
+        const list = $("plateList");
+        list.innerHTML = "";
+        const pool = filter
+          ? titles.filter((t) => t.category === filter || t.alsoCategory === filter)
+          : titles;
+
+        pool.forEach((t, i) => list.appendChild(renderCard(t, i)));
+        if (!pool.length) list.innerHTML = '<div class="empty">无片</div>';
+      }
+
+      let activeTitle = null;
+      function openSheet(t) {
+        activeTitle = t;
+        const cat = catById(t.category);
+        const playLabel = {
+          stable: "片源：正版页（较稳）",
+          ok: "片源：可用公开源",
+          search: "片源：B 站搜索投稿（需自检）",
+          risk: "片源：孩子端可能打不开",
+        };
+        $("sheetCat").textContent =
+          (cat ? cat.name : "") + (t.muscle ? " · " + t.muscle : "");
+        $("sheetTitle").textContent = t.title;
+        $("sheetMeta").textContent =
+          t.duration +
+          " · " +
+          t.episodeHint +
+          (t.play ? " · " + (playLabel[t.play] || t.play) : "");
+        $("sheetPin").textContent = [
+          t.mapPin || "",
+          t.playNote || "",
+          t.parentNote ? "家长：" + t.parentNote : "",
+          "本页不内嵌视频；点「去看」会打开网址，需要联网。",
+        ]
+          .filter(Boolean)
+          .join(" · ");
+        $("sheetWatch").href = t.link;
+        $("sheetWatch").textContent = "去看 · " + (t.linkLabel || "打开");
+        const alt = $("sheetAlt");
+        if (t.altLink) {
+          alt.hidden = false;
+          alt.href = t.altLink;
+          alt.textContent = t.altLabel || "备用";
+        } else {
+          alt.hidden = true;
+        }
+        const prev = state.stamps.filter((s) => s.titleId === t.id).pop();
+        $("noteInput").value = prev ? prev.note : "";
+        $("sheet").classList.add("open");
+        $("sheet").setAttribute("aria-hidden", "false");
+      }
+
+      function closeSheet() {
+        $("sheet").classList.remove("open");
+        $("sheet").setAttribute("aria-hidden", "true");
+        activeTitle = null;
+      }
+
+      function playStampCeremony(titleName) {
+        const el = $("stampCeremony");
+        const cap = $("sealCaption");
+        cap.textContent = titleName ? "已盖印 · " + titleName : "PASSPORT STAMPED";
+        el.classList.remove("show");
+        void el.offsetWidth;
+        el.classList.add("show");
+        el.setAttribute("aria-hidden", "false");
+        clearTimeout(playStampCeremony._t);
+        playStampCeremony._t = setTimeout(() => {
+          el.classList.remove("show");
+          el.setAttribute("aria-hidden", "true");
+        }, 1400);
+      }
+
+      function stamp() {
+        if (!activeTitle) return;
+        const note = ($("noteInput").value || "").trim();
+        if (note.length < 4) {
+          toast("写一句完整的话再盖印（至少几个字）");
+          return;
+        }
+        const stampedTitle = activeTitle;
+        state.stamps = state.stamps.filter((s) => s.titleId !== stampedTitle.id);
+        state.stamps.push({
+          titleId: stampedTitle.id,
+          note,
+          at: Date.now(),
+          category: stampedTitle.category,
+          muscle: stampedTitle.muscle || "",
+        });
+        save(state);
+        closeSheet();
+        playStampCeremony(stampedTitle.title);
+        setTimeout(() => {
+          renderAll();
+          toast("绿色印章已落 · " + stampedTitle.title);
+        }, 420);
+      }
+
+      function switchTab(name) {
+        document.querySelectorAll(".tabs button").forEach((b) => {
+          b.classList.toggle("active", b.dataset.tab === name);
+        });
+        document.querySelectorAll(".panel").forEach((p) => {
+          p.classList.toggle("active", p.id === "panel-" + name);
+        });
+      }
+
+      function renderAll() {
+        renderPassport();
+        renderMenu();
+        renderPlate();
+      }
+
+      document.querySelectorAll(".tabs button").forEach((b) => {
+        b.addEventListener("click", () => switchTab(b.dataset.tab));
+      });
+      $("sheetClose").addEventListener("click", closeSheet);
+      $("sheet").addEventListener("click", (e) => {
+        if (e.target === $("sheet")) closeSheet();
+      });
+      $("stampBtn").addEventListener("click", stamp);
+      $("saveName").addEventListener("click", () => {
+        const n = ($("nameInput").value || "").trim();
+        state.name = n || "小探险家";
+        save(state);
+        renderPassport();
+        toast("护照署名已更新");
+      });
+      $("swapBtn").addEventListener("click", () => {
+        if (state.swapUsed) {
+          toast("本周换口味票已用完");
+          return;
+        }
+        const i = rotation.indexOf(state.focus);
+        state.focus = rotation[(i + 1) % rotation.length];
+        state.swapUsed = true;
+        save(state);
+        renderAll();
+        toast("主线改为「" + catById(state.focus).name + "」");
+      });
+
+      /* —— 背景音乐：打开即播；点「去看」暂停 —— */
+      const bg = $("bgMusic");
+      const musicBtn = $("musicBtn");
+      const MUSIC_KEY = "doc-passport-g4-music-muted";
+      let musicWanted = localStorage.getItem(MUSIC_KEY) !== "1";
+      let musicPausedForWatch = false;
+
+      function syncMusicBtn() {
+        const muted = !musicWanted || bg.paused;
+        musicBtn.classList.toggle("is-muted", muted || bg.muted);
+        musicBtn.setAttribute("aria-pressed", musicWanted && !bg.paused ? "true" : "false");
+        musicBtn.textContent = musicWanted && !bg.paused ? "♪" : "∅";
+        musicBtn.title = musicWanted && !bg.paused ? "关闭背景音乐" : "打开背景音乐";
+      }
+
+      function tryPlayBg() {
+        if (!musicWanted || musicPausedForWatch) {
+          syncMusicBtn();
+          return;
+        }
+        bg.volume = 0.28;
+        bg.muted = false;
+        const p = bg.play();
+        if (p && typeof p.then === "function") {
+          p.then(syncMusicBtn).catch(() => {
+            /* 浏览器拦截自动播放：等一次点击再播 */
+            syncMusicBtn();
+          });
+        } else {
+          syncMusicBtn();
+        }
+      }
+
+      function pauseBgForWatch() {
+        musicPausedForWatch = true;
+        bg.pause();
+        syncMusicBtn();
+      }
+
+      function resumeBgAfterWatch() {
+        if (!musicPausedForWatch) return;
+        musicPausedForWatch = false;
+        tryPlayBg();
+      }
+
+      musicBtn.addEventListener("click", () => {
+        musicWanted = !musicWanted;
+        localStorage.setItem(MUSIC_KEY, musicWanted ? "0" : "1");
+        musicPausedForWatch = false;
+        if (musicWanted) tryPlayBg();
+        else {
+          bg.pause();
+          syncMusicBtn();
+        }
+      });
+
+      $("sheetWatch").addEventListener("click", pauseBgForWatch);
+      $("sheetAlt").addEventListener("click", pauseBgForWatch);
+
+      document.addEventListener(
+        "pointerdown",
+        () => {
+          if (musicWanted && bg.paused && !musicPausedForWatch) tryPlayBg();
+        },
+        { once: true, passive: true }
+      );
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") resumeBgAfterWatch();
+      });
+      window.addEventListener("pageshow", resumeBgAfterWatch);
+      window.addEventListener("focus", resumeBgAfterWatch);
+
+      tryPlayBg();
+      syncMusicBtn();
+
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
