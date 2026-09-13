@@ -349,7 +349,20 @@ keyiyo哪个一个<!DOCTYPE html>
       background: var(--stamp-soft);
     }
     .doc-title { font-weight: 700; font-size: 1.05rem; line-height: 1.35; }
+    .doc-blurb {
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: var(--ink);
+      opacity: 0.8;
+    }
+    .doc-card.done .doc-blurb { color: #2a5a42; opacity: 0.92; }
     .meta { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .sheet-blurb {
+      margin: 10px 0 0;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--ink);
+    }
     .actions {
       display: flex;
       flex-wrap: wrap;
@@ -692,6 +705,7 @@ keyiyo哪个一个<!DOCTYPE html>
     <div class="sheet-panel" role="dialog">
       <div class="pass-id" id="sheetCat">—</div>
       <h3 id="sheetTitle">—</h3>
+      <p class="sheet-blurb" id="sheetBlurb"></p>
       <p class="meta" id="sheetMeta"></p>
       <p class="hint" id="sheetPin"></p>
       <div class="actions" style="margin-top:14px">
@@ -891,6 +905,7 @@ keyiyo哪个一个<!DOCTYPE html>
         el.style.animationDelay = i * 0.05 + "s";
         el.innerHTML =
           '<div class="row1"><div class="doc-title"></div><div class="tag"></div></div>' +
+          '<div class="doc-blurb"></div>' +
           '<div class="meta"></div><div class="actions"></div>';
         el.querySelector(".doc-title").textContent = t.title;
         const tag = el.querySelector(".tag");
@@ -901,6 +916,8 @@ keyiyo哪个一个<!DOCTYPE html>
           tag.textContent =
             (t.slot === "A" ? "A · " : "B · ") + (cat ? cat.short : "");
         }
+        el.querySelector(".doc-blurb").textContent =
+          t.blurb || t.mapPin || "";
         el.querySelector(".meta").textContent =
           t.duration + " · " + t.episodeHint + (t.muscle ? " · " + t.muscle : "");
         const acts = el.querySelector(".actions");
@@ -1045,6 +1062,7 @@ keyiyo哪个一个<!DOCTYPE html>
         $("sheetCat").textContent =
           (cat ? cat.name : "") + (t.muscle ? " · " + t.muscle : "");
         $("sheetTitle").textContent = t.title;
+        $("sheetBlurb").textContent = t.blurb || t.mapPin || "";
         $("sheetMeta").textContent =
           t.duration +
           " · " +
