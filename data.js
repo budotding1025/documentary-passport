@@ -282,6 +282,7 @@ window.DOC_CATALOG = {
       play: "ok",
       playNote: "少儿微生物科普合集，分P选集；短、适合工作日",
       mapPin: "细菌 · 病毒 · 卫生",
+      cover: "./covers/germsquad.jpg",
       episodes: [
         {
           id: "germsquad-1",
@@ -291,6 +292,7 @@ window.DOC_CATALOG = {
           duration: "约 7 分钟",
           link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=1",
           hints: ["飞沫", "传染", "洗手", "休息"],
+          cover: "./covers/germsquad-1.jpg",
         },
         {
           id: "germsquad-2",
@@ -300,6 +302,7 @@ window.DOC_CATALOG = {
           duration: "约 7 分钟",
           link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=2",
           hints: ["发霉", "潮湿", "变质", "别吃坏掉的食物"],
+          cover: "./covers/germsquad-2.jpg",
         },
         {
           id: "germsquad-3",
@@ -309,6 +312,7 @@ window.DOC_CATALOG = {
           duration: "约 7 分钟",
           link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=3",
           hints: ["伤口", "疫苗", "告诉大人", "安全距离"],
+          cover: "./covers/germsquad-3.jpg",
         },
         {
           id: "germsquad-4",
@@ -318,6 +322,7 @@ window.DOC_CATALOG = {
           duration: "约 7 分钟",
           link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=4",
           hints: ["发酵", "二氧化碳", "面团", "有用的菌"],
+          cover: "./covers/germsquad-4.jpg",
         },
         {
           id: "germsquad-5",
@@ -327,6 +332,7 @@ window.DOC_CATALOG = {
           duration: "约 8 分钟",
           link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=5",
           hints: ["酸奶", "发酵", "肠道", "有益菌"],
+          cover: "./covers/germsquad-5.jpg",
         },
         {
           id: "germsquad-6",
@@ -336,6 +342,7 @@ window.DOC_CATALOG = {
           duration: "约 8 分钟",
           link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=6",
           hints: ["醋", "发酵", "变酸", "食物加工"],
+          cover: "./covers/germsquad-6.jpg",
         },
         {
           id: "germsquad-7",
@@ -345,6 +352,7 @@ window.DOC_CATALOG = {
           duration: "约 8 分钟",
           link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=7",
           hints: ["微观", "单细胞", "分解", "水环境"],
+          cover: "./covers/germsquad-7.jpg",
         },
         {
           id: "germsquad-8",
@@ -354,6 +362,7 @@ window.DOC_CATALOG = {
           duration: "约 10 分钟",
           link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=8",
           hints: ["蘑菇", "真菌", "别乱采", "辨认"],
+          cover: "./covers/germsquad-8.jpg",
         },
         {
           id: "germsquad-9",
@@ -363,6 +372,7 @@ window.DOC_CATALOG = {
           duration: "约 8 分钟",
           link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=9",
           hints: ["霉菌", "发酵食品", "环境", "观察"],
+          cover: "./covers/germsquad-9.jpg",
         },
       ],
     },
@@ -733,6 +743,7 @@ window.DOC_CATALOG = {
       play: "stable",
       playNote: "正版 3 集；建议家长陪看第 1 集建立兴趣",
       mapPin: "材料 · 从矿石到生活",
+      cover: "./covers/materialsecret.jpg",
       episodes: [
         {
           id: "materialsecret-1",
@@ -742,6 +753,7 @@ window.DOC_CATALOG = {
           duration: "约 50 分钟",
           link: "https://www.bilibili.com/bangumi/play/ep257923",
           hints: ["冶炼", "合金", "坚硬与延展", "工具与建筑"],
+          cover: "./covers/materialsecret-1.jpg",
         },
         {
           id: "materialsecret-2",
@@ -751,6 +763,7 @@ window.DOC_CATALOG = {
           duration: "约 50 分钟",
           link: "https://www.bilibili.com/bangumi/play/ep257924",
           hints: ["聚合物", "轻便", "大量生产", "回收与使用"],
+          cover: "./covers/materialsecret-2.jpg",
         },
         {
           id: "materialsecret-3",
@@ -760,6 +773,7 @@ window.DOC_CATALOG = {
           duration: "约 50 分钟",
           link: "https://www.bilibili.com/bangumi/play/ep257925",
           hints: ["陶瓷", "玻璃", "水泥", "耐热与透明"],
+          cover: "./covers/materialsecret-3.jpg",
         },
       ],
     },
