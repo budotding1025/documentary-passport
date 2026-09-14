@@ -1,7 +1,9 @@
 /** 四年级纪录片库：工作日 A / 周末 B；四格 + 审美/商业肌肉
  * play: stable=正版页 | ok=可用公开源 | search=仅搜索投稿 | risk=孩子端常打不开
  * blurb: 卡片外可见的一句话简介，方便选片
- * 每部只归一个 category，盖印一次即可；不设交叉分类，避免重复观看感
+ * 每部只归一个 category；盖印下沉到集（episodes[]）。
+ * episode: { id, n, title, blurb, duration?, link?, hints?[] }
+ * 无 episodes 的片子，界面会自动当成「整部 / 1 集」打卡。
  */
 window.DOC_CATALOG = {
   grade: 4,
@@ -208,6 +210,89 @@ window.DOC_CATALOG = {
       play: "ok",
       playNote: "少儿微生物科普合集，分P选集；短、适合工作日",
       mapPin: "细菌 · 病毒 · 卫生",
+      episodes: [
+        {
+          id: "germsquad-1",
+          n: 1,
+          title: "流感病毒",
+          blurb: "感冒为什么容易传开？流感病毒怎样钻进身体。",
+          duration: "约 7 分钟",
+          link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=1",
+          hints: ["飞沫", "传染", "洗手", "休息"],
+        },
+        {
+          id: "germsquad-2",
+          n: 2,
+          title: "黄曲霉",
+          blurb: "长毛的馒头还能吃吗？霉菌喜欢怎样的环境。",
+          duration: "约 7 分钟",
+          link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=2",
+          hints: ["发霉", "潮湿", "变质", "别吃坏掉的食物"],
+        },
+        {
+          id: "germsquad-3",
+          n: 3,
+          title: "狂犬病毒",
+          blurb: "被狗咬伤为什么要重视？狂犬病防范小知识。",
+          duration: "约 7 分钟",
+          link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=3",
+          hints: ["伤口", "疫苗", "告诉大人", "安全距离"],
+        },
+        {
+          id: "germsquad-4",
+          n: 4,
+          title: "酵母菌",
+          blurb: "面包为什么能发起来？酵母是「好帮手」微生物。",
+          duration: "约 7 分钟",
+          link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=4",
+          hints: ["发酵", "二氧化碳", "面团", "有用的菌"],
+        },
+        {
+          id: "germsquad-5",
+          n: 5,
+          title: "乳酸菌",
+          blurb: "牛奶的好朋友：酸奶里的菌怎样工作。",
+          duration: "约 8 分钟",
+          link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=5",
+          hints: ["酸奶", "发酵", "肠道", "有益菌"],
+        },
+        {
+          id: "germsquad-6",
+          n: 6,
+          title: "醋酸菌",
+          blurb: "醋是怎么来的？醋酸菌把酒变成酸酸的味道。",
+          duration: "约 8 分钟",
+          link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=6",
+          hints: ["醋", "发酵", "变酸", "食物加工"],
+        },
+        {
+          id: "germsquad-7",
+          n: 7,
+          title: "草履虫",
+          blurb: "水里的分解小工：草履虫怎样「打扫」污染物。",
+          duration: "约 8 分钟",
+          link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=7",
+          hints: ["微观", "单细胞", "分解", "水环境"],
+        },
+        {
+          id: "germsquad-8",
+          n: 8,
+          title: "食用菌",
+          blurb: "蘑菇亦正亦邪：能吃的菌和要小心的菌。",
+          duration: "约 10 分钟",
+          link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=8",
+          hints: ["蘑菇", "真菌", "别乱采", "辨认"],
+        },
+        {
+          id: "germsquad-9",
+          n: 9,
+          title: "毛霉",
+          blurb: "毛霉是谁？和食物、发酵有什么关系。",
+          duration: "约 8 分钟",
+          link: "https://www.bilibili.com/video/BV12h411V7Gv/?p=9",
+          hints: ["霉菌", "发酵食品", "环境", "观察"],
+        },
+      ],
     },
     {
       id: "pasteur",
@@ -398,12 +483,41 @@ window.DOC_CATALOG = {
       duration: "约 50 分钟 × 3 集",
       episodeHint: "周末 1 集（已看过第1可续第2）",
       muscle: "数理",
-      blurb: "玻璃、水泥、塑料……日常材料从哪来、改变了什么。故事感强，比纯工业片更好入口。",
+      blurb: "金属、塑料、陶瓷……日常材料从哪来、改变了什么。故事感强，比纯工业片更好入口。",
       link: "https://www.bilibili.com/bangumi/play/ep257923",
       linkLabel: "B 站正版",
       play: "stable",
       playNote: "正版 3 集；建议家长陪看第 1 集建立兴趣",
       mapPin: "材料 · 从矿石到生活",
+      episodes: [
+        {
+          id: "materialsecret-1",
+          n: 1,
+          title: "金属",
+          blurb: "从青铜到合金：金属怎样被冶炼，又怎样撑起飞机与城市。",
+          duration: "约 50 分钟",
+          link: "https://www.bilibili.com/bangumi/play/ep257923",
+          hints: ["冶炼", "合金", "坚硬与延展", "工具与建筑"],
+        },
+        {
+          id: "materialsecret-2",
+          n: 2,
+          title: "塑料",
+          blurb: "塑料如何模仿自然、走进日常，也带来新的问题与可能。",
+          duration: "约 50 分钟",
+          link: "https://www.bilibili.com/bangumi/play/ep257924",
+          hints: ["聚合物", "轻便", "大量生产", "回收与使用"],
+        },
+        {
+          id: "materialsecret-3",
+          n: 3,
+          title: "陶瓷",
+          blurb: "黏土、沙子变成陶器、玻璃和水泥：平凡材料如何建起文明。",
+          duration: "约 50 分钟",
+          link: "https://www.bilibili.com/bangumi/play/ep257925",
+          hints: ["陶瓷", "玻璃", "水泥", "耐热与透明"],
+        },
+      ],
     },
     {
       id: "qingzang",

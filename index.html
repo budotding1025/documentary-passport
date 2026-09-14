@@ -498,6 +498,142 @@ keyiyo哪个一个<!DOCTYPE html>
     }
     .hint { font-size: 0.8rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
 
+    .ep-progress {
+      margin-top: 12px;
+      display: grid;
+      gap: 6px;
+    }
+    .ep-progress-bar {
+      height: 4px;
+      background: var(--soft);
+      overflow: hidden;
+    }
+    .ep-progress-bar > i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--stamp);
+      transition: width 0.5s var(--ease);
+    }
+    .ep-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ep-card {
+      border: 1px solid var(--ink);
+      padding: 12px;
+      background: var(--card);
+      display: grid;
+      gap: 6px;
+    }
+    .ep-card.done {
+      border-color: var(--stamp);
+      background: linear-gradient(180deg, #f8fcf9, #f0f7f3);
+      box-shadow: inset 3px 0 0 var(--stamp);
+    }
+    .ep-card .ep-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .ep-card .ep-title {
+      font-weight: 700;
+      font-size: 0.98rem;
+    }
+    .ep-card .ep-blurb {
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .ep-card .ep-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .doc-card.partial {
+      border-color: var(--stamp-mid);
+      box-shadow: inset 3px 0 0 var(--stamp-mid);
+    }
+    .doc-card.partial .tag {
+      border-color: var(--stamp);
+      color: var(--stamp-deep);
+      background: var(--stamp-soft);
+    }
+
+    .stamp-back {
+      margin-bottom: 10px;
+    }
+    .prompt-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .prompt-chip {
+      border: 1px solid var(--ink);
+      background: var(--card);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.82rem;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+    .prompt-chip.active {
+      background: var(--stamp-soft);
+      border-color: var(--stamp);
+      color: var(--stamp-deep);
+    }
+    .ask-box {
+      margin-top: 14px;
+      border: 1px dashed var(--muted);
+      padding: 10px 12px;
+      background: var(--card);
+    }
+    .ask-box summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    .chat-log {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 180px;
+      overflow: auto;
+    }
+    .chat-bubble {
+      padding: 8px 10px;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      border: 1px solid var(--soft);
+    }
+    .chat-bubble.kid {
+      background: #fff;
+      border-color: var(--ink);
+    }
+    .chat-bubble.coach {
+      background: var(--stamp-soft);
+      border-color: var(--stamp-mid);
+      color: var(--stamp-deep);
+    }
+    .ask-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .ask-row input {
+      flex: 1;
+      border: 1px solid var(--ink);
+      background: #fff;
+      padding: 8px 10px;
+      font: inherit;
+      font-size: 0.9rem;
+    }
+
     .stamps-log {
       display: flex;
       flex-direction: column;
@@ -661,7 +797,7 @@ keyiyo哪个一个<!DOCTYPE html>
 
       <div class="title-row">
         <h2>最近盖印</h2>
-        <span class="mono" id="titleHint">一句话才算看完</span>
+        <span class="mono" id="titleHint">按集盖印 · 写反馈</span>
       </div>
       <div class="stamps-log" id="stampsLog"></div>
     </section>
@@ -703,24 +839,64 @@ keyiyo哪个一个<!DOCTYPE html>
 
   <div class="sheet" id="sheet" aria-hidden="true">
     <div class="sheet-panel" role="dialog">
-      <div class="pass-id" id="sheetCat">—</div>
-      <h3 id="sheetTitle">—</h3>
-      <p class="sheet-blurb" id="sheetBlurb"></p>
-      <p class="meta" id="sheetMeta"></p>
-      <p class="hint" id="sheetPin"></p>
-      <div class="actions" style="margin-top:14px">
-        <a class="btn" id="sheetWatch" href="#" target="_blank" rel="noopener">去看</a>
-        <a class="btn ghost" id="sheetAlt" href="#" target="_blank" rel="noopener" hidden>备用入口</a>
-        <button type="button" class="btn ghost" id="sheetClose">关闭</button>
+      <div id="sheetBrowse">
+        <div class="pass-id" id="sheetCat">—</div>
+        <h3 id="sheetTitle">—</h3>
+        <p class="sheet-blurb" id="sheetBlurb"></p>
+        <p class="meta" id="sheetMeta"></p>
+        <p class="hint" id="sheetPin"></p>
+        <div class="ep-progress" id="epProgress" hidden>
+          <div class="ep-progress-bar"><i id="epProgressFill"></i></div>
+          <div class="mono" id="epProgressText">0/0 集</div>
+        </div>
+        <div class="title-row" style="margin-top:16px">
+          <h2>选集打卡</h2>
+          <span class="mono">一集一章</span>
+        </div>
+        <div class="ep-list" id="epList"></div>
+        <div class="actions" style="margin-top:14px">
+          <a class="btn ghost" id="sheetWatchAll" href="#" target="_blank" rel="noopener">打开片源首页</a>
+          <button type="button" class="btn ghost" id="sheetCloseBrowse">关闭</button>
+        </div>
       </div>
-      <div class="title-row" style="margin-top:20px">
-        <h2>一句话笔记</h2>
-        <span class="mono">盖印条件</span>
-      </div>
-      <textarea id="noteInput" maxlength="120" placeholder="例如：原来火山也是地球的工程师。"></textarea>
-      <p class="hint">写完才能盖印。家长不打分。浅也可以。</p>
-      <div class="actions" style="margin-top:12px">
-        <button type="button" class="btn" id="stampBtn">盖印收工</button>
+
+      <div id="sheetStamp" hidden>
+        <button type="button" class="btn ghost stamp-back" id="stampBack">← 回选集</button>
+        <div class="pass-id" id="stampCat">—</div>
+        <h3 id="stampEpTitle">—</h3>
+        <p class="sheet-blurb" id="stampEpBlurb"></p>
+        <p class="meta" id="stampEpMeta"></p>
+        <div class="actions" style="margin-top:10px">
+          <a class="btn" id="stampWatch" href="#" target="_blank" rel="noopener">去看这一集</a>
+          <a class="btn ghost" id="stampAlt" href="#" target="_blank" rel="noopener" hidden>备用入口</a>
+        </div>
+
+        <div class="title-row" style="margin-top:18px">
+          <h2>看完反馈</h2>
+          <span class="mono">必填一类</span>
+        </div>
+        <div class="prompt-row" id="promptRow">
+          <button type="button" class="prompt-chip" data-prompt="remember">记得最清楚的一件事</button>
+          <button type="button" class="prompt-chip" data-prompt="aha">有个「原来是这样」</button>
+          <button type="button" class="prompt-chip" data-prompt="wonder">有个地方还想弄懂</button>
+        </div>
+        <textarea id="noteInput" maxlength="160" placeholder="先点上面一类，再用自己的话写下来。"></textarea>
+        <p class="hint">不打分。写清楚一点，方便自己整理这集看到了什么。</p>
+
+        <details class="ask-box" id="askBox">
+          <summary>有疑问，问一问（可选）</summary>
+          <p class="hint">可以说「没看懂××」。助手会和你聊两三个来回，帮你理清，不是考试。</p>
+          <div class="chat-log" id="chatLog"></div>
+          <div class="ask-row">
+            <input type="text" id="askInput" maxlength="120" placeholder="这集里哪里没懂？" />
+            <button type="button" class="btn ghost" id="askSend">问一下</button>
+          </div>
+        </details>
+
+        <div class="actions" style="margin-top:14px">
+          <button type="button" class="btn" id="stampBtn">盖印收工</button>
+          <button type="button" class="btn ghost" id="sheetCloseStamp">关闭</button>
+        </div>
       </div>
     </div>
   </div>
@@ -751,10 +927,17 @@ keyiyo哪个一个<!DOCTYPE html>
   <script src="./data.js"></script>
   <script>
     (function () {
-      const STORE_KEY = "doc-passport-g4-v1";
+      const STORE_KEY = "doc-passport-g4-v2";
+      const STORE_KEY_LEGACY = "doc-passport-g4-v1";
       const cats = DOC_CATALOG.categories;
       const titles = DOC_CATALOG.titles;
       const rotation = DOC_CATALOG.rotation;
+
+      const PROMPTS = {
+        remember: "这集里我记得最清楚的是：",
+        aha: "这集让我明白原来：",
+        wonder: "这集里我还想弄懂的是：",
+      };
 
       function weekIndex(d) {
         const t = d || new Date();
@@ -765,7 +948,16 @@ keyiyo哪个一个<!DOCTYPE html>
 
       function load() {
         try {
-          return JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+          let raw = localStorage.getItem(STORE_KEY);
+          if (!raw) {
+            const legacy = localStorage.getItem(STORE_KEY_LEGACY);
+            if (legacy) {
+              const old = JSON.parse(legacy);
+              return migrateState(old);
+            }
+            return {};
+          }
+          return JSON.parse(raw);
         } catch (_) {
           return {};
         }
@@ -778,7 +970,7 @@ keyiyo哪个一个<!DOCTYPE html>
       function defaultState() {
         return {
           name: "小探险家",
-          stamps: [], // {titleId, note, at, category, muscle}
+          stamps: [], // {titleId, episodeId, episodeTitle, note, prompt, ask, agentChat, at, category, muscle}
           week: weekIndex(),
           focus: rotation[weekIndex() % rotation.length],
           swapUsed: false,
@@ -786,11 +978,51 @@ keyiyo哪个一个<!DOCTYPE html>
         };
       }
 
+      function episodesOf(t) {
+        if (!t) return [];
+        if (t.episodes && t.episodes.length) return t.episodes;
+        return [
+          {
+            id: t.id + "-all",
+            n: 1,
+            title: "整部 / 本片",
+            blurb: t.blurb || t.mapPin || "",
+            duration: t.duration || "",
+            link: t.link,
+            hints: [],
+          },
+        ];
+      }
+
+      function episodeById(t, episodeId) {
+        return episodesOf(t).find((e) => e.id === episodeId) || null;
+      }
+
+      function migrateState(old) {
+        const next = Object.assign(defaultState(), old || {});
+        next.stamps = (next.stamps || []).map((s) => {
+          if (s.episodeId) return s;
+          const t = titles.find((x) => x.id === s.titleId);
+          const ep = episodesOf(t)[0];
+          return Object.assign({}, s, {
+            episodeId: ep ? ep.id : s.titleId + "-all",
+            episodeTitle: ep ? ep.title : "整部",
+            prompt: s.prompt || "remember",
+            ask: s.ask || "",
+            agentChat: s.agentChat || [],
+          });
+        });
+        return next;
+      }
+
       let state = Object.assign(defaultState(), load());
+      state = migrateState(state);
       if (state.week !== weekIndex()) {
         state.week = weekIndex();
         state.focus = rotation[state.week % rotation.length];
         state.swapUsed = false;
+        save(state);
+      } else {
         save(state);
       }
 
@@ -813,17 +1045,36 @@ keyiyo哪个一个<!DOCTYPE html>
       }
 
       function stampsFor(catId) {
-        return state.stamps.filter(
-          (s) => s.category === catId || (titleById(s.titleId) || {}).alsoCategory === catId
+        return state.stamps.filter((s) => s.category === catId);
+      }
+
+      function titleProgress(t) {
+        const eps = episodesOf(t);
+        const doneIds = new Set(
+          state.stamps.filter((s) => s.titleId === t.id).map((s) => s.episodeId)
         );
+        const n = eps.filter((e) => doneIds.has(e.id)).length;
+        return { n, total: eps.length, pct: eps.length ? Math.round((n / eps.length) * 100) : 0 };
+      }
+
+      function episodeStamped(titleId, episodeId) {
+        return state.stamps.some((s) => s.titleId === titleId && s.episodeId === episodeId);
+      }
+
+      function titleFullyDone(t) {
+        const p = titleProgress(t);
+        return p.total > 0 && p.n >= p.total;
+      }
+
+      function titleTouched(t) {
+        return state.stamps.some((s) => s.titleId === t.id);
       }
 
       function visaDone(catId) {
-        // 四年级最低：至少 2 个有效小印，且 A/B 各至少碰到过一次（若该格有对应片）
         const list = stampsFor(catId);
         if (list.length < 2) return false;
         const ids = new Set(list.map((s) => s.titleId));
-        const pool = titles.filter((t) => t.category === catId || t.alsoCategory === catId);
+        const pool = titles.filter((t) => t.category === catId);
         const hasA = pool.some((t) => t.slot === "A");
         const hasB = pool.some((t) => t.slot === "B");
         const stampedA = pool.some((t) => t.slot === "A" && ids.has(t.id));
@@ -833,7 +1084,7 @@ keyiyo哪个一个<!DOCTYPE html>
       }
 
       function progress(catId) {
-        const pool = titles.filter((t) => t.category === catId || t.alsoCategory === catId);
+        const pool = titles.filter((t) => t.category === catId);
         const done = new Set(stampsFor(catId).map((s) => s.titleId));
         const n = pool.filter((t) => done.has(t.id)).length;
         return { n, total: pool.length, pct: pool.length ? Math.round((n / pool.length) * 100) : 0 };
@@ -848,7 +1099,6 @@ keyiyo哪个一个<!DOCTYPE html>
         const otherA = titles.filter(
           (t) => t.slot === "A" && t.category !== focus && (t.role === "main" || t.role === "side")
         );
-        // 2–3 weekday cards
         A.push(...focusA.slice(0, 2));
         if (A.length < 2 && otherA.length) A.push(otherA[0]);
         if (A.length < 3) {
@@ -857,7 +1107,6 @@ keyiyo哪个一个<!DOCTYPE html>
           );
           if (more) A.push(more);
         }
-        // weekend: focus first, then must-sees if focus is drive
         B.push(...focusB.slice(0, 2));
         if (focus === "drive") {
           titles
@@ -881,10 +1130,6 @@ keyiyo哪个一个<!DOCTYPE html>
         });
       }
 
-      function stamped(titleId) {
-        return state.stamps.some((s) => s.titleId === titleId);
-      }
-
       function miniSealSvg() {
         return (
           '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
@@ -899,9 +1144,12 @@ keyiyo哪个一个<!DOCTYPE html>
 
       function renderCard(t, i) {
         const cat = catById(t.category);
-        const done = stamped(t.id);
+        const p = titleProgress(t);
+        const full = titleFullyDone(t);
+        const partial = !full && titleTouched(t);
         const el = document.createElement("article");
-        el.className = "doc-card" + (done ? " done" : "");
+        el.className =
+          "doc-card" + (full ? " done" : "") + (partial ? " partial" : "");
         el.style.animationDelay = i * 0.05 + "s";
         el.innerHTML =
           '<div class="row1"><div class="doc-title"></div><div class="tag"></div></div>' +
@@ -909,28 +1157,34 @@ keyiyo哪个一个<!DOCTYPE html>
           '<div class="meta"></div><div class="actions"></div>';
         el.querySelector(".doc-title").textContent = t.title;
         const tag = el.querySelector(".tag");
-        if (done) {
+        if (full) {
           tag.classList.add("seen");
-          tag.textContent = "SEEN · 已观看";
+          tag.textContent = "SEEN · 全勤";
+        } else if (partial) {
+          tag.classList.add("seen");
+          tag.textContent = p.n + "/" + p.total + " 集";
         } else {
           tag.textContent =
             (t.slot === "A" ? "A · " : "B · ") + (cat ? cat.short : "");
         }
-        el.querySelector(".doc-blurb").textContent =
-          t.blurb || t.mapPin || "";
+        el.querySelector(".doc-blurb").textContent = t.blurb || t.mapPin || "";
         el.querySelector(".meta").textContent =
-          t.duration + " · " + t.episodeHint + (t.muscle ? " · " + t.muscle : "");
+          t.duration +
+          " · " +
+          t.episodeHint +
+          (t.muscle ? " · " + t.muscle : "") +
+          (t.episodes ? " · " + t.episodes.length + " 集可打卡" : "");
         const acts = el.querySelector(".actions");
         const open = document.createElement("button");
         open.type = "button";
         open.className = "btn";
-        open.textContent = done ? "再看 / 笔记" : "打开";
+        open.textContent = full ? "选集 / 笔记" : partial ? "继续选集" : "打开选集";
         open.addEventListener("click", (e) => {
           e.stopPropagation();
-          openSheet(t);
+          openBrowse(t);
         });
         acts.appendChild(open);
-        el.addEventListener("click", () => openSheet(t));
+        el.addEventListener("click", () => openBrowse(t));
         return el;
       }
 
@@ -939,7 +1193,7 @@ keyiyo哪个一个<!DOCTYPE html>
         $("menuLede").textContent =
           "本周主线建议：「" +
           (focus ? focus.name : "") +
-          "」。在 2–3 张卡片里选；换口味票一周一次。";
+          "」。点进片子选某一集；看完写反馈再盖印。";
         $("dockFocus").textContent = focus ? focus.name : "—";
         $("swapLeft").textContent = state.swapUsed ? "0" : "1";
         $("swapBtn").disabled = !!state.swapUsed;
@@ -969,7 +1223,7 @@ keyiyo哪个一个<!DOCTYPE html>
           const cell = document.createElement("div");
           cell.className = "visa" + (done ? " done" : "");
           if (c.id === state.focus) cell.style.outline = "1px dashed currentColor";
-            cell.innerHTML =
+          cell.innerHTML =
             '<div class="v-name"></div><div class="v-muscle"></div><div class="v-stat"></div><div class="stamp-mark">' +
             miniSealSvg() +
             "</div>";
@@ -991,7 +1245,7 @@ keyiyo哪个一个<!DOCTYPE html>
         log.innerHTML = "";
         const recent = state.stamps.slice().reverse().slice(0, 8);
         if (!recent.length) {
-          log.innerHTML = '<div class="empty">还没有盖印。去本周菜单选一部吧。</div>';
+          log.innerHTML = '<div class="empty">还没有盖印。去本周菜单选一部，再点某一集吧。</div>';
           return;
         }
         recent.forEach((s, i) => {
@@ -1001,7 +1255,10 @@ keyiyo哪个一个<!DOCTYPE html>
           row.style.animationDelay = i * 0.04 + "s";
           row.innerHTML = '<div class="t"></div><div class="n"></div>';
           row.querySelector(".t").textContent =
-            (t ? t.title : s.titleId) + " · " + (s.muscle || "");
+            (t ? t.title : s.titleId) +
+            " · " +
+            (s.episodeTitle || "一集") +
+            (s.muscle ? " · " + s.muscle : "");
           row.querySelector(".n").textContent = s.note;
           log.appendChild(row);
         });
@@ -1041,17 +1298,24 @@ keyiyo哪个一个<!DOCTYPE html>
           : "点格子筛选";
         const list = $("plateList");
         list.innerHTML = "";
-        const pool = filter
-          ? titles.filter((t) => t.category === filter || t.alsoCategory === filter)
-          : titles;
-
+        const pool = filter ? titles.filter((t) => t.category === filter) : titles;
         pool.forEach((t, i) => list.appendChild(renderCard(t, i)));
         if (!pool.length) list.innerHTML = '<div class="empty">无片</div>';
       }
 
       let activeTitle = null;
-      function openSheet(t) {
+      let activeEpisode = null;
+      let activePrompt = "remember";
+      let activeChat = [];
+
+      function showSheetView(mode) {
+        $("sheetBrowse").hidden = mode !== "browse";
+        $("sheetStamp").hidden = mode !== "stamp";
+      }
+
+      function openBrowse(t) {
         activeTitle = t;
+        activeEpisode = null;
         const cat = catById(t.category);
         const playLabel = {
           stable: "片源：正版页（较稳）",
@@ -1059,6 +1323,8 @@ keyiyo哪个一个<!DOCTYPE html>
           search: "片源：B 站搜索投稿（需自检）",
           risk: "片源：孩子端可能打不开",
         };
+        const eps = episodesOf(t);
+        const p = titleProgress(t);
         $("sheetCat").textContent =
           (cat ? cat.name : "") + (t.muscle ? " · " + t.muscle : "");
         $("sheetTitle").textContent = t.title;
@@ -1072,13 +1338,81 @@ keyiyo哪个一个<!DOCTYPE html>
           t.mapPin || "",
           t.playNote || "",
           t.parentNote ? "家长：" + t.parentNote : "",
-          "本页不内嵌视频；点「去看」会打开网址，需要联网。",
+          "点某一集「去看」打开外链；看完回来写反馈再盖印。",
         ]
           .filter(Boolean)
           .join(" · ");
-        $("sheetWatch").href = t.link;
-        $("sheetWatch").textContent = "去看 · " + (t.linkLabel || "打开");
-        const alt = $("sheetAlt");
+        $("sheetWatchAll").href = t.link;
+        $("sheetWatchAll").textContent = "片源首页 · " + (t.linkLabel || "打开");
+
+        const prog = $("epProgress");
+        prog.hidden = false;
+        $("epProgressText").textContent =
+          "已盖印 " + p.n + "/" + p.total + " 集" + (p.n >= p.total ? " · 全勤" : "");
+        requestAnimationFrame(() => {
+          $("epProgressFill").style.width = p.pct + "%";
+        });
+
+        const list = $("epList");
+        list.innerHTML = "";
+        eps.forEach((ep) => {
+          const done = episodeStamped(t.id, ep.id);
+          const card = document.createElement("div");
+          card.className = "ep-card" + (done ? " done" : "");
+          card.innerHTML =
+            '<div class="ep-top"><div class="ep-title"></div><div class="tag"></div></div>' +
+            '<div class="ep-blurb"></div><div class="meta"></div><div class="ep-actions"></div>';
+          card.querySelector(".ep-title").textContent =
+            "第 " + ep.n + " 集 · " + ep.title;
+          const tag = card.querySelector(".tag");
+          if (done) {
+            tag.classList.add("seen");
+            tag.textContent = "SEEN";
+          } else {
+            tag.textContent = "未盖印";
+          }
+          card.querySelector(".ep-blurb").textContent = ep.blurb || "";
+          card.querySelector(".meta").textContent = ep.duration || "";
+          const acts = card.querySelector(".ep-actions");
+          const watch = document.createElement("a");
+          watch.className = "btn";
+          watch.href = ep.link || t.link;
+          watch.target = "_blank";
+          watch.rel = "noopener";
+          watch.textContent = "去看这一集";
+          watch.addEventListener("click", () => pauseBgForWatch());
+          const stamp = document.createElement("button");
+          stamp.type = "button";
+          stamp.className = "btn ghost";
+          stamp.textContent = done ? "改反馈 / 再盖" : "写反馈盖印";
+          stamp.addEventListener("click", () => openStamp(t, ep));
+          acts.appendChild(watch);
+          acts.appendChild(stamp);
+          list.appendChild(card);
+        });
+
+        showSheetView("browse");
+        $("sheet").classList.add("open");
+        $("sheet").setAttribute("aria-hidden", "false");
+      }
+
+      function openStamp(t, ep) {
+        activeTitle = t;
+        activeEpisode = ep;
+        activePrompt = "remember";
+        const prev = state.stamps.find(
+          (s) => s.titleId === t.id && s.episodeId === ep.id
+        );
+        activeChat = prev && prev.agentChat ? prev.agentChat.slice() : [];
+        const cat = catById(t.category);
+        $("stampCat").textContent =
+          (cat ? cat.name : "") + " · " + t.title;
+        $("stampEpTitle").textContent = "第 " + ep.n + " 集 · " + ep.title;
+        $("stampEpBlurb").textContent = ep.blurb || t.blurb || "";
+        $("stampEpMeta").textContent = (ep.duration || t.duration || "") + " · 反馈后盖印";
+        $("stampWatch").href = ep.link || t.link;
+        $("stampWatch").textContent = "去看这一集";
+        const alt = $("stampAlt");
         if (t.altLink) {
           alt.hidden = false;
           alt.href = t.altLink;
@@ -1086,8 +1420,14 @@ keyiyo哪个一个<!DOCTYPE html>
         } else {
           alt.hidden = true;
         }
-        const prev = state.stamps.filter((s) => s.titleId === t.id).pop();
-        $("noteInput").value = prev ? prev.note : "";
+        document.querySelectorAll(".prompt-chip").forEach((b) => {
+          b.classList.toggle("active", b.dataset.prompt === activePrompt);
+        });
+        $("noteInput").value = prev ? prev.note : PROMPTS[activePrompt];
+        $("askInput").value = "";
+        $("askBox").open = !!(prev && (prev.ask || (prev.agentChat && prev.agentChat.length)));
+        renderChatLog();
+        showSheetView("stamp");
         $("sheet").classList.add("open");
         $("sheet").setAttribute("aria-hidden", "false");
       }
@@ -1096,6 +1436,72 @@ keyiyo哪个一个<!DOCTYPE html>
         $("sheet").classList.remove("open");
         $("sheet").setAttribute("aria-hidden", "true");
         activeTitle = null;
+        activeEpisode = null;
+        activeChat = [];
+      }
+
+      function renderChatLog() {
+        const log = $("chatLog");
+        log.innerHTML = "";
+        activeChat.forEach((m) => {
+          const b = document.createElement("div");
+          b.className = "chat-bubble " + (m.role === "kid" ? "kid" : "coach");
+          b.textContent = (m.role === "kid" ? "我： " : "助手： ") + m.text;
+          log.appendChild(b);
+        });
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function coachReply(question) {
+        const ep = activeEpisode;
+        const t = activeTitle;
+        const hints = (ep && ep.hints) || [];
+        const coachTurns = activeChat.filter((m) => m.role === "coach").length;
+        const q = (question || "").trim();
+        const shortQ = q.length > 36 ? q.slice(0, 36) + "…" : q;
+        if (coachTurns === 0) {
+          return (
+            "你问「" +
+            shortQ +
+            "」，说明你看得很细。这集《" +
+            (ep ? ep.title : "") +
+            "》主要在讲：" +
+            ((ep && ep.blurb) || (t && t.blurb) || "片子里的关键内容") +
+            "。你先猜猜：它可能和什么有关系？" +
+            (hints.length ? "（可以想想：" + hints.slice(0, 3).join("、") + "）" : "")
+          );
+        }
+        if (coachTurns === 1) {
+          return (
+            "可以这样想：" +
+            (hints.length
+              ? hints.slice(0, 3).join("、") + "，往往就藏在这集的例子里。"
+              : "把片子里出现过的一个画面，和生活里类似的东西对上号。") +
+            " 生活里也能碰到相似的事。这样说，清楚一点了吗？还想盯着哪一点问？"
+          );
+        }
+        return (
+          "我们先停在这里也很好。你可以用自己的话再说一遍这集讲了什么，然后盖印。剩下的可以和爸爸妈妈再聊，或下次回来继续问。"
+        );
+      }
+
+      function sendAsk() {
+        if (!activeEpisode) return;
+        const q = ($("askInput").value || "").trim();
+        if (q.length < 2) {
+          toast("先写下你的小疑问");
+          return;
+        }
+        const coachTurns = activeChat.filter((m) => m.role === "coach").length;
+        if (coachTurns >= 3) {
+          toast("这集先聊到这儿，盖印后也可以和家长继续聊");
+          return;
+        }
+        activeChat.push({ role: "kid", text: q });
+        activeChat.push({ role: "coach", text: coachReply(q) });
+        $("askInput").value = "";
+        $("askBox").open = true;
+        renderChatLog();
       }
 
       function playStampCeremony(titleName) {
@@ -1114,27 +1520,44 @@ keyiyo哪个一个<!DOCTYPE html>
       }
 
       function stamp() {
-        if (!activeTitle) return;
+        if (!activeTitle || !activeEpisode) return;
         const note = ($("noteInput").value || "").trim();
-        if (note.length < 4) {
-          toast("写一句完整的话再盖印（至少几个字）");
+        if (note.length < 6) {
+          toast("反馈再写完整一点（至少几个词）");
           return;
         }
-        const stampedTitle = activeTitle;
-        state.stamps = state.stamps.filter((s) => s.titleId !== stampedTitle.id);
+        const bare = Object.values(PROMPTS).some((p) => note === p);
+        if (bare) {
+          toast("把冒号后面的话写出来再盖印");
+          return;
+        }
+        const t = activeTitle;
+        const ep = activeEpisode;
+        const ask =
+          activeChat.filter((m) => m.role === "kid").map((m) => m.text).join(" / ") ||
+          ($("askInput").value || "").trim();
+        state.stamps = state.stamps.filter(
+          (s) => !(s.titleId === t.id && s.episodeId === ep.id)
+        );
         state.stamps.push({
-          titleId: stampedTitle.id,
+          titleId: t.id,
+          episodeId: ep.id,
+          episodeTitle: ep.title,
           note,
+          prompt: activePrompt,
+          ask,
+          agentChat: activeChat.slice(),
           at: Date.now(),
-          category: stampedTitle.category,
-          muscle: stampedTitle.muscle || "",
+          category: t.category,
+          muscle: t.muscle || "",
         });
         save(state);
+        const label = t.title + " · 第" + ep.n + "集";
         closeSheet();
-        playStampCeremony(stampedTitle.title);
+        playStampCeremony(label);
         setTimeout(() => {
           renderAll();
-          toast("绿色印章已落 · " + stampedTitle.title);
+          toast("绿色印章已落 · " + label);
         }, 420);
       }
 
@@ -1156,11 +1579,33 @@ keyiyo哪个一个<!DOCTYPE html>
       document.querySelectorAll(".tabs button").forEach((b) => {
         b.addEventListener("click", () => switchTab(b.dataset.tab));
       });
-      $("sheetClose").addEventListener("click", closeSheet);
+      $("sheetCloseBrowse").addEventListener("click", closeSheet);
+      $("sheetCloseStamp").addEventListener("click", closeSheet);
+      $("stampBack").addEventListener("click", () => {
+        if (activeTitle) openBrowse(activeTitle);
+      });
       $("sheet").addEventListener("click", (e) => {
         if (e.target === $("sheet")) closeSheet();
       });
       $("stampBtn").addEventListener("click", stamp);
+      $("askSend").addEventListener("click", sendAsk);
+      $("askInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          sendAsk();
+        }
+      });
+      document.querySelectorAll(".prompt-chip").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activePrompt = btn.dataset.prompt;
+          document.querySelectorAll(".prompt-chip").forEach((b) => {
+            b.classList.toggle("active", b === btn);
+          });
+          const cur = ($("noteInput").value || "").trim();
+          const isBare = !cur || Object.values(PROMPTS).includes(cur);
+          if (isBare) $("noteInput").value = PROMPTS[activePrompt];
+        });
+      });
       $("saveName").addEventListener("click", () => {
         const n = ($("nameInput").value || "").trim();
         state.name = n || "小探险家";
@@ -1237,8 +1682,9 @@ keyiyo哪个一个<!DOCTYPE html>
         }
       });
 
-      $("sheetWatch").addEventListener("click", pauseBgForWatch);
-      $("sheetAlt").addEventListener("click", pauseBgForWatch);
+      $("sheetWatchAll").addEventListener("click", pauseBgForWatch);
+      $("stampWatch").addEventListener("click", pauseBgForWatch);
+      $("stampAlt").addEventListener("click", pauseBgForWatch);
 
       document.addEventListener(
         "pointerdown",
