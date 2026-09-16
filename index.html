@@ -1768,98 +1768,164 @@ keyiyo哪个一个<!DOCTYPE html>
       }
 
       function buildDailyRecs() {
-        const used = new Set();
+        const usedTitles = new Set();
+        const usedEps = new Set();
         const recs = [];
 
-        const loved = state.stamps
-          .filter((s) => Number(s.rating) >= 4)
-          .slice()
-          .sort((a, b) => (b.at || 0) - (a.at || 0));
-
-        for (let i = 0; i < loved.length; i++) {
-          const s = loved[i];
-          const t = titleById(s.titleId);
-          if (!t || used.has(t.id)) continue;
-          const epSame = nextOpenEpisode(t);
-          if (epSame) {
-            recs.push({
-              kind: "interest",
-              label: "兴趣续看",
-              reason:
-                "你给《" + t.title + "》打过 " + s.rating + " 星，下一集也很好看",
-              t: t,
-              ep: epSame,
-            });
-            used.add(t.id);
-            break;
-          }
-          const twin = titles.find(
-            (x) =>
-              !used.has(x.id) &&
-              x.muscle &&
-              t.muscle &&
-              x.muscle === t.muscle &&
-              nextOpenEpisode(x)
-          );
-          if (twin) {
-            const ep = nextOpenEpisode(twin);
-            recs.push({
-              kind: "interest",
-              label: "兴趣相近",
-              reason: "你喜欢「" + t.muscle + "」，可以试试这部",
-              t: twin,
-              ep: ep,
-            });
-            used.add(twin.id);
-            break;
-          }
+        function epKey(t, ep) {
+          return t.id + "::" + ep.id;
         }
 
+        function pushRec(rec) {
+          if (!rec || !rec.t || !rec.ep) return false;
+          const k = epKey(rec.t, rec.ep);
+          if (usedTitles.has(rec.t.id) || usedEps.has(k)) return false;
+          usedTitles.add(rec.t.id);
+          usedEps.add(k);
+          recs.push(rec);
+          return true;
+        }
+
+        // 1) 续看：最近盖过印、但还没看完的片子 → 下一集（例：巴斯德第3集）
+        const recentByTitle = {};
+        state.stamps.forEach((s) => {
+          if (!s.titleId) return;
+          const prev = recentByTitle[s.titleId];
+          if (!prev || (s.at || 0) > (prev.at || 0)) recentByTitle[s.titleId] = s;
+        });
+        const inProgress = Object.keys(recentByTitle)
+          .map((id) => {
+            const t = titleById(id);
+            const ep = nextOpenEpisode(t);
+            if (!t || !ep) return null;
+            const doneN = titleProgress(t).n;
+            return {
+              t: t,
+              ep: ep,
+              at: recentByTitle[id].at || 0,
+              doneN: doneN,
+              lastRating: Number(recentByTitle[id].rating) || 0,
+            };
+          })
+          .filter(Boolean)
+          .sort((a, b) => b.at - a.at || b.doneN - a.doneN);
+
+        if (inProgress.length) {
+          const cur = inProgress[0];
+          pushRec({
+            kind: "continue",
+            label: "接着看",
+            reason:
+              "你已看过《" +
+              cur.t.title +
+              "》" +
+              cur.doneN +
+              " 集，今天直接第 " +
+              cur.ep.n +
+              " 集",
+            t: cur.t,
+            ep: cur.ep,
+          });
+        }
+
+        // 2) 补缺：四格里进度最低、且尽量不是刚续看的那一格
+        const continueCat = recs[0] ? recs[0].t.category : null;
         const catProg = cats
           .map((c) => ({ c: c, p: progress(c.id) }))
-          .sort((a, b) => a.p.pct - b.p.pct || a.p.n - b.p.n);
+          .sort((a, b) => {
+            const aBoost = continueCat && a.c.id === continueCat ? 1 : 0;
+            const bBoost = continueCat && b.c.id === continueCat ? 1 : 0;
+            return aBoost - bBoost || a.p.pct - b.p.pct || a.p.n - b.p.n;
+          });
         for (let i = 0; i < catProg.length; i++) {
           const c = catProg[i].c;
           const candidate = titles.find(
-            (t) => t.category === c.id && !used.has(t.id) && nextOpenEpisode(t)
+            (t) => t.category === c.id && !usedTitles.has(t.id) && nextOpenEpisode(t)
           );
           if (candidate) {
-            recs.push({
+            pushRec({
               kind: "gap",
               label: "补缺开眼",
               reason:
-                "「" + c.short + "」格进度还低，今天补一集，眼界会更开阔",
+                "「" +
+                c.short +
+                "」格还比较空，换换口味，眼界会更开阔",
               t: candidate,
               ep: nextOpenEpisode(candidate),
             });
-            used.add(candidate.id);
             break;
           }
         }
 
+        // 3) 同类型喜好：高分 / 最近常看的肌肉与门类
+        const prefMuscle = {};
+        const prefCat = {};
+        state.stamps.forEach((s) => {
+          const t = titleById(s.titleId);
+          if (!t) return;
+          const w = Math.max(1, Number(s.rating) || 1);
+          if (t.muscle) prefMuscle[t.muscle] = (prefMuscle[t.muscle] || 0) + w;
+          prefCat[t.category] = (prefCat[t.category] || 0) + w;
+        });
+        const topMuscle = Object.keys(prefMuscle).sort(
+          (a, b) => prefMuscle[b] - prefMuscle[a]
+        )[0];
+        const topCat = Object.keys(prefCat).sort(
+          (a, b) => prefCat[b] - prefCat[a]
+        )[0];
+
+        const similarPool = titles
+          .filter((t) => !usedTitles.has(t.id) && nextOpenEpisode(t))
+          .map((t) => {
+            let score = 0;
+            if (topMuscle && t.muscle === topMuscle) score += 5;
+            if (topCat && t.category === topCat) score += 3;
+            const avg = titleAvgRating(t);
+            if (avg >= 4) score += 2;
+            // 同系列已在续看里用过；这里偏「同肌肉不同片」
+            return { t: t, ep: nextOpenEpisode(t), score: score };
+          })
+          .filter((x) => x.score > 0)
+          .sort((a, b) => b.score - a.score);
+
+        if (similarPool.length) {
+          const pick = similarPool[0];
+          const why =
+            topMuscle && pick.t.muscle === topMuscle
+              ? "你最近爱看「" + topMuscle + "」类，这部很接近"
+              : "按你的观看喜好，这部同类型值得试";
+          pushRec({
+            kind: "similar",
+            label: "同类型",
+            reason: why,
+            t: pick.t,
+            ep: pick.ep,
+          });
+        }
+
+        // 填满到 3：微打卡 / 任意可看
         if (recs.length < 3) {
           const snack = titles.find((t) => {
-            if (used.has(t.id)) return false;
+            if (usedTitles.has(t.id)) return false;
             const ep = nextOpenEpisode(t);
             return ep && episodeMinutes(ep, t) <= 10;
           });
           if (snack) {
             const ep = nextOpenEpisode(snack);
-            recs.push({
+            pushRec({
               kind: "snack",
               label: "微打卡",
               reason: "约 " + episodeMinutes(ep, snack) + " 分钟，盖一印很轻松",
               t: snack,
               ep: ep,
             });
-            used.add(snack.id);
           }
         }
 
         if (!recs.length) {
           const t = titles.find((x) => nextOpenEpisode(x));
           if (t) {
-            recs.push({
+            pushRec({
               kind: "fallback",
               label: "今晚开始",
               reason: "从这一集起步就好",
@@ -1956,9 +2022,7 @@ keyiyo哪个一个<!DOCTYPE html>
         const list = $("homeRecs");
         list.innerHTML = "";
         const recs = buildDailyRecs();
-        $("homeRecMeta").textContent = isWeekend()
-          ? "周末 · 可含长片"
-          : "工作日 · 已按时长筛选";
+        $("homeRecMeta").textContent = "续看 · 补缺 · 同类型";
         if (!recs.length) {
           list.innerHTML =
             '<div class="empty">今天暂时没有可推荐的集。去菜单逛逛，或等周五晚 / 周末看长片。</div>';
