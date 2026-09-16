@@ -906,6 +906,52 @@ keyiyo哪个一个<!DOCTYPE html>
       color: var(--muted);
       font-size: 0.95rem;
     }
+    .tab-badge {
+      display: inline-block;
+      min-width: 1.1em;
+      margin-left: 4px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: #c2410c;
+      color: #fff7ed;
+      font-size: 0.68rem;
+      font-family: "JetBrains Mono", monospace;
+      line-height: 1.4;
+      vertical-align: text-top;
+    }
+    .parent-gate-note {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border: 1px solid #b45309;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+    .parent-gate-note[hidden] { display: none !important; }
+    .wish-suggest {
+      margin: 8px 0 0;
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.65);
+      border: 1px dashed #b45309;
+      font-size: 0.86rem;
+      line-height: 1.4;
+      color: #7c2d12;
+    }
+    .parent-todo-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .parent-todo-item {
+      border: 1px solid var(--ink);
+      background: var(--card);
+      padding: 12px;
+    }
+    .parent-todo-item .t { font-weight: 700; margin-bottom: 4px; }
+    .parent-todo-item .n { color: var(--muted); font-size: 0.88rem; line-height: 1.4; }
+    .parent-todo-item .actions { margin-top: 8px; }
     .parent-alert {
       border: 1.5px solid #b45309;
       background: #fff7ed;
@@ -1140,7 +1186,7 @@ keyiyo哪个一个<!DOCTYPE html>
     <button type="button" data-tab="menu">菜单</button>
     <button type="button" data-tab="plate">餐盘</button>
     <button type="button" data-tab="wish">点播</button>
-    <button type="button" data-tab="parent">家长</button>
+    <button type="button" data-tab="parent">家长<span class="tab-badge" id="parentTabBadge" hidden>0</span></button>
   </nav>
 
   <main>
@@ -1185,9 +1231,19 @@ keyiyo哪个一个<!DOCTYPE html>
       <div class="actions rise" style="margin-top:16px">
         <button type="button" class="btn ghost" data-go-tab="menu">打开本周菜单</button>
         <button type="button" class="btn ghost" data-go-tab="plate">打开四格片库</button>
-        <button type="button" class="btn ghost" id="passportExport">导出护照</button>
-        <button type="button" class="btn ghost" id="passportImportBtn">导入护照</button>
+        <button type="button" class="btn ghost" id="passportExport">导出文件</button>
+        <button type="button" class="btn ghost" id="passportCopy">复制文字（发QQ）</button>
+        <button type="button" class="btn ghost" id="passportImportBtn">选文件导入</button>
+        <button type="button" class="btn ghost" id="passportPasteBtn">粘贴导入</button>
         <input type="file" id="passportImportFile" accept="application/json,.json" hidden />
+      </div>
+      <div class="sync-box rise" id="passportPasteBox" hidden style="margin-top:12px">
+        <div class="mono">从 QQ 粘贴护照 JSON</div>
+        <textarea id="passportPasteInput" maxlength="500000" placeholder="在 QQ 里复制整段 JSON，粘贴到这里，再点下方确认导入。" style="margin-top:8px;min-height:110px"></textarea>
+        <div class="actions" style="margin-top:10px">
+          <button type="button" class="btn" id="passportPasteApply">确认导入</button>
+          <button type="button" class="btn ghost" id="passportPasteCancel">取消</button>
+        </div>
       </div>
     </section>
 
@@ -1255,16 +1311,24 @@ keyiyo哪个一个<!DOCTYPE html>
           <button type="button" class="btn" id="parentUnlock">打开家长台</button>
         </div>
         <p class="hint">口令只挡孩子误点；不是账号登录。默认：passport</p>
+        <div class="parent-gate-note" id="parentGateNote" hidden>有点播待处理，解锁后查看今日片源任务。</div>
       </div>
       <div id="parentBody" hidden>
         <div class="parent-alert" id="parentWishAlert" hidden>
           <h3 id="parentWishAlertTitle">今日片源待更新</h3>
           <p id="parentWishAlertText">—</p>
-          <div class="actions">
+          <div class="wish-suggest" id="parentWishSuggest" hidden></div>
+          <div class="actions" style="margin-top:10px">
             <button type="button" class="btn" id="parentWishHandled">已加入片库</button>
             <button type="button" class="btn ghost" data-go-tab="plate">去片库看看</button>
           </div>
         </div>
+
+        <div class="title-row">
+          <h2>今日片源任务</h2>
+          <span class="mono" id="parentTodoCount">0</span>
+        </div>
+        <div class="parent-todo-list" id="parentTodoList"></div>
 
         <div class="title-row">
           <h2>本周洞察</h2>
@@ -1284,12 +1348,19 @@ keyiyo哪个一个<!DOCTYPE html>
         <div id="parentRatings" class="stamps-log"></div>
 
         <div class="sync-box">
-          <div class="mono">护照同步 · 本机文件</div>
-          <p class="hint" style="margin:6px 0 10px">孩子电脑导出 → 家长电脑导入，两边就能看到同一本护照与点播。</p>
+          <div class="mono">护照同步 · 文件或 QQ 粘贴</div>
+          <p class="hint" style="margin:6px 0 10px">
+            孩子电脑点「复制文字」→ 粘贴发 QQ → 家长电脑复制后贴到下方导入。也可互发 JSON 文件再选文件导入。
+          </p>
           <div class="actions">
-            <button type="button" class="btn" id="parentExport">导出护照</button>
-            <button type="button" class="btn ghost" id="parentImportBtn">导入护照</button>
+            <button type="button" class="btn" id="parentExport">导出文件</button>
+            <button type="button" class="btn ghost" id="parentCopy">复制文字</button>
+            <button type="button" class="btn ghost" id="parentImportBtn">选文件导入</button>
             <button type="button" class="btn ghost" id="parentLock">锁定</button>
+          </div>
+          <textarea id="parentPasteInput" maxlength="500000" placeholder="从 QQ 复制整段护照 JSON，粘贴到这里…" style="margin-top:12px;min-height:100px"></textarea>
+          <div class="actions" style="margin-top:10px">
+            <button type="button" class="btn" id="parentPasteApply">粘贴导入</button>
           </div>
         </div>
       </div>
@@ -1710,6 +1781,95 @@ keyiyo哪个一个<!DOCTYPE html>
         return open.find((w) => w.dayKey === y) || open[0];
       }
 
+      function wishSearchBlob(t) {
+        const eps = episodesOf(t)
+          .map((ep) =>
+            [ep.title, ep.blurb, (ep.hints || []).join(" ")].join(" ")
+          )
+          .join(" ");
+        return [
+          t.title,
+          t.blurb,
+          t.muscle,
+          t.mapPin,
+          t.playNote,
+          eps,
+        ]
+          .join(" ")
+          .toLowerCase();
+      }
+
+      function suggestTitlesForWish(wish) {
+        if (!wish) return [];
+        const raw = ((wish.topic || "") + " " + (wish.note || "")).trim();
+        if (raw.length < 2) return [];
+        const tokens = raw
+          .toLowerCase()
+          .split(/[\s,，、。；;/\-]+/)
+          .filter((x) => x.length >= 2);
+        if (!tokens.length) return [];
+        return titles
+          .map((t) => {
+            const blob = wishSearchBlob(t);
+            let score = 0;
+            tokens.forEach((tok) => {
+              if (blob.indexOf(tok) >= 0) score += tok.length;
+            });
+            if (wish.category && wish.category !== "other" && t.category === wish.category) {
+              score += 1;
+            }
+            return { t: t, score: score };
+          })
+          .filter((x) => x.score > 0)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 3)
+          .map((x) => x.t);
+      }
+
+      function markWishHandled(wish, note) {
+        if (!wish) return false;
+        let hit = false;
+        state.wishes = (state.wishes || []).map((w) => {
+          if (w.dayKey === wish.dayKey && w.at === wish.at) {
+            hit = true;
+            return Object.assign({}, w, {
+              handledAt: Date.now(),
+              handleNote: note || "已加入片库",
+            });
+          }
+          return w;
+        });
+        if (hit) save(state);
+        return hit;
+      }
+
+      function syncParentBadge() {
+        const n = openWishes().length;
+        const badge = $("parentTabBadge");
+        if (!badge) return;
+        if (n > 0) {
+          badge.hidden = false;
+          badge.textContent = String(n);
+        } else {
+          badge.hidden = true;
+        }
+        const gateNote = $("parentGateNote");
+        if (gateNote) {
+          if (n > 0 && !parentOpen) {
+            gateNote.hidden = false;
+            const w = primaryWishForToday();
+            const isYday = w && w.dayKey === yesterdayKey();
+            gateNote.textContent = isYday
+              ? "昨天孩子点播了「" +
+                (w.topic || "未写主题") +
+                "」· 今日需更新片源（解锁查看）"
+              : "有 " + n + " 条点播待处理 · 解锁后查看今日片源任务";
+          } else {
+            gateNote.hidden = true;
+          }
+        }
+      }
+
       function weekStartDate() {
         const t = new Date();
         const day = t.getDay();
@@ -1792,32 +1952,33 @@ keyiyo哪个一个<!DOCTYPE html>
         return list.slice(0, 8);
       }
 
-      function exportPassportBlob() {
-        return new Blob(
-          [
-            JSON.stringify(
-              {
-                version: 2,
-                kind: "documentary-passport",
-                exportedAt: new Date().toISOString(),
-                state: {
-                  name: state.name,
-                  stamps: state.stamps || [],
-                  wishes: state.wishes || [],
-                  pendingWatch: state.pendingWatch || null,
-                  dayOpens: state.dayOpens || [],
-                  week: state.week,
-                  focus: state.focus,
-                  swapUsed: !!state.swapUsed,
-                  filter: state.filter || null,
-                },
-              },
-              null,
-              2
-            ),
-          ],
-          { type: "application/json" }
+      function exportPassportText() {
+        return JSON.stringify(
+          {
+            version: 2,
+            kind: "documentary-passport",
+            exportedAt: new Date().toISOString(),
+            state: {
+              name: state.name,
+              stamps: state.stamps || [],
+              wishes: state.wishes || [],
+              pendingWatch: state.pendingWatch || null,
+              dayOpens: state.dayOpens || [],
+              week: state.week,
+              focus: state.focus,
+              swapUsed: !!state.swapUsed,
+              filter: state.filter || null,
+            },
+          },
+          null,
+          2
         );
+      }
+
+      function exportPassportBlob() {
+        return new Blob([exportPassportText()], {
+          type: "application/json",
+        });
       }
 
       function downloadPassport() {
@@ -1831,7 +1992,36 @@ keyiyo哪个一个<!DOCTYPE html>
           ".json";
         a.click();
         URL.revokeObjectURL(a.href);
-        toast("护照已导出 · 可拷到另一台电脑导入");
+        toast("护照文件已下载 · 也可改用「复制文字」发 QQ");
+      }
+
+      function copyPassportText() {
+        const text = exportPassportText();
+        const done = () => toast("已复制 · 去 QQ 粘贴发给家长电脑");
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done).catch(() => {
+            fallbackCopy(text);
+          });
+        } else {
+          fallbackCopy(text);
+        }
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand("copy");
+          toast("已复制 · 去 QQ 粘贴发给家长电脑");
+        } catch (_) {
+          toast("复制失败，请改用导出文件发 QQ");
+        }
+        document.body.removeChild(ta);
       }
 
       function importPassportObject(data) {
@@ -1857,19 +2047,52 @@ keyiyo哪个一个<!DOCTYPE html>
         renderAll();
       }
 
+      function importPassportFromText(raw) {
+        let text = String(raw || "").trim();
+        if (!text) throw new Error("空内容");
+        // QQ 有时会带前后说明文字：截取第一个 { 到最后一个 }
+        const start = text.indexOf("{");
+        const end = text.lastIndexOf("}");
+        if (start >= 0 && end > start) text = text.slice(start, end + 1);
+        const data = JSON.parse(text);
+        importPassportObject(data);
+      }
+
       function handlePassportFile(file) {
         if (!file) return;
         const reader = new FileReader();
         reader.onload = () => {
           try {
-            const data = JSON.parse(String(reader.result || ""));
-            importPassportObject(data);
+            importPassportFromText(String(reader.result || ""));
             toast("护照已导入 · 盖印与点播已合并到本机");
           } catch (_) {
             toast("导入失败：请选择正确的护照 JSON");
           }
         };
         reader.readAsText(file, "utf-8");
+      }
+
+      function applyPasteImport(raw) {
+        try {
+          importPassportFromText(raw);
+          const open = openWishes();
+          if (open.length) {
+            const w = primaryWishForToday();
+            toast(
+              "导入成功 · 有 " +
+                open.length +
+                " 条点播待办" +
+                (w ? "：「" + (w.topic || "") + "」" : "")
+            );
+            syncParentBadge();
+          } else {
+            toast("粘贴导入成功 · 两边护照已对齐");
+          }
+          return true;
+        } catch (_) {
+          toast("粘贴内容不是有效护照 JSON，请整段复制后再试");
+          return false;
+        }
       }
 
       function parseMinutes(str) {
@@ -3127,34 +3350,103 @@ keyiyo哪个一个<!DOCTYPE html>
         save(state);
         renderWish();
         if (parentOpen) renderParent();
-        toast("点播已记下 · " + today);
+        syncParentBadge();
+        toast("点播已记下 · 家长台会出现「今日片源任务」");
       }
 
       function renderParent() {
         $("parentGate").hidden = !!parentOpen;
         $("parentBody").hidden = !parentOpen;
+        syncParentBadge();
         if (!parentOpen) return;
 
         const alert = $("parentWishAlert");
         const wish = primaryWishForToday();
+        const suggestEl = $("parentWishSuggest");
         if (wish) {
           alert.hidden = false;
           const cat = catById(wish.category);
           const isYday = wish.dayKey === yesterdayKey();
           $("parentWishAlertTitle").textContent = isYday
             ? "今日片源待更新（昨天点播）"
-            : "有未处理的点播";
+            : "有未处理的点播 · 请更新片源";
           $("parentWishAlertText").textContent =
-            wish.dayKey +
-            " · " +
-            (cat ? cat.name : wish.category || "其他") +
-            " · 想看「" +
+            "孩子想看「" +
             (wish.topic || "") +
             "」" +
-            (wish.note ? " — " + wish.note : "") +
-            "。建议今天补进片库或找好链接。";
+            (wish.note ? "（" + wish.note + "）" : "") +
+            " · 门类：" +
+            (cat ? cat.name : wish.category || "其他") +
+            " · 留言日 " +
+            wish.dayKey +
+            "。请今天补链接进片库，或确认库里已有合适片子。";
+          const sug = suggestTitlesForWish(wish);
+          if (sug.length) {
+            suggestEl.hidden = false;
+            suggestEl.textContent =
+              "库内相近可先用：" +
+              sug.map((t) => "《" + t.title + "》").join("、") +
+              "。不够再新找片源。";
+          } else {
+            suggestEl.hidden = false;
+            suggestEl.textContent =
+              "库内暂无明显相近片 · 建议今天新找「" +
+              (wish.topic || "该主题") +
+              "」相关纪录片链接并加入片库。";
+          }
         } else {
           alert.hidden = true;
+        }
+
+        const todos = openWishes();
+        $("parentTodoCount").textContent = todos.length + " 条待办";
+        const todoBox = $("parentTodoList");
+        todoBox.innerHTML = "";
+        if (!todos.length) {
+          todoBox.innerHTML =
+            '<div class="empty">没有待更新点播。孩子在「点播」留言后，会出现在这里。</div>';
+        } else {
+          todos.forEach((w) => {
+            const cat = catById(w.category);
+            const isYday = w.dayKey === yesterdayKey();
+            const item = document.createElement("div");
+            item.className = "parent-todo-item";
+            item.innerHTML =
+              '<div class="t"></div><div class="n"></div><div class="actions"></div>';
+            item.querySelector(".t").textContent =
+              (isYday ? "昨天 · " : w.dayKey + " · ") +
+              "想看「" +
+              (w.topic || "") +
+              "」";
+            item.querySelector(".n").textContent =
+              (cat ? cat.name : "其他") +
+              (w.note ? " · " + w.note : "") +
+              " · 今日任务：更新/核对片源";
+            const doneBtn = document.createElement("button");
+            doneBtn.type = "button";
+            doneBtn.className = "btn";
+            doneBtn.textContent = "已更新片源";
+            doneBtn.addEventListener("click", () => {
+              markWishHandled(w, "已更新片源");
+              renderParent();
+              toast("已勾掉：" + (w.topic || ""));
+            });
+            const plateBtn = document.createElement("button");
+            plateBtn.type = "button";
+            plateBtn.className = "btn ghost";
+            plateBtn.textContent = "打开餐盘";
+            plateBtn.addEventListener("click", () => {
+              if (w.category && w.category !== "other") {
+                state.filter = w.category;
+                save(state);
+              }
+              switchTab("plate");
+              renderPlate();
+            });
+            item.querySelector(".actions").appendChild(doneBtn);
+            item.querySelector(".actions").appendChild(plateBtn);
+            todoBox.appendChild(item);
+          });
         }
 
         const insights = $("parentInsights");
@@ -3258,6 +3550,7 @@ keyiyo哪个一个<!DOCTYPE html>
         renderPlate();
         renderWish();
         renderParent();
+        syncParentBadge();
       }
 
       document.querySelectorAll(".tabs button").forEach((b) => {
@@ -3320,16 +3613,7 @@ keyiyo哪个一个<!DOCTYPE html>
           toast("当前没有待处理点播");
           return;
         }
-        state.wishes = (state.wishes || []).map((w) => {
-          if (w.dayKey === wish.dayKey && w.at === wish.at) {
-            return Object.assign({}, w, {
-              handledAt: Date.now(),
-              handleNote: "已加入片库",
-            });
-          }
-          return w;
-        });
-        save(state);
+        markWishHandled(wish, "已加入片库");
         renderParent();
         toast("已标记处理 · " + (wish.topic || ""));
       });
@@ -3346,8 +3630,29 @@ keyiyo哪个一个<!DOCTYPE html>
       }
       $("parentExport").addEventListener("click", downloadPassport);
       $("passportExport").addEventListener("click", downloadPassport);
+      $("parentCopy").addEventListener("click", copyPassportText);
+      $("passportCopy").addEventListener("click", copyPassportText);
       bindImport("parentImportBtn", "passportImportFile");
       bindImport("passportImportBtn", "passportImportFile");
+      $("passportPasteBtn").addEventListener("click", () => {
+        $("passportPasteBox").hidden = false;
+        $("passportPasteInput").focus();
+      });
+      $("passportPasteCancel").addEventListener("click", () => {
+        $("passportPasteBox").hidden = true;
+        $("passportPasteInput").value = "";
+      });
+      $("passportPasteApply").addEventListener("click", () => {
+        if (applyPasteImport($("passportPasteInput").value)) {
+          $("passportPasteInput").value = "";
+          $("passportPasteBox").hidden = true;
+        }
+      });
+      $("parentPasteApply").addEventListener("click", () => {
+        if (applyPasteImport($("parentPasteInput").value)) {
+          $("parentPasteInput").value = "";
+        }
+      });
       document.querySelectorAll(".prompt-chip").forEach((btn) => {
         btn.addEventListener("click", () => {
           activePrompt = btn.dataset.prompt;
