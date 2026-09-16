@@ -829,6 +829,47 @@ keyiyo哪个一个<!DOCTYPE html>
       padding: 3px 8px;
       margin-bottom: 8px;
     }
+    .day-gate-chip.warn {
+      border-color: #b45309;
+      color: #9a3412;
+      background: #fff7ed;
+    }
+    .soft-budget {
+      position: fixed;
+      inset: 0;
+      z-index: 130;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(12, 28, 22, 0.45);
+      backdrop-filter: blur(3px);
+    }
+    .soft-budget.show { display: flex; }
+    .soft-budget-inner {
+      width: min(420px, 100%);
+      background: #fffdf8;
+      border: 1.5px solid var(--ink);
+      padding: 18px 16px 14px;
+      box-shadow: 0 16px 40px rgba(8, 40, 28, 0.28);
+      animation: rise 0.35s var(--ease) both;
+    }
+    .soft-budget-inner .mono {
+      color: var(--stamp-deep);
+      margin-bottom: 8px;
+    }
+    .soft-budget-inner h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      line-height: 1.35;
+    }
+    .soft-budget-inner p {
+      margin: 0 0 14px;
+      line-height: 1.5;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .soft-budget-inner .actions { margin-top: 0; }
     .home-task {
       border: 1.5px solid var(--stamp);
       background: linear-gradient(180deg, #f2faf6, #e8f5ee);
@@ -1274,6 +1315,18 @@ keyiyo哪个一个<!DOCTYPE html>
     </div>
   </div>
 
+  <div class="soft-budget" id="softBudget" aria-hidden="true">
+    <div class="soft-budget-inner" role="dialog" aria-labelledby="softBudgetTitle">
+      <div class="mono">工作日提醒 · 不强制</div>
+      <h3 id="softBudgetTitle">今日 30 分钟差不多了</h3>
+      <p id="softBudgetText">今天大约已看过一轮，工作日早点睡，别耽误学习和休息。仍可继续看。</p>
+      <div class="actions">
+        <button type="button" class="btn" id="softBudgetRest">好的，先休息</button>
+        <button type="button" class="btn ghost" id="softBudgetContinue">还是去看</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <div class="stamp-ceremony" id="stampCeremony" aria-hidden="true">
@@ -1346,6 +1399,7 @@ keyiyo哪个一个<!DOCTYPE html>
           stamps: [], // {titleId, episodeId, episodeTitle, note, prompt, rating, comment, ask, agentChat, at, category, muscle}
           wishes: [], // {dayKey, category, topic, note, at}
           pendingWatch: null, // {titleId, episodeId, openedAt}
+          dayOpens: [], // {dayKey, titleId, episodeId, minutes, at}
           week: weekIndex(),
           focus: rotation[weekIndex() % rotation.length],
           swapUsed: false,
@@ -1377,11 +1431,165 @@ keyiyo哪个一个<!DOCTYPE html>
 
       function dayGateLabel() {
         if (!isWeekend()) {
-          return "工作日 · 仅开放单集 ≤30 分钟（周五 18:00 后开放长片）";
+          const m = todayWatchMinutes();
+          if (m >= WEEKDAY_DAILY_CAP) {
+            return (
+              "工作日 · 今日已看约 " +
+              m +
+              " 分钟 · 建议早点睡（不强制）"
+            );
+          }
+          return (
+            "工作日 · 单集≤30 分钟 · 今日已看约 " +
+            m +
+            " 分钟（建议合计≤30）"
+          );
         }
         const t = new Date();
         if (t.getDay() === 5) return "周五晚 · 已算周末 · 长短片都可看";
         return "周末 · 长短片都可看";
+      }
+
+      const WEEKDAY_DAILY_CAP = 30;
+
+      function stampDayKey(s) {
+        return s && s.at ? dayKey(new Date(s.at)) : "";
+      }
+
+      function todayWatchMap() {
+        const today = dayKey();
+        const map = new Map();
+        (state.stamps || []).forEach((s) => {
+          if (stampDayKey(s) !== today) return;
+          const t = titleById(s.titleId);
+          const ep = t ? episodeById(t, s.episodeId) : null;
+          let mins = episodeMinutes(ep, t);
+          if (mins >= 999) mins = WEEKDAY_DAILY_CAP;
+          const k = s.titleId + "::" + s.episodeId;
+          if (!map.has(k)) map.set(k, mins);
+        });
+        (state.dayOpens || []).forEach((o) => {
+          if (o.dayKey !== today) return;
+          const k = o.titleId + "::" + o.episodeId;
+          if (!map.has(k)) map.set(k, Number(o.minutes) || 0);
+        });
+        return map;
+      }
+
+      function todayWatchMinutes() {
+        let sum = 0;
+        todayWatchMap().forEach((m) => {
+          sum += m;
+        });
+        return sum;
+      }
+
+      function episodeOpenedToday(titleId, episodeId) {
+        return todayWatchMap().has(titleId + "::" + episodeId);
+      }
+
+      function softBudgetNeeded(t, ep) {
+        if (isWeekend()) return false;
+        if (!t || !ep) return false;
+        if (episodeOpenedToday(t.id, ep.id)) return false;
+        return todayWatchMinutes() >= WEEKDAY_DAILY_CAP;
+      }
+
+      function recordDayOpen(t, ep) {
+        if (!t || !ep) return;
+        const today = dayKey();
+        if (!Array.isArray(state.dayOpens)) state.dayOpens = [];
+        state.dayOpens = state.dayOpens.filter((o) => o.dayKey === today);
+        const exists = state.dayOpens.some(
+          (o) => o.titleId === t.id && o.episodeId === ep.id
+        );
+        if (!exists) {
+          let mins = episodeMinutes(ep, t);
+          if (mins >= 999) mins = WEEKDAY_DAILY_CAP;
+          state.dayOpens.push({
+            dayKey: today,
+            titleId: t.id,
+            episodeId: ep.id,
+            minutes: mins,
+            at: Date.now(),
+          });
+        }
+        save(state);
+        syncDayGateChips();
+      }
+
+      function syncDayGateChips() {
+        const label = dayGateLabel();
+        const chip = $("dayGateChip");
+        if (chip) {
+          chip.textContent = label;
+          chip.classList.toggle(
+            "warn",
+            !isWeekend() && todayWatchMinutes() >= WEEKDAY_DAILY_CAP
+          );
+        }
+        const home = $("homeDayChip");
+        if (home) {
+          home.textContent = label;
+          home.classList.toggle(
+            "warn",
+            !isWeekend() && todayWatchMinutes() >= WEEKDAY_DAILY_CAP
+          );
+        }
+      }
+
+      let softWatchPending = null;
+
+      function hideSoftBudget() {
+        const el = $("softBudget");
+        if (!el) return;
+        el.classList.remove("show");
+        el.setAttribute("aria-hidden", "true");
+        softWatchPending = null;
+      }
+
+      function showSoftBudget(t, ep, href) {
+        softWatchPending = { t: t, ep: ep, href: href || "" };
+        const mins = todayWatchMinutes();
+        $("softBudgetText").textContent =
+          "今日大约已看过 " +
+          mins +
+          " 分钟。工作日别影响学习和睡眠，建议到此为止、早点睡。仍可继续看，不强制。";
+        const el = $("softBudget");
+        el.classList.add("show");
+        el.setAttribute("aria-hidden", "false");
+      }
+
+      function proceedWatch(t, ep, href) {
+        markPendingWatch(t, ep);
+        recordDayOpen(t, ep);
+        pauseBgForWatch();
+        toast("看完请回到「今天」盖印打分");
+        if (href) {
+          window.open(href, "_blank", "noopener,noreferrer");
+        }
+        hideSoftBudget();
+        softWatchPending = null;
+      }
+
+      /** 统一入口：工作日超日预算时软提醒，不强制拦截 */
+      function beginWatch(t, ep, href, ev) {
+        if (ev) ev.preventDefault();
+        if (!t || !ep) return;
+        const url = href || ep.link || t.link || "";
+        if (!episodeAllowed(ep, t) && !episodeStamped(t.id, ep.id)) {
+          toast(
+            "工作日限 30 分钟内 · 这一集约 " +
+              episodeMinutes(ep, t) +
+              " 分钟"
+          );
+          return;
+        }
+        if (softBudgetNeeded(t, ep)) {
+          showSoftBudget(t, ep, url);
+          return;
+        }
+        proceedWatch(t, ep, url);
       }
 
       function parseMinutes(str) {
@@ -1455,6 +1663,7 @@ keyiyo哪个一个<!DOCTYPE html>
         const next = Object.assign(defaultState(), old || {});
         if (!Array.isArray(next.wishes)) next.wishes = [];
         if (!next.pendingWatch) next.pendingWatch = null;
+        if (!Array.isArray(next.dayOpens)) next.dayOpens = [];
         next.stamps = (next.stamps || []).map((s) => {
           if (s.episodeId) {
             return Object.assign(
@@ -1730,7 +1939,7 @@ keyiyo哪个一个<!DOCTYPE html>
       function renderMenu() {
         const focus = catById(state.focus);
         const weekend = isWeekend();
-        $("dayGateChip").textContent = dayGateLabel();
+        syncDayGateChips();
         $("menuLede").textContent =
           "本周主线建议：「" +
           (focus ? focus.name : "") +
@@ -1971,11 +2180,8 @@ keyiyo哪个一个<!DOCTYPE html>
         watch.target = "_blank";
         watch.rel = "noopener";
         watch.textContent = "去看 · 今晚任务";
-        watch.addEventListener("click", () => {
-          markPendingWatch(rec.t, rec.ep);
-          pauseBgForWatch();
-          renderHomeTask();
-          toast("看完请回到「今天」盖印打分");
+        watch.addEventListener("click", (e) => {
+          beginWatch(rec.t, rec.ep, rec.ep.link || rec.t.link, e);
         });
         const stamp = document.createElement("button");
         stamp.type = "button";
@@ -2019,6 +2225,10 @@ keyiyo哪个一个<!DOCTYPE html>
 
       function renderHomeRecs() {
         $("homeDayChip").textContent = dayGateLabel();
+        $("homeDayChip").classList.toggle(
+          "warn",
+          !isWeekend() && todayWatchMinutes() >= WEEKDAY_DAILY_CAP
+        );
         const list = $("homeRecs");
         list.innerHTML = "";
         const recs = buildDailyRecs();
@@ -2268,14 +2478,7 @@ keyiyo哪个一个<!DOCTYPE html>
           watch.rel = "noopener";
           watch.textContent = "去看这一集";
           watch.addEventListener("click", (e) => {
-            if (!allowed) {
-              e.preventDefault();
-              toast("工作日限 30 分钟内 · 这一集约 " + mins + " 分钟");
-              return;
-            }
-            markPendingWatch(t, ep);
-            pauseBgForWatch();
-            toast("看完请回到本页盖印打分");
+            beginWatch(t, ep, ep.link || t.link, e);
           });
           const stampBtn = document.createElement("button");
           stampBtn.type = "button";
@@ -2551,7 +2754,15 @@ keyiyo哪个一个<!DOCTYPE html>
         playStampCeremony(label);
         setTimeout(() => {
           renderAll();
-          toast("绿色印章已落 · " + label);
+          if (!isWeekend() && todayWatchMinutes() >= WEEKDAY_DAILY_CAP) {
+            toast(
+              "今日约已看满 " +
+                WEEKDAY_DAILY_CAP +
+                " 分钟 · 工作日早点睡哦（不强制）"
+            );
+          } else {
+            toast("绿色印章已落 · " + label);
+          }
         }, 420);
       }
 
@@ -2847,19 +3058,49 @@ keyiyo哪个一个<!DOCTYPE html>
           toast("工作日只开放 30 分钟以内的集");
           return;
         }
-        markPendingWatch(activeTitle, openEps[0]);
-        pauseBgForWatch();
-        toast("看完请回到本页盖印打分");
+        beginWatch(
+          activeTitle,
+          openEps[0],
+          openEps[0].link || activeTitle.link,
+          e
+        );
       });
-      $("stampWatch").addEventListener("click", () => {
-        if (activeTitle && activeEpisode) markPendingWatch(activeTitle, activeEpisode);
-        pauseBgForWatch();
-        toast("看完请回到本页盖印打分");
+      $("stampWatch").addEventListener("click", (e) => {
+        if (activeTitle && activeEpisode) {
+          beginWatch(
+            activeTitle,
+            activeEpisode,
+            activeEpisode.link || activeTitle.link,
+            e
+          );
+        }
       });
-      $("stampAlt").addEventListener("click", () => {
-        if (activeTitle && activeEpisode) markPendingWatch(activeTitle, activeEpisode);
-        pauseBgForWatch();
-        toast("看完请回到本页盖印打分");
+      $("stampAlt").addEventListener("click", (e) => {
+        if (activeTitle && activeEpisode) {
+          beginWatch(
+            activeTitle,
+            activeEpisode,
+            activeTitle.altLink || activeEpisode.link || activeTitle.link,
+            e
+          );
+        }
+      });
+      $("softBudgetRest").addEventListener("click", () => {
+        hideSoftBudget();
+        toast("好的，今天先到这儿，早点睡");
+      });
+      $("softBudgetContinue").addEventListener("click", () => {
+        const p = softWatchPending;
+        if (!p || !p.t || !p.ep) {
+          hideSoftBudget();
+          return;
+        }
+        proceedWatch(p.t, p.ep, p.href);
+      });
+      $("softBudget").addEventListener("click", (e) => {
+        if (e.target === $("softBudget")) {
+          hideSoftBudget();
+        }
       });
       $("nudgeStamp").addEventListener("click", openPendingStamp);
       $("nudgeDismiss").addEventListener("click", () => {
