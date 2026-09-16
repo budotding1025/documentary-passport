@@ -889,6 +889,72 @@ keyiyo哪个一个<!DOCTYPE html>
       flex-direction: column;
       gap: 10px;
     }
+    .home-done {
+      border: 1.5px solid var(--stamp);
+      background: linear-gradient(180deg, #f7fbf8, #eef7f2);
+      padding: 18px 16px;
+      animation: rise 0.45s var(--ease) both;
+    }
+    .home-done h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+      color: var(--stamp-deep);
+    }
+    .home-done p {
+      margin: 0;
+      line-height: 1.5;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .parent-alert {
+      border: 1.5px solid #b45309;
+      background: #fff7ed;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+    .parent-alert h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      color: #9a3412;
+    }
+    .parent-alert p {
+      margin: 0 0 10px;
+      line-height: 1.45;
+      color: #7c2d12;
+      font-size: 0.92rem;
+    }
+    .parent-insight {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .insight-card {
+      border: 1px solid var(--ink);
+      background: var(--card);
+      padding: 12px 14px;
+    }
+    .insight-card .mono {
+      color: var(--stamp-deep);
+      margin-bottom: 4px;
+    }
+    .insight-card strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+    .insight-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+    .sync-box {
+      border: 1px dashed var(--ink);
+      padding: 12px 14px;
+      margin-top: 14px;
+      background: rgba(255,255,255,0.5);
+    }
+    .sync-box .hint { margin-top: 8px; }
     .rec-card {
       border: 1px solid var(--ink);
       background: var(--card);
@@ -1112,13 +1178,16 @@ keyiyo哪个一个<!DOCTYPE html>
 
       <div class="title-row">
         <h2>最近盖印</h2>
-        <span class="mono" id="titleHint">按集盖印 · 写反馈</span>
+        <span class="mono" id="titleHint">可快速盖印 · 留言选填</span>
       </div>
       <div class="stamps-log" id="stampsLog"></div>
 
       <div class="actions rise" style="margin-top:16px">
         <button type="button" class="btn ghost" data-go-tab="menu">打开本周菜单</button>
         <button type="button" class="btn ghost" data-go-tab="plate">打开四格片库</button>
+        <button type="button" class="btn ghost" id="passportExport">导出护照</button>
+        <button type="button" class="btn ghost" id="passportImportBtn">导入护照</button>
+        <input type="file" id="passportImportFile" accept="application/json,.json" hidden />
       </div>
     </section>
 
@@ -1178,7 +1247,7 @@ keyiyo哪个一个<!DOCTYPE html>
 
     <section id="panel-parent" class="panel">
       <h1 class="rise">家长台</h1>
-      <p class="lede rise">查看孩子点播留言、星级与评论。数据存在这台设备的浏览器里，方便你每日优化片库。</p>
+      <p class="lede rise">查看点播提醒、本周时长、喜好与未盖印。孩子电脑导出护照后，可在此导入同步。</p>
       <div id="parentGate" class="wish-form rise">
         <label class="mono" for="parentPin">口令</label>
         <input id="parentPin" type="password" maxlength="20" placeholder="默认 passport" />
@@ -1188,6 +1257,21 @@ keyiyo哪个一个<!DOCTYPE html>
         <p class="hint">口令只挡孩子误点；不是账号登录。默认：passport</p>
       </div>
       <div id="parentBody" hidden>
+        <div class="parent-alert" id="parentWishAlert" hidden>
+          <h3 id="parentWishAlertTitle">今日片源待更新</h3>
+          <p id="parentWishAlertText">—</p>
+          <div class="actions">
+            <button type="button" class="btn" id="parentWishHandled">已加入片库</button>
+            <button type="button" class="btn ghost" data-go-tab="plate">去片库看看</button>
+          </div>
+        </div>
+
+        <div class="title-row">
+          <h2>本周洞察</h2>
+          <span class="mono">家长摘要</span>
+        </div>
+        <div class="parent-insight" id="parentInsights"></div>
+
         <div class="title-row">
           <h2>点播留言</h2>
           <span class="mono" id="wishCount">0</span>
@@ -1198,9 +1282,15 @@ keyiyo哪个一个<!DOCTYPE html>
           <span class="mono" id="ratingCount">0</span>
         </div>
         <div id="parentRatings" class="stamps-log"></div>
-        <div class="actions" style="margin-top:14px">
-          <button type="button" class="btn ghost" id="parentExport">导出 JSON</button>
-          <button type="button" class="btn ghost" id="parentLock">锁定</button>
+
+        <div class="sync-box">
+          <div class="mono">护照同步 · 本机文件</div>
+          <p class="hint" style="margin:6px 0 10px">孩子电脑导出 → 家长电脑导入，两边就能看到同一本护照与点播。</p>
+          <div class="actions">
+            <button type="button" class="btn" id="parentExport">导出护照</button>
+            <button type="button" class="btn ghost" id="parentImportBtn">导入护照</button>
+            <button type="button" class="btn ghost" id="parentLock">锁定</button>
+          </div>
         </div>
       </div>
     </section>
@@ -1257,18 +1347,6 @@ keyiyo哪个一个<!DOCTYPE html>
         </div>
 
         <div class="title-row" style="margin-top:18px">
-          <h2>看完反馈</h2>
-          <span class="mono">必填一类</span>
-        </div>
-        <div class="prompt-row" id="promptRow">
-          <button type="button" class="prompt-chip" data-prompt="remember">记得最清楚的一件事</button>
-          <button type="button" class="prompt-chip" data-prompt="aha">有个「原来是这样」</button>
-          <button type="button" class="prompt-chip" data-prompt="wonder">有个地方还想弄懂</button>
-        </div>
-        <textarea id="noteInput" maxlength="160" placeholder="先点上面一类，再用自己的话写下来。"></textarea>
-        <p class="hint">写清楚一点，方便自己整理这集看到了什么。</p>
-
-        <div class="title-row" style="margin-top:16px">
           <h2>五星评分</h2>
           <span class="mono">必选</span>
         </div>
@@ -1279,7 +1357,23 @@ keyiyo哪个一个<!DOCTYPE html>
           <button type="button" class="star-btn" data-star="4" aria-label="4星">★</button>
           <button type="button" class="star-btn" data-star="5" aria-label="5星">★</button>
         </div>
-        <p class="hint" id="starHint">点星星：这集好不好看？</p>
+        <p class="hint" id="starHint">点星星就能快速盖印；留言选填。</p>
+
+        <div class="actions" style="margin-top:12px">
+          <button type="button" class="btn" id="stampQuickBtn">快速盖印（只打星）</button>
+        </div>
+
+        <div class="title-row" style="margin-top:18px">
+          <h2>看完反馈</h2>
+          <span class="mono">选填</span>
+        </div>
+        <div class="prompt-row" id="promptRow">
+          <button type="button" class="prompt-chip" data-prompt="remember">记得最清楚的一件事</button>
+          <button type="button" class="prompt-chip" data-prompt="aha">有个「原来是这样」</button>
+          <button type="button" class="prompt-chip" data-prompt="wonder">有个地方还想弄懂</button>
+        </div>
+        <textarea id="noteInput" maxlength="160" placeholder="想写再写；不写也能快速盖印。"></textarea>
+        <p class="hint">写一句也行，方便自己以后翻护照。</p>
 
         <div class="title-row" style="margin-top:14px">
           <h2>评论 / 感受</h2>
@@ -1298,7 +1392,7 @@ keyiyo哪个一个<!DOCTYPE html>
         </details>
 
         <div class="actions" style="margin-top:14px">
-          <button type="button" class="btn" id="stampBtn">盖印收工</button>
+          <button type="button" class="btn" id="stampBtn">写完盖印</button>
           <button type="button" class="btn ghost" id="sheetCloseStamp">关闭</button>
         </div>
       </div>
@@ -1592,6 +1686,192 @@ keyiyo哪个一个<!DOCTYPE html>
         proceedWatch(t, ep, url);
       }
 
+      function weekdayBudgetDone() {
+        return !isWeekend() && todayWatchMinutes() >= WEEKDAY_DAILY_CAP;
+      }
+
+      function yesterdayKey() {
+        const d = new Date();
+        d.setDate(d.getDate() - 1);
+        return dayKey(d);
+      }
+
+      function openWishes() {
+        return (state.wishes || [])
+          .filter((w) => !w.handledAt)
+          .slice()
+          .sort((a, b) => (b.at || 0) - (a.at || 0));
+      }
+
+      function primaryWishForToday() {
+        const open = openWishes();
+        if (!open.length) return null;
+        const y = yesterdayKey();
+        return open.find((w) => w.dayKey === y) || open[0];
+      }
+
+      function weekStartDate() {
+        const t = new Date();
+        const day = t.getDay();
+        const diff = day === 0 ? 6 : day - 1;
+        const mon = new Date(t.getFullYear(), t.getMonth(), t.getDate() - diff);
+        mon.setHours(0, 0, 0, 0);
+        return mon;
+      }
+
+      function inThisWeek(ts) {
+        if (!ts) return false;
+        return ts >= weekStartDate().getTime();
+      }
+
+      function weekWatchMinutes() {
+        const map = new Map();
+        (state.stamps || []).forEach((s) => {
+          if (!inThisWeek(s.at)) return;
+          const t = titleById(s.titleId);
+          const ep = t ? episodeById(t, s.episodeId) : null;
+          let mins = episodeMinutes(ep, t);
+          if (mins >= 999) mins = WEEKDAY_DAILY_CAP;
+          const k = s.titleId + "::" + s.episodeId;
+          if (!map.has(k)) map.set(k, mins);
+        });
+        (state.dayOpens || []).forEach((o) => {
+          if (!inThisWeek(o.at)) return;
+          const k = o.titleId + "::" + o.episodeId;
+          if (!map.has(k)) map.set(k, Number(o.minutes) || 0);
+        });
+        let sum = 0;
+        map.forEach((m) => {
+          sum += m;
+        });
+        return { minutes: sum, episodes: map.size };
+      }
+
+      function topTasteSummary() {
+        const muscle = {};
+        const cat = {};
+        (state.stamps || []).forEach((s) => {
+          const w = Math.max(1, Number(s.rating) || 1);
+          if (s.muscle) muscle[s.muscle] = (muscle[s.muscle] || 0) + w;
+          if (s.category) cat[s.category] = (cat[s.category] || 0) + w;
+        });
+        const topM = Object.keys(muscle).sort((a, b) => muscle[b] - muscle[a])[0];
+        const topC = Object.keys(cat).sort((a, b) => cat[b] - cat[a])[0];
+        const c = topC ? catById(topC) : null;
+        return {
+          muscle: topM || "",
+          categoryName: c ? c.name : "",
+        };
+      }
+
+      function pendingUnstampedList() {
+        const list = [];
+        const seen = new Set();
+        function push(titleId, episodeId, at) {
+          if (!titleId || !episodeId) return;
+          if (episodeStamped(titleId, episodeId)) return;
+          const k = titleId + "::" + episodeId;
+          if (seen.has(k)) return;
+          seen.add(k);
+          const t = titleById(titleId);
+          const ep = t ? episodeById(t, episodeId) : null;
+          if (!t || !ep) return;
+          list.push({ t: t, ep: ep, at: at || 0 });
+        }
+        if (state.pendingWatch) {
+          push(
+            state.pendingWatch.titleId,
+            state.pendingWatch.episodeId,
+            state.pendingWatch.openedAt
+          );
+        }
+        (state.dayOpens || [])
+          .slice()
+          .sort((a, b) => (b.at || 0) - (a.at || 0))
+          .forEach((o) => push(o.titleId, o.episodeId, o.at));
+        return list.slice(0, 8);
+      }
+
+      function exportPassportBlob() {
+        return new Blob(
+          [
+            JSON.stringify(
+              {
+                version: 2,
+                kind: "documentary-passport",
+                exportedAt: new Date().toISOString(),
+                state: {
+                  name: state.name,
+                  stamps: state.stamps || [],
+                  wishes: state.wishes || [],
+                  pendingWatch: state.pendingWatch || null,
+                  dayOpens: state.dayOpens || [],
+                  week: state.week,
+                  focus: state.focus,
+                  swapUsed: !!state.swapUsed,
+                  filter: state.filter || null,
+                },
+              },
+              null,
+              2
+            ),
+          ],
+          { type: "application/json" }
+        );
+      }
+
+      function downloadPassport() {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(exportPassportBlob());
+        a.download =
+          "documentary-passport-" +
+          (state.name || "kid") +
+          "-" +
+          dayKey() +
+          ".json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        toast("护照已导出 · 可拷到另一台电脑导入");
+      }
+
+      function importPassportObject(data) {
+        let incoming = null;
+        if (data && data.state && typeof data.state === "object") {
+          incoming = data.state;
+        } else if (data && (data.stamps || data.wishes)) {
+          incoming = {
+            name: data.name,
+            stamps: data.stamps || [],
+            wishes: data.wishes || [],
+            pendingWatch: data.pendingWatch || null,
+            dayOpens: data.dayOpens || [],
+            week: data.week,
+            focus: data.focus,
+            swapUsed: data.swapUsed,
+            filter: data.filter,
+          };
+        }
+        if (!incoming) throw new Error("格式不对");
+        state = migrateState(Object.assign(defaultState(), incoming));
+        save(state);
+        renderAll();
+      }
+
+      function handlePassportFile(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const data = JSON.parse(String(reader.result || ""));
+            importPassportObject(data);
+            toast("护照已导入 · 盖印与点播已合并到本机");
+          } catch (_) {
+            toast("导入失败：请选择正确的护照 JSON");
+          }
+        };
+        reader.readAsText(file, "utf-8");
+      }
+
       function parseMinutes(str) {
         if (!str) return null;
         const s = String(str);
@@ -1664,6 +1944,9 @@ keyiyo哪个一个<!DOCTYPE html>
         if (!Array.isArray(next.wishes)) next.wishes = [];
         if (!next.pendingWatch) next.pendingWatch = null;
         if (!Array.isArray(next.dayOpens)) next.dayOpens = [];
+        next.wishes = (next.wishes || []).map((w) =>
+          Object.assign({ handledAt: null, handleNote: "" }, w)
+        );
         next.stamps = (next.stamps || []).map((s) => {
           if (s.episodeId) {
             return Object.assign(
@@ -2186,7 +2469,7 @@ keyiyo哪个一个<!DOCTYPE html>
         const stamp = document.createElement("button");
         stamp.type = "button";
         stamp.className = "btn ghost";
-        stamp.textContent = "写反馈盖印";
+        stamp.textContent = "盖印打分";
         stamp.addEventListener("click", () => openStamp(rec.t, rec.ep));
         const more = document.createElement("button");
         more.type = "button";
@@ -2225,12 +2508,22 @@ keyiyo哪个一个<!DOCTYPE html>
 
       function renderHomeRecs() {
         $("homeDayChip").textContent = dayGateLabel();
-        $("homeDayChip").classList.toggle(
-          "warn",
-          !isWeekend() && todayWatchMinutes() >= WEEKDAY_DAILY_CAP
-        );
+        $("homeDayChip").classList.toggle("warn", weekdayBudgetDone());
         const list = $("homeRecs");
         list.innerHTML = "";
+        if (weekdayBudgetDone()) {
+          $("homeRecMeta").textContent = "今日已完成";
+          const done = document.createElement("div");
+          done.className = "home-done";
+          done.innerHTML =
+            "<h3>今日已完成 · 早点睡</h3><p></p>";
+          done.querySelector("p").textContent =
+            "今天大约已看过 " +
+            todayWatchMinutes() +
+            " 分钟。工作日先收工，别影响学习和睡眠。若还想再看，菜单里仍可打开（会软提醒，不强制）。";
+          list.appendChild(done);
+          return;
+        }
         const recs = buildDailyRecs();
         $("homeRecMeta").textContent = "续看 · 补缺 · 同类型";
         if (!recs.length) {
@@ -2483,7 +2776,7 @@ keyiyo哪个一个<!DOCTYPE html>
           const stampBtn = document.createElement("button");
           stampBtn.type = "button";
           stampBtn.className = "btn ghost";
-          stampBtn.textContent = done ? "改反馈 / 再盖" : "写反馈盖印";
+          stampBtn.textContent = done ? "改反馈 / 再盖" : "盖印打分";
           stampBtn.addEventListener("click", () => {
             if (!allowed && !done) {
               toast("工作日限 30 分钟内 · 这一集约 " + mins + " 分钟");
@@ -2543,7 +2836,11 @@ keyiyo哪个一个<!DOCTYPE html>
         document.querySelectorAll(".prompt-chip").forEach((b) => {
           b.classList.toggle("active", b.dataset.prompt === activePrompt);
         });
-        $("noteInput").value = prev ? prev.note : PROMPTS[activePrompt];
+        $("noteInput").value = prev
+          ? prev.note && prev.note !== "快速盖印"
+            ? prev.note
+            : ""
+          : "";
         activeRating = prev && prev.rating ? Number(prev.rating) : 0;
         syncStars();
         $("commentInput").value = prev && prev.comment ? prev.comment : "";
@@ -2707,22 +3004,21 @@ keyiyo哪个一个<!DOCTYPE html>
         }, 1400);
       }
 
-      function stamp() {
+      function stamp(opts) {
+        const quick = !!(opts && opts.quick);
         if (!activeTitle || !activeEpisode) return;
-        const note = ($("noteInput").value || "").trim();
-        if (note.length < 6) {
-          toast("反馈再写完整一点（至少几个词）");
-          return;
-        }
-        const bare = Object.values(PROMPTS).some((p) => note === p);
-        if (bare) {
-          toast("把冒号后面的话写出来再盖印");
-          return;
-        }
         if (!activeRating) {
           toast("先点星星评个分再盖印");
           return;
         }
+        let note = ($("noteInput").value || "").trim();
+        const bare = Object.values(PROMPTS).some((p) => note === p);
+        if (bare) note = "";
+        if (!quick && note && note.length < 4) {
+          toast("反馈再写完整一点，或改用快速盖印");
+          return;
+        }
+        if (quick && !note) note = "快速盖印";
         const t = activeTitle;
         const ep = activeEpisode;
         const ask =
@@ -2736,7 +3032,7 @@ keyiyo哪个一个<!DOCTYPE html>
           titleId: t.id,
           episodeId: ep.id,
           episodeTitle: ep.title,
-          note,
+          note: note || (quick ? "快速盖印" : ""),
           prompt: activePrompt,
           rating: activeRating,
           comment,
@@ -2745,6 +3041,7 @@ keyiyo哪个一个<!DOCTYPE html>
           at: Date.now(),
           category: t.category,
           muscle: t.muscle || "",
+          quick: !!quick,
         });
         save(state);
         clearPendingWatch();
@@ -2754,14 +3051,14 @@ keyiyo哪个一个<!DOCTYPE html>
         playStampCeremony(label);
         setTimeout(() => {
           renderAll();
-          if (!isWeekend() && todayWatchMinutes() >= WEEKDAY_DAILY_CAP) {
+          if (weekdayBudgetDone()) {
             toast(
               "今日约已看满 " +
                 WEEKDAY_DAILY_CAP +
                 " 分钟 · 工作日早点睡哦（不强制）"
             );
           } else {
-            toast("绿色印章已落 · " + label);
+            toast((quick ? "快速盖印 · " : "绿色印章已落 · ") + label);
           }
         }, 420);
       }
@@ -2822,6 +3119,8 @@ keyiyo哪个一个<!DOCTYPE html>
           topic,
           note: ($("wishNote").value || "").trim(),
           at: Date.now(),
+          handledAt: null,
+          handleNote: "",
         };
         state.wishes = (state.wishes || []).filter((w) => w.dayKey !== today);
         state.wishes.push(entry);
@@ -2835,6 +3134,69 @@ keyiyo哪个一个<!DOCTYPE html>
         $("parentGate").hidden = !!parentOpen;
         $("parentBody").hidden = !parentOpen;
         if (!parentOpen) return;
+
+        const alert = $("parentWishAlert");
+        const wish = primaryWishForToday();
+        if (wish) {
+          alert.hidden = false;
+          const cat = catById(wish.category);
+          const isYday = wish.dayKey === yesterdayKey();
+          $("parentWishAlertTitle").textContent = isYday
+            ? "今日片源待更新（昨天点播）"
+            : "有未处理的点播";
+          $("parentWishAlertText").textContent =
+            wish.dayKey +
+            " · " +
+            (cat ? cat.name : wish.category || "其他") +
+            " · 想看「" +
+            (wish.topic || "") +
+            "」" +
+            (wish.note ? " — " + wish.note : "") +
+            "。建议今天补进片库或找好链接。";
+        } else {
+          alert.hidden = true;
+        }
+
+        const insights = $("parentInsights");
+        insights.innerHTML = "";
+        const week = weekWatchMinutes();
+        const taste = topTasteSummary();
+        const pending = pendingUnstampedList();
+        const cards = [
+          {
+            k: "本周观看",
+            v: "约 " + week.minutes + " 分钟",
+            d: week.episodes + " 集（盖印或已点开）",
+          },
+          {
+            k: "常爱哪类",
+            v: taste.muscle
+              ? taste.muscle + (taste.categoryName ? " · " + taste.categoryName : "")
+              : "还在积累",
+            d: taste.muscle ? "按星级加权统计" : "多盖几印后会更准",
+          },
+          {
+            k: "半途未盖印",
+            v: pending.length ? pending.length + " 集" : "暂无",
+            d: pending.length
+              ? pending
+                  .slice(0, 3)
+                  .map((x) => "《" + x.t.title + "》第" + x.ep.n + "集")
+                  .join("、")
+              : "开看后记得回来盖印",
+          },
+        ];
+        cards.forEach((c) => {
+          const el = document.createElement("div");
+          el.className = "insight-card";
+          el.innerHTML =
+            '<div class="mono"></div><strong></strong><p></p>';
+          el.querySelector(".mono").textContent = c.k;
+          el.querySelector("strong").textContent = c.v;
+          el.querySelector("p").textContent = c.d;
+          insights.appendChild(el);
+        });
+
         const wishes = (state.wishes || []).slice().reverse();
         $("wishCount").textContent = wishes.length + " 条";
         const wBox = $("parentWishes");
@@ -2849,7 +3211,10 @@ keyiyo哪个一个<!DOCTYPE html>
             const cat = catById(w.category);
             row.innerHTML = '<div class="t"></div><div class="n"></div>';
             row.querySelector(".t").textContent =
-              w.dayKey + " · " + (cat ? cat.name : w.category || "其他");
+              w.dayKey +
+              " · " +
+              (cat ? cat.name : w.category || "其他") +
+              (w.handledAt ? " · 已处理" : " · 待更新");
             row.querySelector(".n").textContent =
               "想看：" +
               (w.topic || "") +
@@ -2879,7 +3244,8 @@ keyiyo哪个一个<!DOCTYPE html>
             " · " +
             (s.episodeTitle || "") +
             " · " +
-            (s.rating ? starsText(s.rating) : "未评星");
+            (s.rating ? starsText(s.rating) : "未评星") +
+            (s.quick ? " · 快盖" : "");
           row.querySelector(".n").textContent =
             (s.note || "") + (s.comment ? " ｜ 评：" + s.comment : "");
           rBox.appendChild(row);
@@ -2905,7 +3271,8 @@ keyiyo哪个一个<!DOCTYPE html>
       $("sheet").addEventListener("click", (e) => {
         if (e.target === $("sheet")) closeSheet();
       });
-      $("stampBtn").addEventListener("click", stamp);
+      $("stampBtn").addEventListener("click", () => stamp({ quick: false }));
+      $("stampQuickBtn").addEventListener("click", () => stamp({ quick: true }));
       $("askSend").addEventListener("click", sendAsk);
       $("askInput").addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
@@ -2930,7 +3297,16 @@ keyiyo哪个一个<!DOCTYPE html>
         sessionStorage.setItem("doc-passport-parent", "1");
         $("parentPin").value = "";
         renderParent();
-        toast("家长台已打开");
+        const wish = primaryWishForToday();
+        if (wish) {
+          toast(
+            "有点播待处理：" +
+              (wish.topic || "未写主题") +
+              " · 请看上方提醒"
+          );
+        } else {
+          toast("家长台已打开");
+        }
       });
       $("parentLock").addEventListener("click", () => {
         parentOpen = false;
@@ -2938,29 +3314,40 @@ keyiyo哪个一个<!DOCTYPE html>
         renderParent();
         toast("家长台已锁定");
       });
-      $("parentExport").addEventListener("click", () => {
-        const blob = new Blob(
-          [
-            JSON.stringify(
-              {
-                exportedAt: new Date().toISOString(),
-                name: state.name,
-                wishes: state.wishes || [],
-                stamps: state.stamps || [],
-              },
-              null,
-              2
-            ),
-          ],
-          { type: "application/json" }
-        );
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "documentary-passport-" + dayKey() + ".json";
-        a.click();
-        URL.revokeObjectURL(a.href);
-        toast("已导出本机数据");
+      $("parentWishHandled").addEventListener("click", () => {
+        const wish = primaryWishForToday();
+        if (!wish) {
+          toast("当前没有待处理点播");
+          return;
+        }
+        state.wishes = (state.wishes || []).map((w) => {
+          if (w.dayKey === wish.dayKey && w.at === wish.at) {
+            return Object.assign({}, w, {
+              handledAt: Date.now(),
+              handleNote: "已加入片库",
+            });
+          }
+          return w;
+        });
+        save(state);
+        renderParent();
+        toast("已标记处理 · " + (wish.topic || ""));
       });
+      function bindImport(btnId, fileId) {
+        const btn = $(btnId);
+        const file = $(fileId);
+        if (!btn || !file) return;
+        btn.addEventListener("click", () => file.click());
+        file.addEventListener("change", () => {
+          const f = file.files && file.files[0];
+          handlePassportFile(f);
+          file.value = "";
+        });
+      }
+      $("parentExport").addEventListener("click", downloadPassport);
+      $("passportExport").addEventListener("click", downloadPassport);
+      bindImport("parentImportBtn", "passportImportFile");
+      bindImport("passportImportBtn", "passportImportFile");
       document.querySelectorAll(".prompt-chip").forEach((btn) => {
         btn.addEventListener("click", () => {
           activePrompt = btn.dataset.prompt;
