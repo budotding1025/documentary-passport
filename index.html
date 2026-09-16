@@ -2501,7 +2501,7 @@ keyiyo哪个一个<!DOCTYPE html>
           return true;
         }
 
-        // 1) 续看：最近盖过印、但还没看完的片子 → 下一集（例：巴斯德第3集）
+        // 1) 续看：最近盖过印、还没看完 → 下一集（例：超级巴斯德第3集）
         const recentByTitle = {};
         state.stamps.forEach((s) => {
           if (!s.titleId) return;
@@ -2519,7 +2519,6 @@ keyiyo哪个一个<!DOCTYPE html>
               ep: ep,
               at: recentByTitle[id].at || 0,
               doneN: doneN,
-              lastRating: Number(recentByTitle[id].rating) || 0,
             };
           })
           .filter(Boolean)
@@ -2543,36 +2542,16 @@ keyiyo哪个一个<!DOCTYPE html>
           });
         }
 
-        // 2) 补缺：四格里进度最低、且尽量不是刚续看的那一格
-        const continueCat = recs[0] ? recs[0].t.category : null;
-        const catProg = cats
-          .map((c) => ({ c: c, p: progress(c.id) }))
-          .sort((a, b) => {
-            const aBoost = continueCat && a.c.id === continueCat ? 1 : 0;
-            const bBoost = continueCat && b.c.id === continueCat ? 1 : 0;
-            return aBoost - bBoost || a.p.pct - b.p.pct || a.p.n - b.p.n;
-          });
-        for (let i = 0; i < catProg.length; i++) {
-          const c = catProg[i].c;
-          const candidate = titles.find(
-            (t) => t.category === c.id && !usedTitles.has(t.id) && nextOpenEpisode(t)
-          );
-          if (candidate) {
-            pushRec({
-              kind: "gap",
-              label: "补缺开眼",
-              reason:
-                "「" +
-                c.short +
-                "」格还比较空，换换口味，眼界会更开阔",
-              t: candidate,
-              ep: nextOpenEpisode(candidate),
-            });
-            break;
-          }
-        }
-
-        // 3) 同类型喜好：高分 / 最近常看的肌肉与门类
+        // 2) 同主题延伸：微观战斗 / 免疫（巴斯德 → 细胞暗战等）
+        const THEME_BOOST = {
+          pasteur: { ids: ["cellwar", "germsquad", "bacteriasecret", "bodymicro"], label: "微观攻防" },
+          germsquad: { ids: ["cellwar", "pasteur", "bacteriasecret"], label: "细菌病毒" },
+          cellwar: { ids: ["pasteur", "bodymicro", "bacteriasecret"], label: "细胞免疫" },
+          bacteriasecret: { ids: ["cellwar", "germsquad", "pasteur"], label: "细菌微观" },
+          bodymicro: { ids: ["cellwar", "pasteur"], label: "人体微观" },
+        };
+        const seedId = recs[0] ? recs[0].t.id : inProgress[0] && inProgress[0].t.id;
+        const theme = seedId ? THEME_BOOST[seedId] : null;
         const prefMuscle = {};
         const prefCat = {};
         state.stamps.forEach((s) => {
@@ -2585,40 +2564,104 @@ keyiyo哪个一个<!DOCTYPE html>
         const topMuscle = Object.keys(prefMuscle).sort(
           (a, b) => prefMuscle[b] - prefMuscle[a]
         )[0];
-        const topCat = Object.keys(prefCat).sort(
-          (a, b) => prefCat[b] - prefCat[a]
-        )[0];
+        const bioLike =
+          topMuscle === "生物" ||
+          topMuscle === "人体" ||
+          (theme && theme.label);
 
-        const similarPool = titles
-          .filter((t) => !usedTitles.has(t.id) && nextOpenEpisode(t))
-          .map((t) => {
-            let score = 0;
-            if (topMuscle && t.muscle === topMuscle) score += 5;
-            if (topCat && t.category === topCat) score += 3;
-            const avg = titleAvgRating(t);
-            if (avg >= 4) score += 2;
-            // 同系列已在续看里用过；这里偏「同肌肉不同片」
-            return { t: t, ep: nextOpenEpisode(t), score: score };
-          })
-          .filter((x) => x.score > 0)
-          .sort((a, b) => b.score - a.score);
-
-        if (similarPool.length) {
-          const pick = similarPool[0];
-          const why =
-            topMuscle && pick.t.muscle === topMuscle
-              ? "你最近爱看「" + topMuscle + "」类，这部很接近"
-              : "按你的观看喜好，这部同类型值得试";
-          pushRec({
-            kind: "similar",
-            label: "同类型",
-            reason: why,
-            t: pick.t,
-            ep: pick.ep,
-          });
+        if (theme || bioLike) {
+          const preferIds = (theme && theme.ids) || [
+            "cellwar",
+            "germsquad",
+            "bacteriasecret",
+            "bodymicro",
+          ];
+          let picked = null;
+          for (let i = 0; i < preferIds.length; i++) {
+            const t = titleById(preferIds[i]);
+            if (t && !usedTitles.has(t.id) && nextOpenEpisode(t)) {
+              picked = t;
+              break;
+            }
+          }
+          if (!picked) {
+            const pool = titles
+              .filter((t) => !usedTitles.has(t.id) && nextOpenEpisode(t))
+              .filter(
+                (t) =>
+                  t.muscle === "生物" ||
+                  t.muscle === "人体" ||
+                  (topMuscle && t.muscle === topMuscle)
+              );
+            picked = pool[0] || null;
+          }
+          if (picked) {
+            pushRec({
+              kind: "similar",
+              label: "同主题",
+              reason:
+                picked.id === "cellwar"
+                  ? "细胞怎样打仗保卫身体，和巴斯德的微生物话题很搭"
+                  : theme
+                    ? "顺着「" + theme.label + "」再看一部：" + picked.title
+                    : "你最近爱看微观生命，这部同主题值得试",
+              t: picked,
+              ep: nextOpenEpisode(picked),
+            });
+          }
         }
 
-        // 填满到 3：微打卡 / 任意可看
+        // 3) 补缺：从未盖印 / 进度最低的格，优先人文、理财（孩子常不看）
+        const continueCat = recs[0] ? recs[0].t.category : null;
+        const neglectedPrefer = ["human", "finance", "drive", "nature"];
+        const catProg = cats
+          .map((c) => ({ c: c, p: progress(c.id) }))
+          .sort((a, b) => {
+            const aEmpty = a.p.n === 0 ? 0 : 1;
+            const bEmpty = b.p.n === 0 ? 0 : 1;
+            const aPref = neglectedPrefer.indexOf(a.c.id);
+            const bPref = neglectedPrefer.indexOf(b.c.id);
+            const aSame = continueCat && a.c.id === continueCat ? 1 : 0;
+            const bSame = continueCat && b.c.id === continueCat ? 1 : 0;
+            return (
+              aSame - bSame ||
+              aEmpty - bEmpty ||
+              a.p.pct - b.p.pct ||
+              a.p.n - b.p.n ||
+              aPref - bPref
+            );
+          });
+        for (let i = 0; i < catProg.length; i++) {
+          const c = catProg[i].c;
+          if (continueCat && c.id === continueCat && catProg.some((x) => x.c.id !== continueCat && x.p.n === 0)) {
+            continue;
+          }
+          const candidate = titles.find(
+            (t) =>
+              t.category === c.id &&
+              !usedTitles.has(t.id) &&
+              nextOpenEpisode(t)
+          );
+          if (candidate) {
+            const never = catProg[i].p.n === 0;
+            pushRec({
+              kind: "gap",
+              label: never ? "换格开眼" : "补缺开眼",
+              reason: never
+                ? "「" +
+                  c.short +
+                  "」格你几乎还没碰过，今天换换口味"
+                : "「" +
+                  c.short +
+                  "」格进度还低，补一集眼界更开阔",
+              t: candidate,
+              ep: nextOpenEpisode(candidate),
+            });
+            break;
+          }
+        }
+
+        // 填满到 3
         if (recs.length < 3) {
           const snack = titles.find((t) => {
             if (usedTitles.has(t.id)) return false;
@@ -2748,7 +2791,7 @@ keyiyo哪个一个<!DOCTYPE html>
           return;
         }
         const recs = buildDailyRecs();
-        $("homeRecMeta").textContent = "续看 · 补缺 · 同类型";
+        $("homeRecMeta").textContent = "续看 · 同主题 · 换格";
         if (!recs.length) {
           list.innerHTML =
             '<div class="empty">今天暂时没有可推荐的集。去菜单逛逛，或等周五晚 / 周末看长片。</div>';
