@@ -906,6 +906,101 @@ keyiyo哪个一个<!DOCTYPE html>
       color: var(--muted);
       font-size: 0.95rem;
     }
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .album-seal {
+      border: 1px solid var(--ink);
+      background: var(--card);
+      padding: 12px 10px;
+      text-align: center;
+      min-height: 88px;
+      position: relative;
+    }
+    .album-seal.empty {
+      opacity: 0.45;
+      border-style: dashed;
+    }
+    .album-seal .seal-ico {
+      font-size: 1.4rem;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .album-seal .seal-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .album-seal .seal-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .album-seal.rare {
+      border-color: #b45309;
+      background: linear-gradient(160deg, #fff7ed, #ffedd5);
+      box-shadow: 0 0 0 1px rgba(180, 83, 9, 0.2), 0 0 18px rgba(245, 158, 11, 0.35);
+      animation: rareGlow 2.4s ease-in-out infinite;
+    }
+    .album-seal.medal {
+      grid-column: 1 / -1;
+      border-color: var(--stamp);
+      background: linear-gradient(180deg, #f2faf6, #e8f5ee);
+    }
+    @keyframes rareGlow {
+      0%, 100% { box-shadow: 0 0 0 1px rgba(180, 83, 9, 0.2), 0 0 10px rgba(245, 158, 11, 0.25); }
+      50% { box-shadow: 0 0 0 1px rgba(180, 83, 9, 0.35), 0 0 22px rgba(245, 158, 11, 0.55); }
+    }
+    .blind-box {
+      position: fixed;
+      inset: 0;
+      z-index: 140;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(12, 28, 22, 0.5);
+      backdrop-filter: blur(3px);
+    }
+    .blind-box.show { display: flex; }
+    .blind-box-inner {
+      width: min(400px, 100%);
+      background: #fffdf8;
+      border: 1.5px solid var(--ink);
+      padding: 18px 16px 14px;
+      animation: rise 0.4s var(--ease) both;
+      text-align: center;
+    }
+    .blind-box-inner .mono { color: var(--stamp-deep); margin-bottom: 6px; }
+    .blind-box-inner h3 { margin: 0 0 8px; font-size: 1.15rem; }
+    .blind-box-inner p {
+      margin: 0 0 14px;
+      line-height: 1.5;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .blind-box-inner .loot {
+      border: 1px dashed var(--stamp);
+      background: var(--stamp-soft);
+      padding: 12px;
+      margin-bottom: 14px;
+      font-weight: 700;
+      color: var(--stamp-deep);
+      line-height: 1.45;
+      animation: rareGlow 2s ease-in-out infinite;
+    }
+    .npc-chip {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-family: "JetBrains Mono", monospace;
+      border: 1px solid var(--stamp);
+      color: var(--stamp-deep);
+      background: var(--stamp-soft);
+      padding: 2px 8px;
+      margin-bottom: 8px;
+    }
     .tab-badge {
       display: inline-block;
       min-width: 1.1em;
@@ -1222,6 +1317,12 @@ keyiyo哪个一个<!DOCTYPE html>
         <div class="visa-grid" id="visaGrid"></div>
       </div>
 
+      <div class="title-row" style="margin-top:18px">
+        <h2>我的图鉴</h2>
+        <span class="mono" id="albumMeta">收集印章</span>
+      </div>
+      <div class="album-grid rise" id="albumGrid"></div>
+
       <div class="title-row">
         <h2>最近盖印</h2>
         <span class="mono" id="titleHint">可快速盖印 · 留言选填</span>
@@ -1454,7 +1555,8 @@ keyiyo哪个一个<!DOCTYPE html>
 
         <details class="ask-box" id="askBox">
           <summary>有疑问，问一问（可选）</summary>
-          <p class="hint">可以说「没看懂××」。助手会和你聊两三个来回，帮你理清，不是考试。</p>
+          <div class="npc-chip" id="npcChip">NPC · 探索向导</div>
+          <p class="hint" id="npcHint">可以说「没看懂××」。片中角色会和你聊两三个来回，不是考试。</p>
           <div class="chat-log" id="chatLog"></div>
           <div class="ask-row">
             <input type="text" id="askInput" maxlength="120" placeholder="这集里哪里没懂？" />
@@ -1488,6 +1590,18 @@ keyiyo哪个一个<!DOCTYPE html>
       <div class="actions">
         <button type="button" class="btn" id="softBudgetRest">好的，先休息</button>
         <button type="button" class="btn ghost" id="softBudgetContinue">还是去看</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="blind-box" id="blindBox" aria-hidden="true">
+    <div class="blind-box-inner" role="dialog" aria-labelledby="blindBoxTitle">
+      <div class="mono">知识盲盒 · 掉落</div>
+      <h3 id="blindBoxTitle">拆开看看</h3>
+      <div class="loot" id="blindBoxLoot">—</div>
+      <p id="blindBoxSub">一句话惊喜，不占太多时间。</p>
+      <div class="actions" style="justify-content:center">
+        <button type="button" class="btn" id="blindBoxClose">收进护照</button>
       </div>
     </div>
   </div>
@@ -1565,6 +1679,8 @@ keyiyo哪个一个<!DOCTYPE html>
           wishes: [], // {dayKey, category, topic, note, at}
           pendingWatch: null, // {titleId, episodeId, openedAt}
           dayOpens: [], // {dayKey, titleId, episodeId, minutes, at}
+          rareStamps: [], // {id, kind, label, titleId, episodeId, at}
+          medals: [], // {id, label, at}
           week: weekIndex(),
           focus: rotation[weekIndex() % rotation.length],
           swapUsed: false,
@@ -1963,8 +2079,10 @@ keyiyo哪个一个<!DOCTYPE html>
               stamps: state.stamps || [],
               wishes: state.wishes || [],
               pendingWatch: state.pendingWatch || null,
-              dayOpens: state.dayOpens || [],
-              week: state.week,
+                  dayOpens: state.dayOpens || [],
+                  rareStamps: state.rareStamps || [],
+                  medals: state.medals || [],
+                  week: state.week,
               focus: state.focus,
               swapUsed: !!state.swapUsed,
               filter: state.filter || null,
@@ -2035,6 +2153,8 @@ keyiyo哪个一个<!DOCTYPE html>
             wishes: data.wishes || [],
             pendingWatch: data.pendingWatch || null,
             dayOpens: data.dayOpens || [],
+            rareStamps: data.rareStamps || [],
+            medals: data.medals || [],
             week: data.week,
             focus: data.focus,
             swapUsed: data.swapUsed,
@@ -2167,6 +2287,8 @@ keyiyo哪个一个<!DOCTYPE html>
         if (!Array.isArray(next.wishes)) next.wishes = [];
         if (!next.pendingWatch) next.pendingWatch = null;
         if (!Array.isArray(next.dayOpens)) next.dayOpens = [];
+        if (!Array.isArray(next.rareStamps)) next.rareStamps = [];
+        if (!Array.isArray(next.medals)) next.medals = [];
         next.wishes = (next.wishes || []).map((w) =>
           Object.assign({ handledAt: null, handleNote: "" }, w)
         );
@@ -2803,6 +2925,7 @@ keyiyo哪个一个<!DOCTYPE html>
       function renderPassport() {
         renderHomeRecs();
         renderHomeTask();
+        renderAlbum();
         $("explorerName").textContent = state.name || "小探险家";
         $("nameInput").value = state.name === "小探险家" ? "" : state.name;
         $("stampCount").textContent = state.stamps.length + " 枚小印";
@@ -3081,6 +3204,16 @@ keyiyo哪个一个<!DOCTYPE html>
         $("stampEpBlurb").textContent = ep.blurb || t.blurb || "";
         $("stampEpMeta").textContent =
           "约 " + episodeMinutes(ep, t) + " 分钟 · 看完打分盖印";
+        const npc = npcForTitle(t);
+        if ($("npcChip")) $("npcChip").textContent = "NPC · " + npc.name;
+        if ($("npcHint")) {
+          $("npcHint").textContent =
+            "现在和你对话的是「" +
+            npc.name +
+            "」（" +
+            npc.style +
+            "）。问「为什么/如果…」更容易拿到稀有章。";
+        }
         if (ep.cover || t.cover) {
           $("stampCoverWrap").hidden = false;
           $("stampCover").src = ep.cover || t.cover;
@@ -3197,42 +3330,306 @@ keyiyo哪个一个<!DOCTYPE html>
         activeChat.forEach((m) => {
           const b = document.createElement("div");
           b.className = "chat-bubble " + (m.role === "kid" ? "kid" : "coach");
-          b.textContent = (m.role === "kid" ? "我： " : "助手： ") + m.text;
+          const npc = npcForTitle(activeTitle);
+          const who =
+            m.role === "kid"
+              ? "我： "
+              : npc.name + "： ";
+          b.textContent = who + m.text.replace(/^（[^）]+）/, "");
           log.appendChild(b);
         });
         log.scrollTop = log.scrollHeight;
       }
 
+      function npcForTitle(t) {
+        if (!t) {
+          return {
+            name: "探索向导",
+            voice: "向导",
+            style: "温和、好奇",
+          };
+        }
+        if (t.id === "pasteur" || t.muscle === "生物") {
+          return {
+            name: "微生物侦探巴斯德",
+            voice: "侦探",
+            style: "爱观察、爱提问、偶尔开玩笑",
+          };
+        }
+        if (t.id === "cellwar" || t.muscle === "人体") {
+          return {
+            name: "细胞卫队小队长",
+            voice: "队长",
+            style: "像在战场汇报，又像给队友打气",
+          };
+        }
+        if (t.category === "human" || t.muscle === "叙事" || t.muscle === "审美") {
+          return {
+            name: "时光旅人",
+            voice: "旅人",
+            style: "讲故事、带画面感",
+          };
+        }
+        if (t.category === "finance" || t.muscle === "商业" || t.muscle === "工程") {
+          return {
+            name: "发明家工头",
+            voice: "工头",
+            style: "务实、爱用生活例子",
+          };
+        }
+        if (t.category === "drive" || t.muscle === "意志" || t.muscle === "选择") {
+          return {
+            name: "训练营教练",
+            voice: "教练",
+            style: "鼓励但不鸡汤",
+          };
+        }
+        if (t.muscle === "实验" || t.muscle === "数理") {
+          return {
+            name: "疯狂实验博士",
+            voice: "博士",
+            style: "兴奋、爱打比方",
+          };
+        }
+        return {
+          name: "探索向导",
+          voice: "向导",
+          style: "温和、好奇",
+        };
+      }
+
+      function isGoodQuestion(q) {
+        const s = String(q || "").trim();
+        if (s.length < 8) return false;
+        if (/^(看不懂|不知道|嗯|啊|哦|？|\?)+$/.test(s)) return false;
+        const hooks = [
+          "为什么",
+          "怎么",
+          "如何",
+          "会不会",
+          "如果",
+          "是不是",
+          "什么时候",
+          "谁",
+          "哪",
+          "怎样",
+          "为何",
+          "能不能",
+          "有没有",
+        ];
+        return hooks.some((h) => s.indexOf(h) >= 0) || s.indexOf("？") >= 0 || s.indexOf("?") >= 0;
+      }
+
+      function hasRareStamp(kind, titleId, episodeId) {
+        return (state.rareStamps || []).some(
+          (r) =>
+            r.kind === kind &&
+            r.titleId === titleId &&
+            (!episodeId || r.episodeId === episodeId)
+        );
+      }
+
+      function awardRareStamp(kind, label, t, ep) {
+        if (!Array.isArray(state.rareStamps)) state.rareStamps = [];
+        if (hasRareStamp(kind, t && t.id, ep && ep.id)) return null;
+        const item = {
+          id: kind + "-" + (t ? t.id : "x") + "-" + (ep ? ep.id : "all") + "-" + Date.now(),
+          kind: kind,
+          label: label,
+          titleId: t ? t.id : "",
+          episodeId: ep ? ep.id : "",
+          episodeTitle: ep ? ep.title : "",
+          at: Date.now(),
+        };
+        state.rareStamps.push(item);
+        save(state);
+        return item;
+      }
+
+      function ensureExplorerMedal() {
+        const have = {};
+        (state.stamps || []).forEach((s) => {
+          if (s.category) have[s.category] = true;
+        });
+        const all = cats.every((c) => have[c.id]);
+        if (!all) return null;
+        if (!Array.isArray(state.medals)) state.medals = [];
+        if (state.medals.some((m) => m.id === "explorer")) return null;
+        const medal = {
+          id: "explorer",
+          label: "探索者大勋章",
+          at: Date.now(),
+        };
+        state.medals.push(medal);
+        save(state);
+        return medal;
+      }
+
+      function pickBlindBox(t, ep, extras) {
+        const pool = [];
+        if (ep && ep.blurb) pool.push({ kind: "fact", text: "冷知识：" + ep.blurb });
+        if (t && t.mapPin) pool.push({ kind: "fact", text: "地图钉：" + t.mapPin });
+        if (ep && ep.hints && ep.hints.length) {
+          pool.push({
+            kind: "fact",
+            text: "关键词彩蛋：" + ep.hints.slice(0, 3).join(" · "),
+          });
+        }
+        if (t && t.muscle) {
+          pool.push({
+            kind: "mission",
+            text:
+              "神秘任务：用一句话问 AI「如果我是" +
+              t.muscle +
+              "里的一员，今天最想搞懂什么？」",
+          });
+        }
+        pool.push({
+          kind: "mission",
+          text: "神秘任务：今晚再问 AI 一个怪问题，看看它怎么扮角色回答。",
+        });
+        if (extras && extras.rare) {
+          pool.push({
+            kind: "rare",
+            text: "稀有掉落：你获得了「" + extras.rare.label + "」发光章！",
+          });
+        }
+        if (extras && extras.medal) {
+          pool.push({
+            kind: "medal",
+            text: "大成就：四格都盖过印，解锁「" + extras.medal.label + "」！",
+          });
+        }
+        return pool[Math.floor(Math.random() * pool.length)] || pool[0];
+      }
+
+      function showBlindBox(loot, sub) {
+        $("blindBoxLoot").textContent = loot.text;
+        $("blindBoxTitle").textContent =
+          loot.kind === "mission"
+            ? "掉落 · AI 神秘任务"
+            : loot.kind === "rare" || loot.kind === "medal"
+              ? "掉落 · 稀有奖励"
+              : "掉落 · 一句话彩蛋";
+        $("blindBoxSub").textContent =
+          sub || "收进护照吧。惊喜很短，学习别拖太久。";
+        const el = $("blindBox");
+        el.classList.add("show");
+        el.setAttribute("aria-hidden", "false");
+      }
+
+      function hideBlindBox() {
+        const el = $("blindBox");
+        if (!el) return;
+        el.classList.remove("show");
+        el.setAttribute("aria-hidden", "true");
+      }
+
+      function renderAlbum() {
+        const grid = $("albumGrid");
+        if (!grid) return;
+        grid.innerHTML = "";
+        const rareN = (state.rareStamps || []).length;
+        const medalN = (state.medals || []).length;
+        $("albumMeta").textContent =
+          "基础 " +
+          cats.filter((c) => progress(c.id).n > 0).length +
+          "/4 · 稀有 " +
+          rareN +
+          " · 勋章 " +
+          medalN;
+
+        cats.forEach((c) => {
+          const p = progress(c.id);
+          const el = document.createElement("div");
+          el.className = "album-seal" + (p.n ? "" : " empty");
+          el.innerHTML =
+            '<div class="seal-ico"></div><div class="seal-name"></div><div class="seal-meta"></div>';
+          el.querySelector(".seal-ico").textContent = p.n ? "▣" : "□";
+          el.querySelector(".seal-name").textContent = c.short + "章";
+          el.querySelector(".seal-meta").textContent = p.n
+            ? "已收集 · " + p.n + " 印"
+            : "还未点亮";
+          grid.appendChild(el);
+        });
+
+        (state.rareStamps || [])
+          .slice()
+          .reverse()
+          .slice(0, 6)
+          .forEach((r) => {
+            const el = document.createElement("div");
+            el.className = "album-seal rare";
+            el.innerHTML =
+              '<div class="seal-ico"></div><div class="seal-name"></div><div class="seal-meta"></div>';
+            el.querySelector(".seal-ico").textContent = "✦";
+            el.querySelector(".seal-name").textContent = r.label;
+            el.querySelector(".seal-meta").textContent = r.episodeTitle
+              ? r.episodeTitle
+              : "稀有章";
+            grid.appendChild(el);
+          });
+
+        (state.medals || []).forEach((m) => {
+          const el = document.createElement("div");
+          el.className = "album-seal medal";
+          el.innerHTML =
+            '<div class="seal-ico"></div><div class="seal-name"></div><div class="seal-meta"></div>';
+          el.querySelector(".seal-ico").textContent = "♛";
+          el.querySelector(".seal-name").textContent = m.label;
+          el.querySelector(".seal-meta").textContent = "四格集齐解锁";
+          grid.appendChild(el);
+        });
+
+        if (!(state.medals || []).length) {
+          const el = document.createElement("div");
+          el.className = "album-seal medal empty";
+          el.innerHTML =
+            '<div class="seal-ico">♛</div><div class="seal-name">探索者大勋章</div><div class="seal-meta">集齐四格基础章后解锁</div>';
+          grid.appendChild(el);
+        }
+      }
+
       function coachReply(question) {
         const ep = activeEpisode;
         const t = activeTitle;
+        const npc = npcForTitle(t);
         const hints = (ep && ep.hints) || [];
         const coachTurns = activeChat.filter((m) => m.role === "coach").length;
         const q = (question || "").trim();
         const shortQ = q.length > 36 ? q.slice(0, 36) + "…" : q;
+        const place = ep ? ep.title : t ? t.title : "这集";
         if (coachTurns === 0) {
           return (
-            "你问「" +
+            "（" +
+            npc.name +
+            "）嘿，你问「" +
             shortQ +
-            "」，说明你看得很细。这集《" +
-            (ep ? ep.title : "") +
-            "》主要在讲：" +
-            ((ep && ep.blurb) || (t && t.blurb) || "片子里的关键内容") +
-            "。你先猜猜：它可能和什么有关系？" +
-            (hints.length ? "（可以想想：" + hints.slice(0, 3).join("、") + "）" : "")
+            "」，问得漂亮！在《" +
+            place +
+            "》里，我最想先带你盯住：" +
+            ((ep && ep.blurb) || (t && t.blurb) || "片子里的关键画面") +
+            "。你猜猜，它可能跟什么有关？" +
+            (hints.length ? " 线索：" + hints.slice(0, 3).join("、") : "")
           );
         }
         if (coachTurns === 1) {
           return (
-            "可以这样想：" +
+            "（" +
+            npc.name +
+            "）可以这样想：" +
             (hints.length
-              ? hints.slice(0, 3).join("、") + "，往往就藏在这集的例子里。"
-              : "把片子里出现过的一个画面，和生活里类似的东西对上号。") +
-            " 生活里也能碰到相似的事。这样说，清楚一点了吗？还想盯着哪一点问？"
+              ? hints.slice(0, 3).join("、") + "，常常就藏在刚才的画面里。"
+              : "把片子里一个画面，和生活里类似的东西对上号。") +
+            " 我是" +
+            npc.style +
+            "的人设——你还想盯哪一点继续问？"
           );
         }
         return (
-          "我们先停在这里也很好。你可以用自己的话再说一遍这集讲了什么，然后盖印。剩下的可以和爸爸妈妈再聊，或下次回来继续问。"
+          "（" +
+          npc.name +
+          "）我们先停在这里也很好。你用自己的话再说一遍这集讲了什么，然后盖印。想要稀有章的话，记得问一个「为什么/如果…」的好问题哦。"
         );
       }
 
@@ -3248,11 +3645,21 @@ keyiyo哪个一个<!DOCTYPE html>
           toast("这集先聊到这儿，盖印后也可以和家长继续聊");
           return;
         }
-        activeChat.push({ role: "kid", text: q });
+        const good = isGoodQuestion(q);
+        activeChat.push({ role: "kid", text: q, good: good });
         activeChat.push({ role: "coach", text: coachReply(q) });
         $("askInput").value = "";
         $("askBox").open = true;
         renderChatLog();
+        if (good && activeTitle) {
+          const rare = awardRareStamp(
+            "good_ask",
+            "神提问",
+            activeTitle,
+            activeEpisode
+          );
+          if (rare) toast("✦ 稀有章「神提问」已点亮");
+        }
       }
 
       function playStampCeremony(titleName) {
@@ -3291,6 +3698,27 @@ keyiyo哪个一个<!DOCTYPE html>
           activeChat.filter((m) => m.role === "kid").map((m) => m.text).join(" / ") ||
           ($("askInput").value || "").trim();
         const comment = ($("commentInput").value || "").trim();
+        const hadGoodAsk = activeChat.some((m) => m.role === "kid" && m.good);
+        let rareDrop = null;
+        if (hadGoodAsk) {
+          rareDrop =
+            awardRareStamp("good_ask", "神提问", t, ep) ||
+            (state.rareStamps || []).find(
+              (r) =>
+                r.kind === "good_ask" &&
+                r.titleId === t.id &&
+                r.episodeId === ep.id
+            );
+        }
+        if (
+          !quick &&
+          note &&
+          note.length >= 18 &&
+          note.indexOf("快速盖印") < 0
+        ) {
+          const deep = awardRareStamp("deep_note", "深度思考", t, ep);
+          if (deep) rareDrop = deep;
+        }
         state.stamps = state.stamps.filter(
           (s) => !(s.titleId === t.id && s.episodeId === ep.id)
         );
@@ -3308,16 +3736,27 @@ keyiyo哪个一个<!DOCTYPE html>
           category: t.category,
           muscle: t.muscle || "",
           quick: !!quick,
+          rare: !!(rareDrop || hadGoodAsk),
         });
         save(state);
+        const medal = ensureExplorerMedal();
         clearPendingWatch();
         hideReturnNudge();
         const label = t.title + " · 第" + ep.n + "集 · " + activeRating + "星";
         closeSheet();
         playStampCeremony(label);
+        const loot = pickBlindBox(t, ep, { rare: rareDrop, medal: medal });
         setTimeout(() => {
           renderAll();
-          if (weekdayBudgetDone()) {
+          showBlindBox(
+            loot,
+            weekdayBudgetDone()
+              ? "今日时长差不多了，收工早点睡哦。"
+              : "惊喜很短，收进图鉴继续探索。"
+          );
+          if (medal) toast("♛ 探索者大勋章已解锁");
+          else if (rareDrop) toast("✦ " + rareDrop.label + " · 已收入图鉴");
+          else if (weekdayBudgetDone()) {
             toast(
               "今日约已看满 " +
                 WEEKDAY_DAILY_CAP +
@@ -3326,7 +3765,7 @@ keyiyo哪个一个<!DOCTYPE html>
           } else {
             toast((quick ? "快速盖印 · " : "绿色印章已落 · ") + label);
           }
-        }, 420);
+        }, 900);
       }
 
       function switchTab(name) {
@@ -3606,6 +4045,10 @@ keyiyo哪个一个<!DOCTYPE html>
       });
       $("sheet").addEventListener("click", (e) => {
         if (e.target === $("sheet")) closeSheet();
+      });
+      $("blindBoxClose").addEventListener("click", hideBlindBox);
+      $("blindBox").addEventListener("click", (e) => {
+        if (e.target === $("blindBox")) hideBlindBox();
       });
       $("stampBtn").addEventListener("click", () => stamp({ quick: false }));
       $("stampQuickBtn").addEventListener("click", () => stamp({ quick: true }));
