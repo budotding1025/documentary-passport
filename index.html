@@ -609,14 +609,15 @@ keyiyo哪个一个<!DOCTYPE html>
     }
     .ask-box {
       margin-top: 14px;
-      border: 1px dashed var(--muted);
-      padding: 10px 12px;
-      background: var(--card);
+      border: 1.5px solid var(--stamp);
+      padding: 12px 12px 10px;
+      background: linear-gradient(180deg, #f7fbf8, #eef7f2);
     }
-    .ask-box summary {
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.92rem;
+    .ask-box .ask-title {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--stamp-deep);
     }
     .chat-log {
       margin-top: 10px;
@@ -625,6 +626,16 @@ keyiyo哪个一个<!DOCTYPE html>
       gap: 8px;
       max-height: 180px;
       overflow: auto;
+      min-height: 48px;
+      background: rgba(255,255,255,0.7);
+      border: 1px dashed var(--stamp);
+      padding: 8px;
+    }
+    .chat-log:empty::before {
+      content: "还没开始聊。问一句「为什么…」试试，NPC 会回你。";
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.4;
     }
     .chat-bubble {
       padding: 8px 10px;
@@ -1292,6 +1303,7 @@ keyiyo哪个一个<!DOCTYPE html>
         <p class="home-task-text" id="homeTaskText">有一集还没盖印</p>
         <div class="actions">
           <button type="button" class="btn" id="homeTaskStamp">去盖印</button>
+          <button type="button" class="btn" id="homeTaskAsk">问 NPC</button>
           <button type="button" class="btn ghost" id="homeTaskDismiss">先放一放</button>
         </div>
       </div>
@@ -1518,6 +1530,17 @@ keyiyo哪个一个<!DOCTYPE html>
           <a class="btn ghost" id="stampAlt" href="#" target="_blank" rel="noopener" hidden>备用入口</a>
         </div>
 
+        <div class="ask-box" id="askBox">
+          <div class="ask-title">跟 NPC 聊两句</div>
+          <div class="npc-chip" id="npcChip">NPC · 探索向导</div>
+          <p class="hint" id="npcHint">问「为什么 / 如果…」更容易拿到稀有章「神提问」。不是考试。</p>
+          <div class="chat-log" id="chatLog"></div>
+          <div class="ask-row">
+            <input type="text" id="askInput" maxlength="120" placeholder="例如：为什么细胞要这样打仗？" />
+            <button type="button" class="btn" id="askSend">问 NPC</button>
+          </div>
+        </div>
+
         <div class="title-row" style="margin-top:18px">
           <h2>五星评分</h2>
           <span class="mono">必选</span>
@@ -1553,17 +1576,6 @@ keyiyo哪个一个<!DOCTYPE html>
         </div>
         <textarea id="commentInput" maxlength="160" placeholder="想推荐给朋友的一句话，或随便写点感受。"></textarea>
 
-        <details class="ask-box" id="askBox">
-          <summary>有疑问，问一问（可选）</summary>
-          <div class="npc-chip" id="npcChip">NPC · 探索向导</div>
-          <p class="hint" id="npcHint">可以说「没看懂××」。片中角色会和你聊两三个来回，不是考试。</p>
-          <div class="chat-log" id="chatLog"></div>
-          <div class="ask-row">
-            <input type="text" id="askInput" maxlength="120" placeholder="这集里哪里没懂？" />
-            <button type="button" class="btn ghost" id="askSend">问一下</button>
-          </div>
-        </details>
-
         <div class="actions" style="margin-top:14px">
           <button type="button" class="btn" id="stampBtn">写完盖印</button>
           <button type="button" class="btn ghost" id="sheetCloseStamp">关闭</button>
@@ -1577,6 +1589,7 @@ keyiyo哪个一个<!DOCTYPE html>
       <p id="nudgeText">看完了吗？回来给这一集打分盖印吧。</p>
       <div class="actions">
         <button type="button" class="btn" id="nudgeStamp">去盖印</button>
+        <button type="button" class="btn" id="nudgeAsk">先问 NPC</button>
         <button type="button" class="btn ghost" id="nudgeDismiss">稍后再说</button>
       </div>
     </div>
@@ -2859,6 +2872,13 @@ keyiyo哪个一个<!DOCTYPE html>
         stamp.className = "btn ghost";
         stamp.textContent = "盖印打分";
         stamp.addEventListener("click", () => openStamp(rec.t, rec.ep));
+        const askNpc = document.createElement("button");
+        askNpc.type = "button";
+        askNpc.className = "btn ghost";
+        askNpc.textContent = "问 NPC";
+        askNpc.addEventListener("click", () =>
+          openStamp(rec.t, rec.ep, { focusAsk: true })
+        );
         const more = document.createElement("button");
         more.type = "button";
         more.className = "btn ghost";
@@ -2866,6 +2886,7 @@ keyiyo哪个一个<!DOCTYPE html>
         more.addEventListener("click", () => openBrowse(rec.t));
         acts.appendChild(watch);
         acts.appendChild(stamp);
+        acts.appendChild(askNpc);
         acts.appendChild(more);
         return el;
       }
@@ -2891,7 +2912,11 @@ keyiyo哪个一个<!DOCTYPE html>
         }
         box.hidden = false;
         $("homeTaskText").textContent =
-          "待盖印任务：《" + t.title + "》第" + ep.n + "集 · " + ep.title;
+          "待盖印：《" +
+          t.title +
+          "》第" +
+          ep.n +
+          "集 · 也可先跟 NPC 聊两句";
       }
 
       function renderHomeRecs() {
@@ -3173,7 +3198,19 @@ keyiyo哪个一个<!DOCTYPE html>
             }
             openStamp(t, ep);
           });
+          const askBtn = document.createElement("button");
+          askBtn.type = "button";
+          askBtn.className = "btn";
+          askBtn.textContent = "问 NPC";
+          askBtn.addEventListener("click", () => {
+            if (!allowed && !done) {
+              toast("工作日限 30 分钟内 · 这一集约 " + mins + " 分钟");
+              return;
+            }
+            openStamp(t, ep, { focusAsk: true });
+          });
           acts.appendChild(watch);
+          acts.appendChild(askBtn);
           acts.appendChild(stampBtn);
           list.appendChild(card);
         });
@@ -3183,13 +3220,14 @@ keyiyo哪个一个<!DOCTYPE html>
         $("sheet").setAttribute("aria-hidden", "false");
       }
 
-      function openStamp(t, ep) {
+      function openStamp(t, ep, opts) {
         if (!episodeAllowed(ep, t) && !episodeStamped(t.id, ep.id)) {
           toast(
             "工作日限 30 分钟内 · 这一集约 " + episodeMinutes(ep, t) + " 分钟"
           );
           return;
         }
+        const focusAsk = !!(opts && opts.focusAsk);
         activeTitle = t;
         activeEpisode = ep;
         activePrompt = "remember";
@@ -3244,12 +3282,21 @@ keyiyo哪个一个<!DOCTYPE html>
         syncStars();
         $("commentInput").value = prev && prev.comment ? prev.comment : "";
         $("askInput").value = "";
-        $("askBox").open = !!(prev && (prev.ask || (prev.agentChat && prev.agentChat.length)));
         renderChatLog();
         showSheetView("stamp");
         $("sheet").classList.add("open");
         $("sheet").setAttribute("aria-hidden", "false");
         hideReturnNudge();
+        if (focusAsk) {
+          setTimeout(() => {
+            const box = $("askBox");
+            if (box && box.scrollIntoView) {
+              box.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+            $("askInput").focus();
+            toast("跟「" + npcForTitle(t).name + "」聊两句吧");
+          }, 120);
+        }
       }
 
       function markPendingWatch(t, ep) {
@@ -3282,7 +3329,11 @@ keyiyo哪个一个<!DOCTYPE html>
           return;
         }
         $("nudgeText").textContent =
-          "《" + t.title + "》第" + ep.n + "集看完了吗？回来打分盖印吧。";
+          "《" +
+          t.title +
+          "》第" +
+          ep.n +
+          "集看完了吗？可以先问 NPC，再盖印打分。";
         $("returnNudge").classList.add("show");
         renderHomeTask();
       }
@@ -3649,7 +3700,6 @@ keyiyo哪个一个<!DOCTYPE html>
         activeChat.push({ role: "kid", text: q, good: good });
         activeChat.push({ role: "coach", text: coachReply(q) });
         $("askInput").value = "";
-        $("askBox").open = true;
         renderChatLog();
         if (good && activeTitle) {
           const rare = awardRareStamp(
@@ -3660,6 +3710,22 @@ keyiyo哪个一个<!DOCTYPE html>
           );
           if (rare) toast("✦ 稀有章「神提问」已点亮");
         }
+      }
+
+      function openPendingAsk() {
+        const p = state.pendingWatch;
+        if (!p) {
+          toast("没有待聊的集");
+          return;
+        }
+        const t = titleById(p.titleId);
+        const ep = t ? episodeById(t, p.episodeId) : null;
+        if (!t || !ep) {
+          clearPendingWatch();
+          return;
+        }
+        hideReturnNudge();
+        openStamp(t, ep, { focusAsk: true });
       }
 
       function playStampCeremony(titleName) {
@@ -4281,6 +4347,7 @@ keyiyo哪个一个<!DOCTYPE html>
         }
       });
       $("nudgeStamp").addEventListener("click", openPendingStamp);
+      $("nudgeAsk").addEventListener("click", openPendingAsk);
       $("nudgeDismiss").addEventListener("click", () => {
         hideReturnNudge();
         toast("记得回来盖印哦");
@@ -4288,6 +4355,10 @@ keyiyo哪个一个<!DOCTYPE html>
       $("homeTaskStamp").addEventListener("click", () => {
         switchTab("passport");
         openPendingStamp();
+      });
+      $("homeTaskAsk").addEventListener("click", () => {
+        switchTab("passport");
+        openPendingAsk();
       });
       $("homeTaskDismiss").addEventListener("click", () => {
         hideReturnNudge();
