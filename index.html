@@ -153,11 +153,19 @@
       color: #111;
     }
 
-    .home-today { padding: 0 !important; max-width: none !important; }
+    .home-today {
+      padding: 0 !important;
+      max-width: none !important;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+    }
     .home-hero {
       position: relative;
-      min-height: 100vh;
-      min-height: 100dvh;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      height: auto;
+      min-height: 0;
       display: flex;
       align-items: flex-end;
       overflow: hidden;
@@ -168,14 +176,13 @@
       inset: 0;
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
       background-image: linear-gradient(135deg, #ebe4d6, #d9d0c0);
-      transform: scale(1.02);
     }
     .home-hero-shade {
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, rgba(243,239,230,0.92) 0%, rgba(243,239,230,0.55) 48%, rgba(243,239,230,0.2) 100%),
-        linear-gradient(0deg, rgba(20,20,16,0.35), transparent 55%);
+      background: linear-gradient(90deg, rgba(243,239,230,0.82) 0%, rgba(243,239,230,0.28) 34%, rgba(243,239,230,0) 58%);
     }
     .home-hero-content {
       position: relative;
@@ -237,9 +244,10 @@
       padding: 12px;
     }
     .home-discover {
-      padding: 48px 5vw 36px;
+      padding: 28px 12px 24px;
       background: var(--paper);
       border-top: 1px solid rgba(0,0,0,0.08);
+      width: 100%;
     }
     .home-discover-head {
       display: flex;
@@ -255,11 +263,13 @@
     .home-trio {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      gap: 12px;
+      width: 100%;
     }
     .home-trio-card {
       position: relative;
-      min-height: 220px;
+      aspect-ratio: 16 / 9;
+      min-height: 0;
       border: 1px solid rgba(17,17,17,0.15);
       background: #ddd6c8;
       overflow: hidden;
@@ -283,14 +293,13 @@
       background: linear-gradient(180deg, transparent 30%, rgba(20,18,14,0.72));
     }
     .home-trio-card .body {
-      position: relative;
+      position: absolute;
+      inset: 0;
       z-index: 1;
-      height: 100%;
-      min-height: 220px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 16px;
+      padding: 14px 16px;
       color: #f7f3ea;
     }
     .home-trio-card .tag {
@@ -325,7 +334,7 @@
     }
     @media (max-width: 860px) {
       .home-trio { grid-template-columns: 1fr; }
-      .home-hero { min-height: 88vh; }
+      .home-hero { aspect-ratio: 16 / 9; }
       .home-task-float { position: static; margin: 12px 5vw 20px; max-width: none; }
     }
 
@@ -3337,8 +3346,8 @@
 
       function heroArtUrl(t) {
         if (!t) return "";
-        if (t.heroArt) return t.heroArt;
-        return "./covers/hero/" + t.id + ".png";
+        const base = t.heroArt || "./covers/hero/" + t.id + ".png";
+        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=3";
       }
 
       function stopHomeTrioRotate() {
