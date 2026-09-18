@@ -18,7 +18,7 @@ window.DOC_CATALOG = {
   titles: [
     {
       id: "xiaoxiao",
-      heroArt: "./covers/hero/xiaoxiao.png",
+      heroArt: "./covers/hero/xiaoxiao.jpg",
       title: "小小少年",
       category: "drive",
       slot: "A",
@@ -35,7 +35,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "kipchoge",
-      heroArt: "./covers/hero/kipchoge.png",
+      heroArt: "./covers/hero/kipchoge.jpg",
       title: "基普乔格：最后的里程碑",
       category: "drive",
       slot: "B",
@@ -53,7 +53,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "richpoor",
-      heroArt: "./covers/hero/richpoor.png",
+      heroArt: "./covers/hero/richpoor.jpg",
       title: "富哥哥，穷弟弟",
       category: "drive",
       slot: "B",
@@ -71,7 +71,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "schoolroad",
-      heroArt: "./covers/hero/schoolroad.png",
+      heroArt: "./covers/hero/schoolroad.jpg",
       title: "翻山涉水上学路",
       category: "drive",
       slot: "B",
@@ -88,7 +88,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "crow",
-      heroArt: "./covers/hero/crow.png",
+      heroArt: "./covers/hero/crow.jpg",
       title: "像乌鸦一样思考",
       category: "nature",
       slot: "A",
@@ -105,7 +105,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "bigscience",
-      heroArt: "./covers/hero/bigscience.png",
+      heroArt: "./covers/hero/bigscience.jpg",
       title: "大科学实验",
       category: "nature",
       slot: "A",
@@ -130,7 +130,7 @@ window.DOC_CATALOG = {
     },
         {
       id: "allusionsci",
-      heroArt: "./covers/hero/allusionsci.png",
+      heroArt: "./covers/hero/allusionsci.jpg",
       title: "典故里的科学（第二季）",
       category: "nature",
       slot: "A",
@@ -155,7 +155,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "mendeleev",
-      heroArt: "./covers/hero/mendeleev.png",
+      heroArt: "./covers/hero/mendeleev.jpg",
       title: "门捷列夫很忙（第一季）",
       category: "nature",
       slot: "B",
@@ -181,7 +181,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "starshift",
-      heroArt: "./covers/hero/starshift.png",
+      heroArt: "./covers/hero/starshift.jpg",
       title: "斗转星移",
       category: "nature",
       slot: "A",
@@ -206,7 +206,7 @@ window.DOC_CATALOG = {
     },
         {
       id: "mathchosen",
-      heroArt: "./covers/hero/mathchosen.png",
+      heroArt: "./covers/hero/mathchosen.jpg",
       title: "被数学选中的人",
       category: "nature",
       slot: "B",
@@ -231,7 +231,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "electricstory",
-      heroArt: "./covers/hero/electricstory.png",
+      heroArt: "./covers/hero/electricstory.jpg",
       title: "电的故事",
       category: "nature",
       slot: "B",
@@ -253,7 +253,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "beautychem",
-      heroArt: "./covers/hero/beautychem.png",
+      heroArt: "./covers/hero/beautychem.jpg",
       title: "美丽化学",
       category: "nature",
       slot: "A",
@@ -279,7 +279,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "planet",
-      heroArt: "./covers/hero/planet.png",
+      heroArt: "./covers/hero/planet.jpg",
       title: "地球脉动 第一季",
       category: "nature",
       slot: "B",
@@ -296,7 +296,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "greenplanet",
-      heroArt: "./covers/hero/greenplanet.png",
+      heroArt: "./covers/hero/greenplanet.jpg",
       title: "绿色星球",
       category: "nature",
       slot: "B",
@@ -313,7 +313,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "ourplanet",
-      heroArt: "./covers/hero/ourplanet.png",
+      heroArt: "./covers/hero/ourplanet.jpg",
       title: "我们的星球",
       category: "nature",
       slot: "B",
@@ -330,7 +330,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "blueplanet",
-      heroArt: "./covers/hero/blueplanet.png",
+      heroArt: "./covers/hero/blueplanet.jpg",
       title: "蓝色星球 第一季",
       category: "nature",
       slot: "B",
@@ -347,7 +347,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "frozen",
-      heroArt: "./covers/hero/frozen.png",
+      heroArt: "./covers/hero/frozen.jpg",
       title: "冰冻星球",
       category: "nature",
       slot: "B",
@@ -372,7 +372,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "wildchina",
-      heroArt: "./covers/hero/wildchina.png",
+      heroArt: "./covers/hero/wildchina.jpg",
       title: "美丽中国",
       category: "nature",
       slot: "B",
@@ -397,7 +397,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "humanbody",
-      heroArt: "./covers/hero/humanbody.png",
+      heroArt: "./covers/hero/humanbody.jpg",
       title: "人体奥秘",
       category: "nature",
       slot: "B",
@@ -415,7 +415,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "life",
-      heroArt: "./covers/hero/life.png",
+      heroArt: "./covers/hero/life.jpg",
       title: "生命",
       category: "nature",
       slot: "B",
@@ -432,7 +432,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "germsquad",
-      heroArt: "./covers/hero/germsquad.png",
+      heroArt: "./covers/hero/germsquad.jpg",
       title: "细菌病毒特工队",
       category: "nature",
       slot: "A",
@@ -542,7 +542,7 @@ window.DOC_CATALOG = {
     },
         {
       id: "pasteur",
-      heroArt: "./covers/hero/pasteur.png",
+      heroArt: "./covers/hero/pasteur.jpg",
       title: "超级巴斯德",
       category: "nature",
       slot: "B",
@@ -567,7 +567,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "bodymicro",
-      heroArt: "./covers/hero/bodymicro.png",
+      heroArt: "./covers/hero/bodymicro.jpg",
       title: "人体的微观世界",
       category: "nature",
       slot: "B",
@@ -584,7 +584,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "cellwar",
-      heroArt: "./covers/hero/cellwar.png",
+      heroArt: "./covers/hero/cellwar.jpg",
       title: "细胞的暗战",
       category: "nature",
       slot: "B",
@@ -621,7 +621,7 @@ window.DOC_CATALOG = {
     },
         {
       id: "bacteriasecret",
-      heroArt: "./covers/hero/bacteriasecret.png",
+      heroArt: "./covers/hero/bacteriasecret.jpg",
       title: "破解细菌的秘密",
       category: "nature",
       slot: "B",
@@ -638,7 +638,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "microcosmos",
-      heroArt: "./covers/hero/microcosmos.png",
+      heroArt: "./covers/hero/microcosmos.jpg",
       title: "微观世界",
       category: "nature",
       slot: "B",
@@ -655,7 +655,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "wonders",
-      heroArt: "./covers/hero/wonders.png",
+      heroArt: "./covers/hero/wonders.jpg",
       title: "生命的奇迹",
       category: "nature",
       slot: "B",
@@ -672,7 +672,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "guobao",
-      heroArt: "./covers/hero/guobao.png",
+      heroArt: "./covers/hero/guobao.jpg",
       title: "如果国宝会说话",
       category: "human",
       slot: "A",
@@ -691,7 +691,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "qimiao",
-      heroArt: "./covers/hero/qimiao.png",
+      heroArt: "./covers/hero/qimiao.jpg",
       title: "奇妙中国",
       category: "human",
       slot: "A",
@@ -716,7 +716,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "letters",
-      heroArt: "./covers/hero/letters.png",
+      heroArt: "./covers/hero/letters.jpg",
       title: "书简阅中国",
       category: "human",
       slot: "B",
@@ -792,7 +792,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "zicong",
-      heroArt: "./covers/hero/zicong.png",
+      heroArt: "./covers/hero/zicong.jpg",
       title: "字从遇见你",
       category: "human",
       slot: "A",
@@ -818,7 +818,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "heyi",
-      heroArt: "./covers/hero/heyi.png",
+      heroArt: "./covers/hero/heyi.jpg",
       title: "何以中国",
       category: "human",
       slot: "B",
@@ -846,7 +846,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "histfun",
-      heroArt: "./covers/hero/histfun.png",
+      heroArt: "./covers/hero/histfun.jpg",
       title: "历史那些事",
       category: "human",
       slot: "A",
@@ -868,7 +868,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "howpaint",
-      heroArt: "./covers/hero/howpaint.png",
+      heroArt: "./covers/hero/howpaint.jpg",
       title: "此画怎讲",
       category: "human",
       slot: "A",
@@ -893,7 +893,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "artfun",
-      heroArt: "./covers/hero/artfun.png",
+      heroArt: "./covers/hero/artfun.jpg",
       title: "奇趣美术馆",
       category: "human",
       slot: "A",
@@ -918,7 +918,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "judgeyes",
-      heroArt: "./covers/hero/judgeyes.png",
+      heroArt: "./covers/hero/judgeyes.jpg",
       title: "是这样的，法官",
       category: "human",
       slot: "B",
@@ -944,7 +944,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "designah",
-      heroArt: "./covers/hero/designah.png",
+      heroArt: "./covers/hero/designah.jpg",
       title: "啊！设计",
       category: "human",
       slot: "A",
@@ -961,7 +961,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "aerial",
-      heroArt: "./covers/hero/aerial.png",
+      heroArt: "./covers/hero/aerial.jpg",
       title: "航拍中国 第一季",
       category: "human",
       slot: "B",
@@ -978,7 +978,7 @@ window.DOC_CATALOG = {
     },
         {
       id: "supereng",
-      heroArt: "./covers/hero/supereng.png",
+      heroArt: "./covers/hero/supereng.jpg",
       title: "超级工程",
       category: "finance",
       slot: "B",
@@ -1004,7 +1004,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "howmade",
-      heroArt: "./covers/hero/howmade.png",
+      heroArt: "./covers/hero/howmade.jpg",
       title: "造物小百科",
       category: "finance",
       slot: "A",
@@ -1029,7 +1029,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "materialsecret",
-      heroArt: "./covers/hero/materialsecret.png",
+      heroArt: "./covers/hero/materialsecret.jpg",
       title: "材料的秘密身世",
       category: "finance",
       slot: "B",
@@ -1079,7 +1079,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "qingzang",
-      heroArt: "./covers/hero/qingzang.png",
+      heroArt: "./covers/hero/qingzang.jpg",
       title: "青藏铁路",
       category: "finance",
       slot: "B",
@@ -1096,7 +1096,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "antarcticbase",
-      heroArt: "./covers/hero/antarcticbase.png",
+      heroArt: "./covers/hero/antarcticbase.jpg",
       title: "南极探秘之旅（长城站）",
       category: "finance",
       slot: "B",
@@ -1120,7 +1120,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "skytree",
-      heroArt: "./covers/hero/skytree.png",
+      heroArt: "./covers/hero/skytree.jpg",
       title: "东京天空树",
       category: "finance",
       slot: "B",
@@ -1137,7 +1137,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "bridges",
-      heroArt: "./covers/hero/bridges.png",
+      heroArt: "./covers/hero/bridges.jpg",
       title: "跨越（桥梁）",
       category: "finance",
       slot: "B",
@@ -1154,7 +1154,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "dimensions",
-      heroArt: "./covers/hero/dimensions.png",
+      heroArt: "./covers/hero/dimensions.jpg",
       title: "维度：数学漫步（第1–2章）",
       category: "nature",
       slot: "A",
@@ -1171,7 +1171,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "thecode",
-      heroArt: "./covers/hero/thecode.png",
+      heroArt: "./covers/hero/thecode.jpg",
       title: "解码数学",
       category: "nature",
       slot: "B",
@@ -1193,7 +1193,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "econmachine",
-      heroArt: "./covers/hero/econmachine.png",
+      heroArt: "./covers/hero/econmachine.jpg",
       title: "经济机器是怎样运行的",
       category: "finance",
       slot: "A",
@@ -1212,7 +1212,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "clarksonfarm",
-      heroArt: "./covers/hero/clarksonfarm.png",
+      heroArt: "./covers/hero/clarksonfarm.jpg",
       title: "克拉克森的农场（第一季）",
       category: "finance",
       slot: "B",
@@ -1238,7 +1238,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "surveil",
-      heroArt: "./covers/hero/surveil.png",
+      heroArt: "./covers/hero/surveil.jpg",
       title: "监视资本主义：智能陷阱",
       category: "drive",
       slot: "B",
@@ -1256,7 +1256,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "logicjoy",
-      heroArt: "./covers/hero/logicjoy.png",
+      heroArt: "./covers/hero/logicjoy.jpg",
       title: "逻辑的乐趣",
       category: "nature",
       slot: "B",
@@ -1273,7 +1273,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "newtoncoach",
-      heroArt: "./covers/hero/newtoncoach.png",
+      heroArt: "./covers/hero/newtoncoach.jpg",
       title: "我的牛顿教练",
       category: "nature",
       slot: "A",
@@ -1300,7 +1300,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "mathstory",
-      heroArt: "./covers/hero/mathstory.png",
+      heroArt: "./covers/hero/mathstory.jpg",
       title: "数学的故事（第1–2集）",
       category: "nature",
       slot: "B",
@@ -1319,7 +1319,7 @@ window.DOC_CATALOG = {
     },
     {
       id: "englishadv",
-      heroArt: "./covers/hero/englishadv.png",
+      heroArt: "./covers/hero/englishadv.jpg",
       title: "英语发展史",
       category: "human",
       slot: "B",
