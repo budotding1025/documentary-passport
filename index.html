@@ -1,4 +1,4 @@
-keyiyo哪个一个<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -6,34 +6,33 @@ keyiyo哪个一个<!DOCTYPE html>
   <title>四年级 · 纪录片护照</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f4f4f0;
-      --ink: #111;
+      --bg: #f3efe6;
+      --ink: #1a1a1a;
       --muted: #6a6a66;
-      --line: #111;
-      --soft: #e8e8e2;
-      --card: #fafaf7;
-      --stamp: #0b5c3b;
-      --stamp-deep: #074530;
-      --stamp-soft: rgba(11, 92, 59, 0.12);
-      --stamp-mid: rgba(11, 92, 59, 0.28);
+      --line: #1a1a1a;
+      --soft: #e8e4da;
+      --card: #faf7f0;
+      --stamp: #4a6741;
+      --stamp-deep: #3a5234;
+      --stamp-soft: rgba(74, 103, 65, 0.12);
+      --stamp-mid: rgba(74, 103, 65, 0.28);
+      --nav: #111;
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
       --radius: 0;
+      --paper: #f3efe6;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-family: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", sans-serif;
       color: var(--ink);
-      background: var(--bg);
-      background-image:
-        radial-gradient(circle at 12% 8%, rgba(0,0,0,0.03), transparent 40%),
-        radial-gradient(circle at 88% 92%, rgba(0,0,0,0.04), transparent 45%);
-      padding-bottom: 88px;
+      background: var(--paper);
+      padding-bottom: 0;
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -125,8 +124,271 @@ keyiyo哪个一个<!DOCTYPE html>
     nav.tabs {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      border-bottom: 1px solid var(--ink);
+      border-bottom: 1px solid #111;
+      background: #111;
+      position: sticky;
+      top: 56px;
+      z-index: 35;
     }
+    nav.tabs.moleskine-nav button {
+      color: rgba(243, 239, 230, 0.72);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      background: transparent;
+      border-right-color: rgba(243, 239, 230, 0.18) !important;
+    }
+    nav.tabs.moleskine-nav button.active {
+      color: #f3efe6;
+      background: transparent;
+      font-weight: 700;
+    }
+    nav.tabs.moleskine-nav button.active::after {
+      background: #f3efe6;
+      left: 18%;
+      right: 18%;
+      height: 2px;
+    }
+    nav.tabs.moleskine-nav .tab-badge {
+      background: #f3efe6;
+      color: #111;
+    }
+
+    .home-today { padding: 0 !important; max-width: none !important; }
+    .home-hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      background: #ebe4d6;
+    }
+    .home-hero-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-image: linear-gradient(135deg, #ebe4d6, #d9d0c0);
+      transform: scale(1.02);
+    }
+    .home-hero-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(243,239,230,0.92) 0%, rgba(243,239,230,0.55) 48%, rgba(243,239,230,0.2) 100%),
+        linear-gradient(0deg, rgba(20,20,16,0.35), transparent 55%);
+    }
+    .home-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 8vh 6vw 10vh;
+      max-width: 720px;
+    }
+    .home-hero-kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .home-hero-title {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: #111;
+    }
+    .home-hero-ep {
+      margin: 0 0 22px;
+      font-size: 1.15rem;
+      color: #333;
+    }
+    .home-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .home-hero-cta {
+      background: #111 !important;
+      color: #f3efe6 !important;
+      border-color: #111 !important;
+      padding: 14px 28px !important;
+      font-size: 1.05rem !important;
+    }
+    .home-hero-ask {
+      border-color: #111 !important;
+      color: #111 !important;
+      background: rgba(255,255,255,0.45) !important;
+    }
+    .home-hero-meta {
+      margin-top: 16px;
+      font-size: 0.82rem;
+      color: #444;
+      font-family: "JetBrains Mono", monospace;
+    }
+    .home-task-float {
+      position: absolute;
+      right: 4vw;
+      bottom: 8vh;
+      z-index: 3;
+      max-width: 320px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #111;
+      padding: 12px;
+    }
+    .home-discover {
+      padding: 48px 5vw 36px;
+      background: var(--paper);
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+    .home-discover-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 18px;
+    }
+    .home-discover-head h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+    .home-trio {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .home-trio-card {
+      position: relative;
+      min-height: 220px;
+      border: 1px solid rgba(17,17,17,0.15);
+      background: #ddd6c8;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+    }
+    .home-trio-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    }
+    .home-trio-card .bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.92;
+    }
+    .home-trio-card .veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgba(20,18,14,0.72));
+    }
+    .home-trio-card .body {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+      color: #f7f3ea;
+    }
+    .home-trio-card .tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      opacity: 0.9;
+      margin-bottom: 6px;
+    }
+    .home-trio-card .name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .home-trio-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .home-trio-dots i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #bbb;
+      display: inline-block;
+    }
+    .home-trio-dots i.on { background: #111; }
+    .home-more {
+      padding: 24px 5vw 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    @media (max-width: 860px) {
+      .home-trio { grid-template-columns: 1fr; }
+      .home-hero { min-height: 88vh; }
+      .home-task-float { position: static; margin: 12px 5vw 20px; max-width: none; }
+    }
+
+    .watch-bay {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: none;
+      flex-direction: column;
+      background: #111;
+      color: #f3efe6;
+    }
+    .watch-bay.show { display: flex; }
+    .watch-bay-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: #111;
+      border-bottom: 1px solid rgba(243,239,230,0.2);
+      flex-shrink: 0;
+    }
+    .watch-bay-bar .meta {
+      flex: 1;
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+    .watch-bay-frame {
+      flex: 1;
+      border: 0;
+      width: 100%;
+      background: #1a1a1a;
+    }
+    .watch-bay-fallback {
+      flex: 1;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      background: #1a1a1a;
+    }
+    .watch-bay.show-fallback .watch-bay-fallback { display: flex; }
+    .watch-bay.show-fallback .watch-bay-frame { display: none; }
+    .hold-talk {
+      appearance: none;
+      border: 1px solid #111;
+      background: #f3efe6;
+      color: #111;
+      padding: 10px 14px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      user-select: none;
+      touch-action: none;
+    }
+    .hold-talk.is-listening {
+      background: #111;
+      color: #f3efe6;
+    }
+    .ask-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: stretch; }
+    .ask-row input { flex: 1; min-width: 140px; }
+
     nav.tabs button {
       appearance: none;
       border: 0;
@@ -1287,98 +1549,88 @@ keyiyo哪个一个<!DOCTYPE html>
 
   <audio id="bgMusic" loop preload="auto" playsinline src="audio/atlasaudio-calm-nature-510279.mp3"></audio>
 
-  <nav class="tabs rise" role="tablist">
-    <button type="button" class="active" data-tab="passport">今天</button>
-    <button type="button" data-tab="menu">菜单</button>
-    <button type="button" data-tab="plate">餐盘</button>
+  <nav class="tabs rise moleskine-nav" role="tablist">
+    <button type="button" class="active" data-tab="passport">今日推荐</button>
+    <button type="button" data-tab="plate">餐盘版块</button>
     <button type="button" data-tab="wish">点播</button>
-    <button type="button" data-tab="parent">家长<span class="tab-badge" id="parentTabBadge" hidden>0</span></button>
+    <button type="button" data-tab="godreply">留言神回复</button>
+    <button type="button" data-tab="parent">家长台<span class="tab-badge" id="parentTabBadge" hidden>0</span></button>
   </nav>
 
   <main>
-    <section id="panel-passport" class="panel active">
-      <div class="day-gate-chip rise" id="homeDayChip">—</div>
-
-      <div class="home-task rise" id="homeTask" hidden>
-        <p class="home-task-text" id="homeTaskText">有一集还没盖印</p>
-        <div class="actions">
-          <button type="button" class="btn" id="homeTaskStamp">去盖印</button>
-          <button type="button" class="btn" id="homeTaskAsk">问 NPC</button>
-          <button type="button" class="btn ghost" id="homeTaskDismiss">先放一放</button>
-        </div>
-      </div>
-
-      <div class="title-row rise">
-        <h2>今天看什么</h2>
-        <span class="mono" id="homeRecMeta">兴趣 + 补缺</span>
-      </div>
-      <div class="home-recs rise" id="homeRecs"></div>
-
-      <div class="passport rise" style="margin-top:18px">
-        <div class="pass-top">
-          <div>
-            <div class="pass-id">Explorer · Grade 4</div>
-            <div class="explorer-name" id="explorerName">小探险家</div>
-            <div class="name-edit">
-              <input id="nameInput" maxlength="12" placeholder="写上名字" />
-              <button type="button" class="btn ghost" id="saveName">盖名</button>
-            </div>
+    <section id="panel-passport" class="panel active home-today">
+      <div class="home-hero" id="homeHero">
+        <div class="home-hero-bg" id="homeHeroBg"></div>
+        <div class="home-hero-shade"></div>
+        <div class="home-hero-content">
+          <div class="home-hero-kicker" id="homeHeroKicker">继续探索</div>
+          <h1 class="home-hero-title" id="homeHeroTitle">超级巴斯德</h1>
+          <p class="home-hero-ep" id="homeHeroEp">第 4 集 · 巴斯德喊你回家打疫苗</p>
+          <div class="home-hero-actions">
+            <button type="button" class="btn home-hero-cta" id="homeHeroWatch">继续看</button>
+            <button type="button" class="btn ghost home-hero-ask" id="homeHeroAsk">问角色</button>
           </div>
-          <div class="mono" id="stampCount">0 枚小印</div>
+          <p class="home-hero-meta" id="homeDayChip">—</p>
         </div>
-        <div class="visa-grid" id="visaGrid"></div>
-      </div>
-
-      <div class="title-row" style="margin-top:18px">
-        <h2>我的图鉴</h2>
-        <span class="mono" id="albumMeta">收集印章</span>
-      </div>
-      <div class="album-grid rise" id="albumGrid"></div>
-
-      <div class="title-row">
-        <h2>最近盖印</h2>
-        <span class="mono" id="titleHint">可快速盖印 · 留言选填</span>
-      </div>
-      <div class="stamps-log" id="stampsLog"></div>
-
-      <div class="actions rise" style="margin-top:16px">
-        <button type="button" class="btn ghost" data-go-tab="menu">打开本周菜单</button>
-        <button type="button" class="btn ghost" data-go-tab="plate">打开四格片库</button>
-        <button type="button" class="btn ghost" id="passportExport">导出文件</button>
-        <button type="button" class="btn ghost" id="passportCopy">复制文字（发QQ）</button>
-        <button type="button" class="btn ghost" id="passportImportBtn">选文件导入</button>
-        <button type="button" class="btn ghost" id="passportPasteBtn">粘贴导入</button>
-        <input type="file" id="passportImportFile" accept="application/json,.json" hidden />
-      </div>
-      <div class="sync-box rise" id="passportPasteBox" hidden style="margin-top:12px">
-        <div class="mono">从 QQ 粘贴护照 JSON</div>
-        <textarea id="passportPasteInput" maxlength="500000" placeholder="在 QQ 里复制整段 JSON，粘贴到这里，再点下方确认导入。" style="margin-top:8px;min-height:110px"></textarea>
-        <div class="actions" style="margin-top:10px">
-          <button type="button" class="btn" id="passportPasteApply">确认导入</button>
-          <button type="button" class="btn ghost" id="passportPasteCancel">取消</button>
+        <div class="home-task home-task-float" id="homeTask" hidden>
+          <p class="home-task-text" id="homeTaskText">有一集还没盖印</p>
+          <div class="actions">
+            <button type="button" class="btn" id="homeTaskStamp">去盖印</button>
+            <button type="button" class="btn" id="homeTaskAsk">问角色</button>
+            <button type="button" class="btn ghost" id="homeTaskDismiss">先放一放</button>
+          </div>
         </div>
       </div>
+
+      <section class="home-discover" id="homeDiscover">
+        <div class="home-discover-head">
+          <h2>再发现三部</h2>
+          <span class="mono" id="homeRecMeta">约 5 秒换一批</span>
+        </div>
+        <div class="home-trio" id="homeTrio"></div>
+        <div class="home-trio-dots" id="homeTrioDots" aria-hidden="true"></div>
+      </section>
+
+      <section class="home-more">
+        <div class="passport rise">
+          <div class="pass-top">
+            <div>
+              <div class="pass-id">Explorer · Grade 4</div>
+              <div class="explorer-name" id="explorerName">小探险家</div>
+              <div class="name-edit">
+                <input id="nameInput" maxlength="12" placeholder="写上名字" />
+                <button type="button" class="btn ghost" id="saveName">盖名</button>
+              </div>
+            </div>
+            <div class="mono" id="stampCount">0 枚小印</div>
+          </div>
+          <div class="visa-grid" id="visaGrid"></div>
+        </div>
+        <div class="title-row" style="margin-top:18px">
+          <h2>我的图鉴</h2>
+          <span class="mono" id="albumMeta">收集印章</span>
+        </div>
+        <div class="album-grid rise" id="albumGrid"></div>
+        <div class="title-row">
+          <h2>最近盖印</h2>
+          <span class="mono" id="titleHint">可快速盖印 · 语音也可</span>
+        </div>
+        <div class="stamps-log" id="stampsLog"></div>
+      </section>
+      <div id="homeRecs" hidden></div>
     </section>
 
-    <section id="panel-menu" class="panel">
+    <section id="panel-menu" class="panel" hidden>
       <h1 class="rise">今晚看什么</h1>
       <div class="day-gate-chip rise" id="dayGateChip">—</div>
-      <p class="lede rise" id="menuLede">本周主线建议如下。在卡片里选一部；去看后回来写一句，再盖印。</p>
-      <div class="title-row">
-        <h2 id="menuATitle">工作日 · 短片</h2>
-        <span class="mono" id="menuAMeta">≤ 30 分钟</span>
-      </div>
+      <p class="lede rise" id="menuLede">本周主线建议如下。</p>
       <div class="menu-list" id="menuA"></div>
-      <div class="title-row">
-        <h2 id="menuBTitle">周末 · 长片也可</h2>
-        <span class="mono" id="menuBMeta">全开放</span>
-      </div>
       <div class="menu-list" id="menuB"></div>
     </section>
 
     <section id="panel-plate" class="panel">
-      <h1 class="rise">四格餐盘</h1>
-      <p class="lede rise">不锁关。工作日灰色＝单集超过 30 分钟；周五 18:00 起与周末全开放。人文含审美，科学含实验与数理，理财含商业与工程。</p>
+      <h1 class="rise">餐盘版块</h1>
+      <p class="lede rise">四格片库。工作日灰色＝单集超过 30 分钟；周五 18:00 起与周末全开放。</p>
       <div class="plate rise" id="plateGrid"></div>
       <div class="title-row">
         <h2>本格片库</h2>
@@ -1389,7 +1641,7 @@ keyiyo哪个一个<!DOCTYPE html>
 
     <section id="panel-wish" class="panel">
       <h1 class="rise">点播台</h1>
-      <p class="lede rise">每天可以留一条：想看什么类型的纪录片。爸爸妈妈会在家长台看到，用来充实片库。</p>
+      <p class="lede rise">每天可以留一条：想看什么类型的纪录片。爸爸妈妈会在家长台看到。</p>
       <div class="wish-form rise">
         <label class="mono" for="wishCat">门类</label>
         <select id="wishCat">
@@ -1400,18 +1652,27 @@ keyiyo哪个一个<!DOCTYPE html>
           <option value="other">其他 / 说不准</option>
         </select>
         <label class="mono" for="wishTopic">我想看关于……</label>
-        <input id="wishTopic" maxlength="40" placeholder="例如：恐龙、深海、手机为什么上瘾" />
+        <div class="ask-row" style="margin-bottom:10px">
+          <input id="wishTopic" maxlength="40" placeholder="例如：恐龙、深海、手机为什么上瘾" />
+          <button type="button" class="hold-talk" id="wishHoldTalk" title="按住说话">按住说话</button>
+        </div>
         <textarea id="wishNote" maxlength="120" placeholder="也可以多写一句为什么想看（选填）"></textarea>
         <div class="actions" style="margin-top:12px">
           <button type="button" class="btn" id="wishSubmit">今天留这一条</button>
         </div>
-        <p class="hint" id="wishHint">每天只能正式提交一条；改主意可以再写，会覆盖今天的那条。</p>
+        <p class="hint" id="wishHint">每天只能正式提交一条。</p>
       </div>
       <div class="title-row">
         <h2>我最近的点播</h2>
         <span class="mono">本机保存</span>
       </div>
       <div id="wishMine" class="stamps-log"></div>
+    </section>
+
+    <section id="panel-godreply" class="panel">
+      <h1 class="rise">留言神回复</h1>
+      <p class="lede rise">好问题、稀有章与角色神回复合集。问得漂亮会出现在这里。</p>
+      <div id="godReplyList" class="stamps-log"></div>
     </section>
 
     <section id="panel-parent" class="panel">
@@ -1537,6 +1798,7 @@ keyiyo哪个一个<!DOCTYPE html>
           <div class="chat-log" id="chatLog"></div>
           <div class="ask-row">
             <input type="text" id="askInput" maxlength="120" placeholder="例如：为什么细胞要这样打仗？" />
+            <button type="button" class="hold-talk" id="askHoldTalk" title="按住说话">按住说话</button>
             <button type="button" class="btn" id="askSend">问 NPC</button>
           </div>
         </div>
@@ -1580,6 +1842,22 @@ keyiyo哪个一个<!DOCTYPE html>
           <button type="button" class="btn" id="stampBtn">写完盖印</button>
           <button type="button" class="btn ghost" id="sheetCloseStamp">关闭</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="watch-bay" id="watchBay" aria-hidden="true">
+    <div class="watch-bay-bar">
+      <div class="meta" id="watchBayMeta">观看舱</div>
+      <a class="btn ghost" id="watchBayExternal" href="#" target="_blank" rel="noopener" style="color:#f3efe6;border-color:rgba(243,239,230,0.45)">外链打开</a>
+      <button type="button" class="btn" id="watchBayStamp">回护照盖印</button>
+      <button type="button" class="btn ghost" id="watchBayClose" style="color:#f3efe6;border-color:rgba(243,239,230,0.45)">关闭</button>
+    </div>
+    <iframe class="watch-bay-frame" id="watchBayFrame" title="观看舱" referrerpolicy="no-referrer"></iframe>
+    <div class="watch-bay-fallback" id="watchBayFallback">
+      <div>
+        <p>这部片子的网站不让嵌进页面（很常见）。</p>
+        <p class="hint" style="color:rgba(243,239,230,0.7)">已用外链打开；看完点「回护照盖印」即可。</p>
       </div>
     </div>
   </div>
@@ -1694,6 +1972,7 @@ keyiyo哪个一个<!DOCTYPE html>
           dayOpens: [], // {dayKey, titleId, episodeId, minutes, at}
           rareStamps: [], // {id, kind, label, titleId, episodeId, at}
           medals: [], // {id, label, at}
+          godReplies: [], // {titleId, title, episodeId, episodeTitle, q, a, npc, at}
           week: weekIndex(),
           focus: rotation[weekIndex() % rotation.length],
           swapUsed: false,
@@ -1858,12 +2137,72 @@ keyiyo哪个一个<!DOCTYPE html>
         markPendingWatch(t, ep);
         recordDayOpen(t, ep);
         pauseBgForWatch();
-        toast("看完请回到「今天」盖印打分");
-        if (href) {
-          window.open(href, "_blank", "noopener,noreferrer");
-        }
+        startPersonaAmbient(t);
+        toast("看完请回到护照盖印打分");
+        openWatchBay(t, ep, href || ep.link || t.link || "");
         hideSoftBudget();
         softWatchPending = null;
+      }
+
+      let watchBayTitle = null;
+      let watchBayEpisode = null;
+
+      function openWatchBay(t, ep, href) {
+        watchBayTitle = t;
+        watchBayEpisode = ep;
+        const bay = $("watchBay");
+        if (!bay) {
+          if (href) window.open(href, "_blank", "noopener,noreferrer");
+          return;
+        }
+        $("watchBayMeta").textContent =
+          "《" + t.title + "》第" + ep.n + "集 · " + ep.title;
+        const ext = $("watchBayExternal");
+        ext.href = href || "#";
+        bay.classList.remove("show-fallback");
+        bay.classList.add("show");
+        bay.setAttribute("aria-hidden", "false");
+        const frame = $("watchBayFrame");
+        frame.removeAttribute("src");
+        if (href) {
+          try {
+            frame.src = href;
+          } catch (err) {
+            bay.classList.add("show-fallback");
+          }
+          // 多数正版站禁 iframe：短暂后若空白也提示外链
+          setTimeout(() => {
+            if (!bay.classList.contains("show")) return;
+            try {
+              const doc = frame.contentDocument;
+              if (!doc || !doc.body || !doc.body.innerHTML) {
+                bay.classList.add("show-fallback");
+                window.open(href, "_blank", "noopener,noreferrer");
+              }
+            } catch (e) {
+              // cross-origin = likely loaded; keep iframe; also open external as backup once
+              if (!bay.dataset.openedExt) {
+                bay.dataset.openedExt = "1";
+                window.open(href, "_blank", "noopener,noreferrer");
+                bay.classList.add("show-fallback");
+              }
+            }
+          }, 1200);
+        } else {
+          bay.classList.add("show-fallback");
+        }
+      }
+
+      function closeWatchBay() {
+        const bay = $("watchBay");
+        if (!bay) return;
+        bay.classList.remove("show", "show-fallback");
+        bay.setAttribute("aria-hidden", "true");
+        delete bay.dataset.openedExt;
+        $("watchBayFrame").removeAttribute("src");
+        stopPersonaAmbient();
+        resumeBgAfterWatch();
+        checkReturnNudge();
       }
 
       /** 统一入口：工作日超日预算时软提醒，不强制拦截 */
@@ -2302,6 +2641,7 @@ keyiyo哪个一个<!DOCTYPE html>
         if (!Array.isArray(next.dayOpens)) next.dayOpens = [];
         if (!Array.isArray(next.rareStamps)) next.rareStamps = [];
         if (!Array.isArray(next.medals)) next.medals = [];
+        if (!Array.isArray(next.godReplies)) next.godReplies = [];
         next.wishes = (next.wishes || []).map((w) =>
           Object.assign({ handledAt: null, handleNote: "" }, w)
         );
@@ -2581,16 +2921,23 @@ keyiyo哪个一个<!DOCTYPE html>
         const focus = catById(state.focus);
         const weekend = isWeekend();
         syncDayGateChips();
-        $("menuLede").textContent =
-          "本周主线建议：「" +
-          (focus ? focus.name : "") +
-          "」。先看片名、时长和简介；去看后请回到本页盖印打分。";
-        $("menuATitle").textContent = weekend ? "短片区 · A" : "今晚可选 · 短片";
-        $("menuAMeta").textContent = "≤ 30 分钟";
-        $("menuBTitle").textContent = weekend ? "长片区 · B（今日开放）" : "长片区 · B";
-        $("menuBMeta").textContent = weekend
-          ? "全开放"
-          : "周五 18:00 前灰色不可选";
+        if ($("menuLede")) {
+          $("menuLede").textContent =
+            "本周主线建议：「" +
+            (focus ? focus.name : "") +
+            "」。先看片名、时长和简介；去看后请回到本页盖印打分。";
+        }
+        if ($("menuATitle"))
+          $("menuATitle").textContent = weekend ? "短片区 · A" : "今晚可选 · 短片";
+        if ($("menuAMeta")) $("menuAMeta").textContent = "≤ 30 分钟";
+        if ($("menuBTitle"))
+          $("menuBTitle").textContent = weekend
+            ? "长片区 · B（今日开放）"
+            : "长片区 · B";
+        if ($("menuBMeta"))
+          $("menuBMeta").textContent = weekend
+            ? "全开放"
+            : "周五 18:00 前灰色不可选";
         $("dockFocus").textContent = focus ? focus.name : "—";
         $("swapLeft").textContent = state.swapUsed ? "0" : "1";
         $("swapBtn").disabled = !!state.swapUsed;
@@ -2600,6 +2947,7 @@ keyiyo哪个一个<!DOCTYPE html>
         const menu = buildWeekMenu();
         const a = $("menuA");
         const b = $("menuB");
+        if (!a || !b) return;
         a.innerHTML = "";
         b.innerHTML = "";
         menu.A.forEach((t, i) => a.appendChild(renderCard(t, i)));
@@ -2920,31 +3268,194 @@ keyiyo哪个一个<!DOCTYPE html>
       }
 
       function renderHomeRecs() {
-        $("homeDayChip").textContent = dayGateLabel();
-        $("homeDayChip").classList.toggle("warn", weekdayBudgetDone());
-        const list = $("homeRecs");
-        list.innerHTML = "";
+        const heroBg = $("homeHeroBg");
+        const heroTitle = $("homeHeroTitle");
+        const heroEp = $("homeHeroEp");
+        const heroKicker = $("homeHeroKicker");
+        const dayChip = $("homeDayChip");
+        const trio = $("homeTrio");
+        const dots = $("homeTrioDots");
+        const meta = $("homeRecMeta");
+        if (!heroTitle || !trio) return;
+
+        dayChip.textContent = dayGateLabel();
+        dayChip.classList.toggle("warn", weekdayBudgetDone());
+
         if (weekdayBudgetDone()) {
-          $("homeRecMeta").textContent = "今日已完成";
-          const done = document.createElement("div");
-          done.className = "home-done";
-          done.innerHTML =
-            "<h3>今日已完成 · 早点睡</h3><p></p>";
-          done.querySelector("p").textContent =
-            "今天大约已看过 " +
-            todayWatchMinutes() +
-            " 分钟。工作日先收工，别影响学习和睡眠。若还想再看，菜单里仍可打开（会软提醒，不强制）。";
-          list.appendChild(done);
+          stopHomeTrioRotate();
+          heroKicker.textContent = "今日收工";
+          heroTitle.textContent = "今天差不多了";
+          heroEp.textContent =
+            "大约已看过 " + todayWatchMinutes() + " 分钟 · 工作日早点睡";
+          heroBg.style.backgroundImage =
+            "linear-gradient(135deg, #ebe4d6, #d9d0c0)";
+          homeHeroRec = null;
+          meta.textContent = "今日已完成";
+          trio.innerHTML =
+            '<div class="empty" style="grid-column:1/-1;padding:24px;border:1px dashed rgba(0,0,0,0.2)">菜单里仍可打开片子（会软提醒，不强制）。往下还能翻护照和图鉴。</div>';
+          dots.innerHTML = "";
           return;
         }
-        const recs = buildDailyRecs();
-        $("homeRecMeta").textContent = "续看 · 同主题 · 换格";
-        if (!recs.length) {
-          list.innerHTML =
-            '<div class="empty">今天暂时没有可推荐的集。去菜单逛逛，或等周五晚 / 周末看长片。</div>';
+
+        const packs = buildHomePacks();
+        homeHeroRec = packs.hero;
+        homeTrioBatches = packs.batches;
+        homeTrioIndex = 0;
+
+        if (homeHeroRec) {
+          const t = homeHeroRec.t;
+          const ep = homeHeroRec.ep;
+          heroKicker.textContent = homeHeroRec.label || "继续探索";
+          heroTitle.textContent = t.title;
+          heroEp.textContent =
+            "第 " + ep.n + " 集 · " + ep.title +
+            " · 约 " + episodeMinutes(ep, t) + " 分钟";
+          const art = heroArtUrl(t);
+          heroBg.style.backgroundImage = art
+            ? 'url("' + art + '")'
+            : "linear-gradient(135deg, #ebe4d6, #d9d0c0)";
+        } else {
+          heroKicker.textContent = "今晚开始";
+          heroTitle.textContent = "打开一部纪录片";
+          heroEp.textContent = "去餐盘逛逛，或等周五晚 / 周末看长片";
+          heroBg.style.backgroundImage =
+            "linear-gradient(135deg, #ebe4d6, #d9d0c0)";
+        }
+
+        paintHomeTrioBatch(0);
+        startHomeTrioRotate();
+        meta.textContent =
+          homeTrioBatches.length > 1
+            ? "约 5 秒换一批 · " + homeTrioBatches.length + " 组"
+            : "续看 · 同主题 · 换格";
+      }
+
+      let homeHeroRec = null;
+      let homeTrioBatches = [];
+      let homeTrioIndex = 0;
+      let homeTrioTimer = null;
+
+      function heroArtUrl(t) {
+        if (!t) return "";
+        if (t.heroArt) return t.heroArt;
+        return "./covers/hero/" + t.id + ".png";
+      }
+
+      function stopHomeTrioRotate() {
+        if (homeTrioTimer) {
+          clearInterval(homeTrioTimer);
+          homeTrioTimer = null;
+        }
+      }
+
+      function startHomeTrioRotate() {
+        stopHomeTrioRotate();
+        if (homeTrioBatches.length < 2) return;
+        homeTrioTimer = setInterval(() => {
+          homeTrioIndex = (homeTrioIndex + 1) % homeTrioBatches.length;
+          paintHomeTrioBatch(homeTrioIndex);
+        }, 5000);
+      }
+
+      function paintHomeTrioBatch(idx) {
+        const trio = $("homeTrio");
+        const dots = $("homeTrioDots");
+        if (!trio) return;
+        const batch = homeTrioBatches[idx] || [];
+        trio.innerHTML = "";
+        if (!batch.length) {
+          trio.innerHTML =
+            '<div class="empty" style="grid-column:1/-1">今天暂时没有更多推荐。去餐盘逛逛吧。</div>';
+          dots.innerHTML = "";
           return;
         }
-        recs.forEach((rec, i) => list.appendChild(renderRecCard(rec, i)));
+        batch.forEach((rec) => {
+          const card = document.createElement("article");
+          card.className = "home-trio-card";
+          const art = heroArtUrl(rec.t);
+          card.innerHTML =
+            '<div class="bg"></div><div class="veil"></div><div class="body"><div class="tag"></div><div class="name"></div></div>';
+          if (art) card.querySelector(".bg").style.backgroundImage = 'url("' + art + '")';
+          card.querySelector(".tag").textContent =
+            (rec.label || "发现") +
+            " · 第" +
+            rec.ep.n +
+            "集 · 约" +
+            episodeMinutes(rec.ep, rec.t) +
+            "分";
+          card.querySelector(".name").textContent = rec.t.title;
+          card.addEventListener("click", () => {
+            beginWatch(rec.t, rec.ep, rec.ep.link || rec.t.link);
+          });
+          trio.appendChild(card);
+        });
+        dots.innerHTML = "";
+        homeTrioBatches.forEach((_, i) => {
+          const d = document.createElement("i");
+          if (i === idx) d.className = "on";
+          dots.appendChild(d);
+        });
+      }
+
+      function buildHomePacks() {
+        const primary = buildDailyRecs();
+        let hero = primary[0] || null;
+        // 巴斯德续看：已盖 1–3 集时，英雄区固定到下一集（常为第4集）
+        const pasteur = titleById("pasteur");
+        if (pasteur) {
+          const done = titleProgress(pasteur).n;
+          const next = nextOpenEpisode(pasteur);
+          if (next && done >= 1 && done < episodesOf(pasteur).length) {
+            hero = {
+              kind: "continue",
+              label: "继续探索",
+              reason: "接着《超级巴斯德》",
+              t: pasteur,
+              ep: next,
+            };
+          }
+        }
+        const used = new Set();
+        if (hero) used.add(hero.t.id);
+        const pool = [];
+        primary.forEach((r) => {
+          if (r && r.t && !used.has(r.t.id)) {
+            used.add(r.t.id);
+            pool.push(r);
+          }
+        });
+        // 扩充轮换池：年龄友好短片 / 未碰过的格
+        const extras = titles
+          .filter((t) => !used.has(t.id) && nextOpenEpisode(t))
+          .sort((a, b) => {
+            const am = episodeMinutes(nextOpenEpisode(a), a);
+            const bm = episodeMinutes(nextOpenEpisode(b), b);
+            const ap = progress(a.category).n;
+            const bp = progress(b.category).n;
+            return ap - bp || am - bm;
+          });
+        extras.slice(0, 12).forEach((t) => {
+          const ep = nextOpenEpisode(t);
+          if (!ep) return;
+          used.add(t.id);
+          pool.push({
+            kind: "discover",
+            label: progress(t.category).n === 0 ? "换格开眼" : "再发现",
+            reason: "",
+            t: t,
+            ep: ep,
+          });
+        });
+        const batches = [];
+        for (let i = 0; i < pool.length; i += 3) {
+          const slice = pool.slice(i, i + 3);
+          if (slice.length) batches.push(slice);
+        }
+        if (!batches.length && hero) {
+          // 至少给英雄之外留空提示
+          batches.push([]);
+        }
+        return { hero: hero, batches: batches };
       }
 
       function renderPassport() {
@@ -3697,10 +4208,12 @@ keyiyo哪个一个<!DOCTYPE html>
           return;
         }
         const good = isGoodQuestion(q);
+        const reply = coachReply(q);
         activeChat.push({ role: "kid", text: q, good: good });
-        activeChat.push({ role: "coach", text: coachReply(q) });
+        activeChat.push({ role: "coach", text: reply });
         $("askInput").value = "";
         renderChatLog();
+        speakNpc(reply);
         if (good && activeTitle) {
           const rare = awardRareStamp(
             "good_ask",
@@ -3709,7 +4222,158 @@ keyiyo哪个一个<!DOCTYPE html>
             activeEpisode
           );
           if (rare) toast("✦ 稀有章「神提问」已点亮");
+          pushGodReply(activeTitle, activeEpisode, q, reply);
         }
+      }
+
+      function pushGodReply(t, ep, q, a) {
+        if (!Array.isArray(state.godReplies)) state.godReplies = [];
+        state.godReplies.push({
+          titleId: t.id,
+          title: t.title,
+          episodeId: ep.id,
+          episodeTitle: ep.title,
+          q: q,
+          a: a,
+          npc: npcForTitle(t).name,
+          at: Date.now(),
+        });
+        if (state.godReplies.length > 40) {
+          state.godReplies = state.godReplies.slice(-40);
+        }
+        save(state);
+      }
+
+      function renderGodReply() {
+        const box = $("godReplyList");
+        if (!box) return;
+        box.innerHTML = "";
+        const list = (state.godReplies || []).slice().reverse();
+        if (!list.length) {
+          box.innerHTML =
+            '<div class="empty">还没有神回复。盖印页问 NPC 一个「为什么/如果…」好问题，会出现在这里。</div>';
+          return;
+        }
+        list.forEach((g, i) => {
+          const row = document.createElement("div");
+          row.className = "stamp-row";
+          row.style.animationDelay = i * 0.04 + "s";
+          row.innerHTML = '<div class="t"></div><div class="n"></div>';
+          row.querySelector(".t").textContent =
+            "《" +
+            (g.title || "") +
+            "》· " +
+            (g.npc || "NPC") +
+            (g.episodeTitle ? " · " + g.episodeTitle : "");
+          row.querySelector(".n").textContent =
+            "问：" + (g.q || "") + (g.a ? " ｜ 回：" + g.a : "");
+          box.appendChild(row);
+        });
+      }
+
+      function speakNpc(text) {
+        try {
+          if (!window.speechSynthesis) return;
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(String(text || ""));
+          u.lang = "zh-CN";
+          u.rate = 1.02;
+          u.pitch = 1.05;
+          window.speechSynthesis.speak(u);
+        } catch (e) {}
+      }
+
+      let ambientCtx = null;
+      let ambientNodes = [];
+
+      function stopPersonaAmbient() {
+        ambientNodes.forEach((n) => {
+          try {
+            n.stop && n.stop();
+            n.disconnect && n.disconnect();
+          } catch (e) {}
+        });
+        ambientNodes = [];
+        if (ambientCtx) {
+          try {
+            ambientCtx.close();
+          } catch (e) {}
+          ambientCtx = null;
+        }
+      }
+
+      function startPersonaAmbient(t) {
+        stopPersonaAmbient();
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return;
+          ambientCtx = new AC();
+          const o = ambientCtx.createOscillator();
+          const g = ambientCtx.createGain();
+          const cat = t && t.category;
+          o.type = "sine";
+          o.frequency.value =
+            cat === "nature" ? 174 : cat === "human" ? 196 : cat === "finance" ? 220 : 164;
+          g.gain.value = 0.012;
+          o.connect(g);
+          g.connect(ambientCtx.destination);
+          o.start();
+          ambientNodes = [o, g];
+        } catch (e) {}
+      }
+
+      function bindHoldTalk(btnId, inputId) {
+        const btn = $(btnId);
+        const input = $(inputId);
+        if (!btn || !input) return;
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) {
+          btn.hidden = true;
+          return;
+        }
+        let rec = null;
+        let base = "";
+        function stop() {
+          btn.classList.remove("is-listening");
+          if (rec) {
+            try {
+              rec.stop();
+            } catch (e) {}
+            rec = null;
+          }
+        }
+        function start(ev) {
+          if (ev) ev.preventDefault();
+          if (rec) return;
+          base = (input.value || "").trim();
+          rec = new SR();
+          rec.lang = "zh-CN";
+          rec.interimResults = true;
+          rec.continuous = false;
+          btn.classList.add("is-listening");
+          toast("松开结束 · 可再改字");
+          rec.onresult = (e) => {
+            let text = "";
+            for (let i = 0; i < e.results.length; i++) {
+              text += e.results[i][0].transcript;
+            }
+            input.value = (base ? base + " " : "") + text;
+          };
+          rec.onerror = () => {
+            stop();
+            toast("语音没听清，再按住试试或直接打字");
+          };
+          rec.onend = () => stop();
+          try {
+            rec.start();
+          } catch (err) {
+            stop();
+          }
+        }
+        btn.addEventListener("pointerdown", start);
+        btn.addEventListener("pointerup", stop);
+        btn.addEventListener("pointerleave", stop);
+        btn.addEventListener("pointercancel", stop);
       }
 
       function openPendingAsk() {
@@ -3841,6 +4505,8 @@ keyiyo哪个一个<!DOCTYPE html>
         document.querySelectorAll(".panel").forEach((p) => {
           p.classList.toggle("active", p.id === "panel-" + name);
         });
+        if (name === "godreply") renderGodReply();
+        if (name === "passport") renderPassport();
       }
 
       function renderWish() {
@@ -4097,6 +4763,7 @@ keyiyo哪个一个<!DOCTYPE html>
         renderMenu();
         renderPlate();
         renderWish();
+        renderGodReply();
         renderParent();
         syncParentBadge();
       }
@@ -4181,30 +4848,72 @@ keyiyo哪个一个<!DOCTYPE html>
         });
       }
       $("parentExport").addEventListener("click", downloadPassport);
-      $("passportExport").addEventListener("click", downloadPassport);
+      if ($("passportExport")) $("passportExport").addEventListener("click", downloadPassport);
       $("parentCopy").addEventListener("click", copyPassportText);
-      $("passportCopy").addEventListener("click", copyPassportText);
+      if ($("passportCopy")) $("passportCopy").addEventListener("click", copyPassportText);
       bindImport("parentImportBtn", "passportImportFile");
-      bindImport("passportImportBtn", "passportImportFile");
-      $("passportPasteBtn").addEventListener("click", () => {
-        $("passportPasteBox").hidden = false;
-        $("passportPasteInput").focus();
-      });
-      $("passportPasteCancel").addEventListener("click", () => {
-        $("passportPasteBox").hidden = true;
-        $("passportPasteInput").value = "";
-      });
-      $("passportPasteApply").addEventListener("click", () => {
-        if (applyPasteImport($("passportPasteInput").value)) {
-          $("passportPasteInput").value = "";
+      if ($("passportImportBtn")) bindImport("passportImportBtn", "passportImportFile");
+      if ($("passportPasteBtn")) {
+        $("passportPasteBtn").addEventListener("click", () => {
+          $("passportPasteBox").hidden = false;
+          $("passportPasteInput").focus();
+        });
+      }
+      if ($("passportPasteCancel")) {
+        $("passportPasteCancel").addEventListener("click", () => {
           $("passportPasteBox").hidden = true;
-        }
-      });
+          $("passportPasteInput").value = "";
+        });
+      }
+      if ($("passportPasteApply")) {
+        $("passportPasteApply").addEventListener("click", () => {
+          if (applyPasteImport($("passportPasteInput").value)) {
+            $("passportPasteInput").value = "";
+            $("passportPasteBox").hidden = true;
+          }
+        });
+      }
       $("parentPasteApply").addEventListener("click", () => {
         if (applyPasteImport($("parentPasteInput").value)) {
           $("parentPasteInput").value = "";
         }
       });
+      bindHoldTalk("askHoldTalk", "askInput");
+      bindHoldTalk("wishHoldTalk", "wishTopic");
+      if ($("homeHeroWatch")) {
+        $("homeHeroWatch").addEventListener("click", () => {
+          if (!homeHeroRec) {
+            toast("今天暂时没有续看推荐");
+            return;
+          }
+          beginWatch(
+            homeHeroRec.t,
+            homeHeroRec.ep,
+            homeHeroRec.ep.link || homeHeroRec.t.link
+          );
+        });
+      }
+      if ($("homeHeroAsk")) {
+        $("homeHeroAsk").addEventListener("click", () => {
+          if (!homeHeroRec) {
+            toast("先选一部片子再问角色");
+            return;
+          }
+          openStamp(homeHeroRec.t, homeHeroRec.ep, { focusAsk: true });
+        });
+      }
+      if ($("watchBayClose")) {
+        $("watchBayClose").addEventListener("click", closeWatchBay);
+      }
+      if ($("watchBayStamp")) {
+        $("watchBayStamp").addEventListener("click", () => {
+          const t = watchBayTitle;
+          const ep = watchBayEpisode;
+          closeWatchBay();
+          if (t && ep) openStamp(t, ep);
+          else openPendingStamp();
+        });
+      }
       document.querySelectorAll(".prompt-chip").forEach((btn) => {
         btn.addEventListener("click", () => {
           activePrompt = btn.dataset.prompt;
