@@ -2268,8 +2268,8 @@
       function proceedWatch(t, ep, href) {
         markPendingWatch(t, ep);
         recordDayOpen(t, ep);
+        stopPersonaAmbient();
         pauseBgForWatch();
-        startPersonaAmbient(t);
         openWatchBay(t, ep, href || ep.link || t.link || "");
         hideSoftBudget();
         softWatchPending = null;
@@ -2277,19 +2277,23 @@
 
       let watchBayTitle = null;
       let watchBayEpisode = null;
+      let expectMusicResumeOnReturn = false;
 
       function openWatchBay(t, ep, href) {
         watchBayTitle = t;
         watchBayEpisode = ep;
         const url = href || "";
+        stopPersonaAmbient();
+        pauseBgForWatch();
+        expectMusicResumeOnReturn = true;
         const bay = $("watchBay");
         // 多数正版站禁嵌入：直接外链打开，观看舱只做「回护照」导航
         if (url) {
           const opened = window.open(url, "_blank", "noopener,noreferrer");
           if (!opened) {
-            toast("请允许弹窗，或点观看舱里的「外链打开」");
+            toast("请允许弹窗，或点观看舱里的「打开片源观看」");
           } else {
-            toast("已在新标签页打开 · 看完回本页盖印");
+            toast("已打开片源 · 背景音乐已暂停 · 看完回到本页即恢复");
           }
         }
         if (!bay) return;
@@ -2310,8 +2314,8 @@
         const fb = $("watchBayFallback");
         if (fb) {
           fb.innerHTML =
-            "<div><p>这部片子不能嵌在本页里看（B站 / 央视等常见限制）。</p>" +
-            '<p class="hint" style="color:rgba(243,239,230,0.75);margin:10px 0 16px">已尝试在新标签页打开。看完后点「回护照盖印」。</p>' +
+            "<div><p>片子在新标签页播放；本页背景音乐已暂停。</p>" +
+            '<p class="hint" style="color:rgba(243,239,230,0.75);margin:10px 0 16px">关掉视频标签、回到本页后音乐会自动恢复。也可点「回护照盖印」。</p>' +
             '<div class="actions" style="justify-content:center">' +
             '<a class="btn" id="watchBayOpenNow" href="' +
             (url || "#") +
@@ -2332,6 +2336,14 @@
           frame.removeAttribute("src");
         }
         stopPersonaAmbient();
+        expectMusicResumeOnReturn = false;
+        resumeBgAfterWatch();
+        checkReturnNudge();
+      }
+
+      function onPassportPageVisibleAgain() {
+        if (!expectMusicResumeOnReturn) return;
+        expectMusicResumeOnReturn = false;
         resumeBgAfterWatch();
         checkReturnNudge();
       }
@@ -5452,13 +5464,24 @@
 
       function pauseBgForWatch() {
         musicPausedForWatch = true;
-        bg.pause();
+        musicNpcDepth = 0;
+        clearInterval(musicFadeTimer);
+        musicFadeTimer = null;
+        if (bg) {
+          bg.pause();
+          bg.volume = 0;
+        }
         syncMusicBtn();
       }
 
       function resumeBgAfterWatch() {
         if (!musicPausedForWatch) return;
         musicPausedForWatch = false;
+        if (!musicWanted) {
+          syncMusicBtn();
+          return;
+        }
+        if (bg) bg.volume = 0.28;
         tryPlayBg();
       }
 
@@ -5573,17 +5596,17 @@
 
       document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") {
-          resumeBgAfterWatch();
-          checkReturnNudge();
+          onPassportPageVisibleAgain();
         }
       });
       window.addEventListener("pageshow", () => {
-        resumeBgAfterWatch();
-        checkReturnNudge();
+        onPassportPageVisibleAgain();
       });
       window.addEventListener("focus", () => {
-        resumeBgAfterWatch();
-        checkReturnNudge();
+        // 仅在从外链看片返回时恢复，避免打开弹窗瞬间误触发
+        if (document.visibilityState === "visible") {
+          onPassportPageVisibleAgain();
+        }
       });
 
       tryPlayBg();
