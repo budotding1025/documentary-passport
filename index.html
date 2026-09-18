@@ -350,9 +350,9 @@
       inset: -8%;
       width: 116%;
       height: 116%;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      object-fit: cover;
+      object-position: center;
+      display: block;
     }
     .home-trio-card .veil {
       position: absolute;
@@ -3514,6 +3514,7 @@
         }
 
         paintHomeTrioBatch(0);
+        preloadTrioAhead(0);
         startHomeTrioRotate();
         meta.textContent =
           homeTrioBatches.length > 1
@@ -3525,6 +3526,8 @@
       let homeTrioBatches = [];
       let homeTrioIndex = 0;
       let homeTrioTimer = null;
+      let homeTrioGen = 0;
+      const thumbReady = new Map();
 
       function heroArtUrl(t) {
         if (!t) return "";
@@ -3532,9 +3535,75 @@
         return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=6";
       }
 
+      function thumbArtUrl(t) {
+        if (!t || !t.id) return "";
+        return "./covers/thumb/" + t.id + ".jpg?v=7";
+      }
+
+      function ensureThumb(url) {
+        if (!url) return Promise.resolve(false);
+        const hit = thumbReady.get(url);
+        if (hit) return hit;
+        const p = new Promise((resolve) => {
+          const img = new Image();
+          let done = false;
+          const finish = (ok) => {
+            if (done) return;
+            done = true;
+            if (!ok) thumbReady.delete(url);
+            resolve(ok);
+          };
+          img.onload = () => finish(true);
+          img.onerror = () => finish(false);
+          img.src = url;
+        });
+        thumbReady.set(url, p);
+        return p;
+      }
+
+      function waitBatchArt(idx) {
+        const batch = homeTrioBatches[idx] || [];
+        return Promise.all(
+          batch.map((rec) =>
+            Promise.race([
+              ensureThumb(thumbArtUrl(rec.t)),
+              new Promise((resolve) => setTimeout(() => resolve(false), 2500)),
+            ])
+          )
+        );
+      }
+
+      let thumbQueue = [];
+      let thumbWorkers = 0;
+      function pumpThumbs() {
+        while (thumbWorkers < 3 && thumbQueue.length) {
+          const url = thumbQueue.shift();
+          thumbWorkers++;
+          ensureThumb(url).then(() => {
+            thumbWorkers--;
+            pumpThumbs();
+          });
+        }
+      }
+
+      function preloadTrioAhead(idx) {
+        const n = homeTrioBatches.length;
+        if (!n) return;
+        const urls = [];
+        for (let step = 0; step < n; step++) {
+          (homeTrioBatches[(idx + step) % n] || []).forEach((rec) => {
+            const u = thumbArtUrl(rec.t);
+            if (u && urls.indexOf(u) < 0) urls.push(u);
+          });
+        }
+        thumbQueue = urls;
+        pumpThumbs();
+      }
+
       function stopHomeTrioRotate() {
+        homeTrioGen++;
         if (homeTrioTimer) {
-          clearInterval(homeTrioTimer);
+          clearTimeout(homeTrioTimer);
           homeTrioTimer = null;
         }
       }
@@ -3542,10 +3611,21 @@
       function startHomeTrioRotate() {
         stopHomeTrioRotate();
         if (homeTrioBatches.length < 2) return;
-        homeTrioTimer = setInterval(() => {
-          homeTrioIndex = (homeTrioIndex + 1) % homeTrioBatches.length;
-          paintHomeTrioBatch(homeTrioIndex);
-        }, 5000);
+        const gen = homeTrioGen;
+        const arm = () => {
+          homeTrioTimer = setTimeout(() => rotateHomeTrio(gen), 5000);
+        };
+        preloadTrioAhead(homeTrioIndex);
+        arm();
+      }
+
+      async function rotateHomeTrio(gen) {
+        if (gen !== homeTrioGen) return;
+        const next = (homeTrioIndex + 1) % homeTrioBatches.length;
+        await waitBatchArt(next);
+        if (gen !== homeTrioGen) return;
+        paintHomeTrioBatch(next);
+        homeTrioTimer = setTimeout(() => rotateHomeTrio(gen), 5000);
       }
 
       function paintHomeTrioBatch(idx) {
@@ -3564,10 +3644,19 @@
         batch.forEach((rec) => {
           const card = document.createElement("article");
           card.className = "home-trio-card";
-          const art = heroArtUrl(rec.t);
+          const art = thumbArtUrl(rec.t);
           card.innerHTML =
-            '<div class="bg"></div><div class="veil"></div><div class="body"><div class="tag"></div><div class="name"></div></div>';
-          if (art) card.querySelector(".bg").style.backgroundImage = 'url("' + art + '")';
+            '<img class="bg" alt="" decoding="async" fetchpriority="high"><div class="veil"></div><div class="body"><div class="tag"></div><div class="name"></div></div>';
+          const bg = card.querySelector(".bg");
+          if (art) {
+            bg.addEventListener("error", function onErr() {
+              if (bg.dataset.retry) return;
+              bg.dataset.retry = "1";
+              bg.removeEventListener("error", onErr);
+              bg.src = art + "&retry=1";
+            });
+            bg.src = art;
+          }
           card.querySelector(".tag").textContent =
             (rec.label || "发现") +
             " · 第" +
