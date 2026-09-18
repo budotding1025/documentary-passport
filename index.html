@@ -160,12 +160,21 @@
       margin-left: calc(50% - 50vw);
       margin-right: calc(50% - 50vw);
     }
+    .home-stage {
+      height: calc(100dvh - 56px - 46px - 48px);
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--paper);
+    }
     .home-hero {
       position: relative;
+      flex: 1.45 1 0;
       width: 100%;
-      aspect-ratio: 16 / 9;
-      height: auto;
       min-height: 0;
+      height: auto;
+      aspect-ratio: auto;
       display: flex;
       align-items: flex-end;
       overflow: hidden;
@@ -187,40 +196,40 @@
     .home-hero-content {
       position: relative;
       z-index: 2;
-      padding: 8vh 6vw 10vh;
-      max-width: 720px;
+      padding: 3vh 4vw 3.5vh;
+      max-width: 640px;
     }
     .home-hero-kicker {
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #333;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
     .home-hero-title {
-      margin: 0 0 8px;
-      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      margin: 0 0 6px;
+      font-size: clamp(1.55rem, 3.2vw, 2.6rem);
       font-weight: 700;
       line-height: 1.15;
       color: #111;
     }
     .home-hero-ep {
-      margin: 0 0 22px;
-      font-size: 1.15rem;
+      margin: 0 0 14px;
+      font-size: 0.98rem;
       color: #333;
     }
     .home-hero-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
     }
     .home-hero-cta {
       background: #111 !important;
       color: #f3efe6 !important;
       border-color: #111 !important;
-      padding: 14px 28px !important;
-      font-size: 1.05rem !important;
+      padding: 10px 20px !important;
+      font-size: 0.95rem !important;
     }
     .home-hero-ask {
       border-color: #111 !important;
@@ -228,23 +237,76 @@
       background: rgba(255,255,255,0.45) !important;
     }
     .home-hero-meta {
-      margin-top: 16px;
-      font-size: 0.82rem;
+      margin-top: 10px;
+      font-size: 0.75rem;
       color: #444;
       font-family: "JetBrains Mono", monospace;
     }
     .home-task-float {
       position: absolute;
-      right: 4vw;
-      bottom: 8vh;
+      right: 3vw;
+      top: 3vh;
+      bottom: auto;
       z-index: 3;
-      max-width: 320px;
-      background: rgba(255,255,255,0.92);
+      max-width: 280px;
+      background: rgba(255,255,255,0.94);
       border: 1px solid #111;
-      padding: 12px;
+      padding: 10px;
+      font-size: 0.85rem;
+    }
+    .npc-buddy {
+      position: absolute;
+      right: 3vw;
+      bottom: 3vh;
+      z-index: 4;
+      display: none;
+      align-items: flex-end;
+      gap: 10px;
+      max-width: min(360px, 46vw);
+      cursor: pointer;
+    }
+    .npc-buddy.show { display: flex; }
+    .npc-buddy-bubble {
+      background: #111;
+      color: #f3efe6;
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      border: 1px solid #111;
+      position: relative;
+      animation: buddyPop 0.45s var(--ease) both;
+    }
+    .npc-buddy-bubble::after {
+      content: "";
+      position: absolute;
+      right: -6px;
+      bottom: 18px;
+      width: 10px;
+      height: 10px;
+      background: #111;
+      transform: rotate(45deg);
+    }
+    .npc-buddy-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid #111;
+      object-fit: cover;
+      background: #ebe4d6;
+      flex-shrink: 0;
+      animation: buddyBob 2.4s ease-in-out infinite;
+    }
+    @keyframes buddyPop {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes buddyBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
     }
     .home-discover {
-      padding: 28px 12px 24px;
+      flex: 0 0 auto;
+      padding: 10px 12px 8px;
       background: var(--paper);
       border-top: 1px solid rgba(0,0,0,0.08);
       width: 100%;
@@ -253,23 +315,24 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 18px;
+      margin-bottom: 8px;
     }
     .home-discover-head h2 {
       margin: 0;
-      font-size: 1.35rem;
+      font-size: 1.05rem;
       font-weight: 700;
     }
     .home-trio {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
       width: 100%;
     }
     .home-trio-card {
       position: relative;
       aspect-ratio: 16 / 9;
       min-height: 0;
+      max-height: 22vh;
       border: 1px solid rgba(17,17,17,0.15);
       background: #ddd6c8;
       overflow: hidden;
@@ -277,20 +340,20 @@
       transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
     }
     .home-trio-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.1);
     }
     .home-trio-card .bg {
       position: absolute;
       inset: 0;
       background-size: cover;
       background-position: center;
-      opacity: 0.92;
+      background-repeat: no-repeat;
     }
     .home-trio-card .veil {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 30%, rgba(20,18,14,0.72));
+      background: linear-gradient(180deg, transparent 28%, rgba(20,18,14,0.78));
     }
     .home-trio-card .body {
       position: absolute;
@@ -299,44 +362,123 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 14px 16px;
+      padding: 10px 12px;
       color: #f7f3ea;
     }
     .home-trio-card .tag {
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
       opacity: 0.9;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .home-trio-card .name {
-      font-size: 1.25rem;
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
       font-weight: 700;
-      line-height: 1.3;
+      line-height: 1.25;
     }
     .home-trio-dots {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin-top: 16px;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .home-trio-dots button,
+    .home-trio-dot {
+      appearance: none;
+      width: 10px;
+      height: 10px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #bbb;
+      display: inline-block;
+      cursor: pointer;
+      transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+    }
+    .home-trio-dots button:hover,
+    .home-trio-dot:hover {
+      transform: scale(1.2);
+      background: #888;
+    }
+    .home-trio-dots button.on,
+    .home-trio-dots i.on,
+    .home-trio-dot.on {
+      background: #111;
     }
     .home-trio-dots i {
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: #bbb;
       display: inline-block;
     }
-    .home-trio-dots i.on { background: #111; }
     .home-more {
       padding: 24px 5vw 80px;
       max-width: 1100px;
       margin: 0 auto;
     }
     @media (max-width: 860px) {
+      .home-stage { height: auto; min-height: 0; overflow: visible; }
       .home-trio { grid-template-columns: 1fr; }
-      .home-hero { aspect-ratio: 16 / 9; }
-      .home-task-float { position: static; margin: 12px 5vw 20px; max-width: none; }
+      .home-trio-card { max-height: none; }
+      .home-hero { flex: none; min-height: 42vh; }
+      .home-task-float { position: static; margin: 10px 4vw; max-width: none; }
+      .npc-buddy { position: static; margin: 0 4vw 10px; max-width: none; }
+      .npc-buddy-bubble::after { display: none; }
     }
+
+    .ask-box {
+      margin-top: 14px;
+      border: 1.5px solid var(--stamp);
+      padding: 12px 12px 10px;
+      background: linear-gradient(180deg, #f7fbf8, #eef7f2);
+    }
+    .ask-box .ask-title {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--stamp-deep);
+    }
+    .npc-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .npc-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--stamp-deep);
+      object-fit: cover;
+      background: #ebe4d6;
+      flex-shrink: 0;
+    }
+    .npc-avatar.is-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--stamp-deep);
+      font-weight: 700;
+    }
+    .npc-chip {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--stamp-deep);
+      background: rgba(255,255,255,0.75);
+      border: 1px solid var(--stamp);
+      padding: 3px 8px;
+    }
+    .mic-hint {
+      margin: 8px 0 0;
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* 底部绿色浮条已删除 */
 
     .watch-bay {
       position: fixed;
@@ -1067,40 +1209,8 @@
       font-weight: 500;
     }
 
-    .return-nudge {
-      position: fixed;
-      left: 12px;
-      right: 12px;
-      bottom: 72px;
-      z-index: 110;
-      display: none;
-    }
-    .return-nudge.show { display: block; }
-    .return-nudge-inner {
-      background: #0b5c3b;
-      color: #f4faf7;
-      border: 1px solid #063528;
-      padding: 14px 14px 12px;
-      box-shadow: 0 10px 28px rgba(8, 40, 28, 0.35);
-      animation: rise 0.4s var(--ease) both;
-    }
-    .return-nudge-inner p {
-      margin: 0 0 10px;
-      font-size: 0.95rem;
-      line-height: 1.45;
-      font-weight: 600;
-    }
-    .return-nudge-inner .actions { margin-top: 0; }
-    .return-nudge-inner .btn {
-      background: #f4faf7;
-      color: #0b5c3b;
-      border-color: #f4faf7;
-    }
-    .return-nudge-inner .btn.ghost {
-      background: transparent;
-      color: #d7efe4;
-      border-color: #6aa88c;
-    }
+    /* return-nudge 已移除 */
+
     .day-gate-chip {
       display: inline-block;
       font-family: "JetBrains Mono", monospace;
@@ -1568,6 +1678,7 @@
 
   <main>
     <section id="panel-passport" class="panel active home-today">
+      <div class="home-stage">
       <div class="home-hero" id="homeHero">
         <div class="home-hero-bg" id="homeHeroBg"></div>
         <div class="home-hero-shade"></div>
@@ -1589,6 +1700,10 @@
             <button type="button" class="btn ghost" id="homeTaskDismiss">先放一放</button>
           </div>
         </div>
+        <div class="npc-buddy" id="npcBuddy" hidden>
+          <div class="npc-buddy-bubble" id="npcBuddyText">来聊两句？</div>
+          <img class="npc-buddy-avatar" id="npcBuddyAvatar" alt="NPC" width="64" height="64" />
+        </div>
       </div>
 
       <section class="home-discover" id="homeDiscover">
@@ -1599,6 +1714,7 @@
         <div class="home-trio" id="homeTrio"></div>
         <div class="home-trio-dots" id="homeTrioDots" aria-hidden="true"></div>
       </section>
+      </div>
 
       <section class="home-more">
         <div class="passport rise">
@@ -1801,15 +1917,21 @@
         </div>
 
         <div class="ask-box" id="askBox">
-          <div class="ask-title">跟 NPC 聊两句</div>
-          <div class="npc-chip" id="npcChip">NPC · 探索向导</div>
-          <p class="hint" id="npcHint">问「为什么 / 如果…」更容易拿到稀有章「神提问」。不是考试。</p>
+          <div class="ask-title">跟角色聊两句</div>
+          <div class="npc-head">
+            <img class="npc-avatar" id="npcAvatar" alt="" width="52" height="52" hidden />
+            <div>
+              <div class="npc-chip" id="npcChip">NPC · 探索向导</div>
+              <p class="hint" id="npcHint" style="margin:6px 0 0">问「为什么 / 如果…」更容易拿到稀有章。</p>
+            </div>
+          </div>
           <div class="chat-log" id="chatLog"></div>
           <div class="ask-row">
-            <input type="text" id="askInput" maxlength="120" placeholder="例如：为什么细胞要这样打仗？" />
-            <button type="button" class="hold-talk" id="askHoldTalk" title="按住说话">按住说话</button>
-            <button type="button" class="btn" id="askSend">问 NPC</button>
+            <input type="text" id="askInput" maxlength="120" placeholder="例如：为什么疫苗能保护人？" autocomplete="off" />
+            <button type="button" class="hold-talk" id="askHoldTalk" title="按住说话（需麦克风权限）">按住说话</button>
+            <button type="button" class="btn" id="askSend">问角色</button>
           </div>
+          <p class="mic-hint" id="micHint">Windows 麦克风开着还不够：首次按住说话时，请在地址栏锁图标里允许「本网站」使用麦克风。选允许后就能语音；说完可改字再发送。也支持直接打字。</p>
         </div>
 
         <div class="title-row" style="margin-top:18px">
@@ -1871,16 +1993,7 @@
     </div>
   </div>
 
-  <div class="return-nudge" id="returnNudge" aria-live="polite">
-    <div class="return-nudge-inner">
-      <p id="nudgeText">看完了吗？回来给这一集打分盖印吧。</p>
-      <div class="actions">
-        <button type="button" class="btn" id="nudgeStamp">去盖印</button>
-        <button type="button" class="btn" id="nudgeAsk">先问 NPC</button>
-        <button type="button" class="btn ghost" id="nudgeDismiss">稍后再说</button>
-      </div>
-    </div>
-  </div>
+  <!-- return-nudge 绿条已移除：待盖印只用首页卡片 -->
 
   <div class="soft-budget" id="softBudget" aria-hidden="true">
     <div class="soft-budget-inner" role="dialog" aria-labelledby="softBudgetTitle">
@@ -2142,12 +2255,21 @@
         el.setAttribute("aria-hidden", "false");
       }
 
+      function watchUrlBlockedInIframe(url) {
+        const u = String(url || "").toLowerCase();
+        return (
+          !u ||
+          /bilibili\.com|b23\.tv|cctv\.com|tv\.cctv|iqiyi\.com|youku\.com|v\.qq\.com|mgtv\.com|miguvideo|youtube\.com|youtu\.be|douyin\.com/.test(
+            u
+          )
+        );
+      }
+
       function proceedWatch(t, ep, href) {
         markPendingWatch(t, ep);
         recordDayOpen(t, ep);
         pauseBgForWatch();
         startPersonaAmbient(t);
-        toast("看完请回到护照盖印打分");
         openWatchBay(t, ep, href || ep.link || t.link || "");
         hideSoftBudget();
         softWatchPending = null;
@@ -2159,46 +2281,42 @@
       function openWatchBay(t, ep, href) {
         watchBayTitle = t;
         watchBayEpisode = ep;
+        const url = href || "";
         const bay = $("watchBay");
-        if (!bay) {
-          if (href) window.open(href, "_blank", "noopener,noreferrer");
-          return;
+        // 多数正版站禁嵌入：直接外链打开，观看舱只做「回护照」导航
+        if (url) {
+          const opened = window.open(url, "_blank", "noopener,noreferrer");
+          if (!opened) {
+            toast("请允许弹窗，或点观看舱里的「外链打开」");
+          } else {
+            toast("已在新标签页打开 · 看完回本页盖印");
+          }
         }
+        if (!bay) return;
         $("watchBayMeta").textContent =
           "《" + t.title + "》第" + ep.n + "集 · " + ep.title;
         const ext = $("watchBayExternal");
-        ext.href = href || "#";
-        bay.classList.remove("show-fallback");
-        bay.classList.add("show");
-        bay.setAttribute("aria-hidden", "false");
+        if (ext) {
+          ext.href = url || "#";
+          ext.textContent = url ? "再次打开片源" : "暂无链接";
+        }
         const frame = $("watchBayFrame");
-        frame.removeAttribute("src");
-        if (href) {
-          try {
-            frame.src = href;
-          } catch (err) {
-            bay.classList.add("show-fallback");
-          }
-          // 多数正版站禁 iframe：短暂后若空白也提示外链
-          setTimeout(() => {
-            if (!bay.classList.contains("show")) return;
-            try {
-              const doc = frame.contentDocument;
-              if (!doc || !doc.body || !doc.body.innerHTML) {
-                bay.classList.add("show-fallback");
-                window.open(href, "_blank", "noopener,noreferrer");
-              }
-            } catch (e) {
-              // cross-origin = likely loaded; keep iframe; also open external as backup once
-              if (!bay.dataset.openedExt) {
-                bay.dataset.openedExt = "1";
-                window.open(href, "_blank", "noopener,noreferrer");
-                bay.classList.add("show-fallback");
-              }
-            }
-          }, 1200);
-        } else {
-          bay.classList.add("show-fallback");
+        if (frame) {
+          frame.removeAttribute("src");
+          frame.style.display = "none";
+        }
+        bay.classList.add("show", "show-fallback");
+        bay.setAttribute("aria-hidden", "false");
+        const fb = $("watchBayFallback");
+        if (fb) {
+          fb.innerHTML =
+            "<div><p>这部片子不能嵌在本页里看（B站 / 央视等常见限制）。</p>" +
+            '<p class="hint" style="color:rgba(243,239,230,0.75);margin:10px 0 16px">已尝试在新标签页打开。看完后点「回护照盖印」。</p>' +
+            '<div class="actions" style="justify-content:center">' +
+            '<a class="btn" id="watchBayOpenNow" href="' +
+            (url || "#") +
+            '" target="_blank" rel="noopener">打开片源观看</a>' +
+            "</div></div>";
         }
       }
 
@@ -2208,7 +2326,11 @@
         bay.classList.remove("show", "show-fallback");
         bay.setAttribute("aria-hidden", "true");
         delete bay.dataset.openedExt;
-        $("watchBayFrame").removeAttribute("src");
+        const frame = $("watchBayFrame");
+        if (frame) {
+          frame.style.display = "";
+          frame.removeAttribute("src");
+        }
         stopPersonaAmbient();
         resumeBgAfterWatch();
         checkReturnNudge();
@@ -3370,12 +3492,13 @@
         const trio = $("homeTrio");
         const dots = $("homeTrioDots");
         if (!trio) return;
+        homeTrioIndex = idx;
         const batch = homeTrioBatches[idx] || [];
         trio.innerHTML = "";
         if (!batch.length) {
           trio.innerHTML =
             '<div class="empty" style="grid-column:1/-1">今天暂时没有更多推荐。去餐盘逛逛吧。</div>';
-          dots.innerHTML = "";
+          if (dots) dots.innerHTML = "";
           return;
         }
         batch.forEach((rec) => {
@@ -3398,10 +3521,22 @@
           });
           trio.appendChild(card);
         });
+        if (!dots) return;
         dots.innerHTML = "";
+        dots.removeAttribute("aria-hidden");
         homeTrioBatches.forEach((_, i) => {
-          const d = document.createElement("i");
-          if (i === idx) d.className = "on";
+          const d = document.createElement("button");
+          d.type = "button";
+          d.className = "home-trio-dot" + (i === idx ? " on" : "");
+          d.setAttribute("aria-label", "切换到第 " + (i + 1) + " 组推荐");
+          d.title = "第 " + (i + 1) + " 组";
+          d.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            stopHomeTrioRotate();
+            paintHomeTrioBatch(i);
+            startHomeTrioRotate();
+          });
           dots.appendChild(d);
         });
       }
@@ -3763,15 +3898,7 @@
         $("stampEpMeta").textContent =
           "约 " + episodeMinutes(ep, t) + " 分钟 · 看完打分盖印";
         const npc = npcForTitle(t);
-        if ($("npcChip")) $("npcChip").textContent = "NPC · " + npc.name;
-        if ($("npcHint")) {
-          $("npcHint").textContent =
-            "现在和你对话的是「" +
-            npc.name +
-            "」（" +
-            npc.style +
-            "）。问「为什么/如果…」更容易拿到稀有章。";
-        }
+        syncNpcPanel(npc);
         if (ep.cover || t.cover) {
           $("stampCoverWrap").hidden = false;
           $("stampCover").src = ep.cover || t.cover;
@@ -3801,22 +3928,119 @@
         activeRating = prev && prev.rating ? Number(prev.rating) : 0;
         syncStars();
         $("commentInput").value = prev && prev.comment ? prev.comment : "";
-        $("askInput").value = "";
+        clearAskInput();
         renderChatLog();
         showSheetView("stamp");
         $("sheet").classList.add("open");
         $("sheet").setAttribute("aria-hidden", "false");
         hideReturnNudge();
+        const greet =
+          (npc.tips && npc.tips[0]) ||
+          "来问我一个「为什么…」吧，我准备了冷知识。";
+        if (focusAsk || !(prev && prev.agentChat && prev.agentChat.length)) {
+          setTimeout(() => {
+            speakNpc(greet, npc);
+            showNpcBuddy(t, greet, { sticky: false });
+          }, 280);
+        }
         if (focusAsk) {
           setTimeout(() => {
             const box = $("askBox");
             if (box && box.scrollIntoView) {
               box.scrollIntoView({ behavior: "smooth", block: "center" });
             }
+            clearAskInput();
             $("askInput").focus();
-            toast("跟「" + npcForTitle(t).name + "」聊两句吧");
+            toast("跟「" + npc.name + "」聊两句吧");
           }, 120);
         }
+      }
+
+      function clearAskInput() {
+        const el = $("askInput");
+        if (!el) return;
+        el.value = "";
+      }
+
+      function sanitizeAskInput() {
+        const el = $("askInput");
+        if (!el) return "";
+        let v = el.value;
+        if (v == null || v === "null" || v === "undefined") v = "";
+        v = String(v).replace(/\bnull\b|\bundefined\b/gi, "").trim();
+        el.value = v;
+        return v;
+      }
+
+      function syncNpcPanel(npc) {
+        if ($("npcChip")) $("npcChip").textContent = "角色 · " + npc.name;
+        if ($("npcHint")) {
+          $("npcHint").textContent =
+            "现在对话的是「" +
+            npc.name +
+            "」（" +
+            npc.style +
+            "）。问「为什么/如果…」更能拿到稀有章，也更适合讲给朋友听。";
+        }
+        const av = $("npcAvatar");
+        if (av) {
+          if (npc.avatar) {
+            av.hidden = false;
+            av.classList.remove("is-empty");
+            av.src = npc.avatar;
+            av.alt = npc.name;
+          } else {
+            av.hidden = true;
+            av.removeAttribute("src");
+          }
+        }
+      }
+
+      function pickNpcLine(npc) {
+        const tips = (npc && npc.tips) || [];
+        const facts = (npc && npc.facts) || [];
+        const pool = tips.concat(facts);
+        if (!pool.length) return "来问我一个为什么吧！";
+        return pool[Math.floor(Math.random() * pool.length)];
+      }
+
+      function showNpcBuddy(t, text, opts) {
+        const buddy = $("npcBuddy");
+        if (!buddy) return;
+        const npc = npcForTitle(t);
+        if (!npc.avatar && !(opts && opts.force)) {
+          buddy.hidden = true;
+          buddy.classList.remove("show");
+          return;
+        }
+        const line = text || pickNpcLine(npc);
+        $("npcBuddyText").textContent = line;
+        const img = $("npcBuddyAvatar");
+        if (npc.avatar) {
+          img.src = npc.avatar;
+          img.alt = npc.name;
+          img.hidden = false;
+        } else {
+          img.hidden = true;
+        }
+        buddy.hidden = false;
+        buddy.classList.add("show");
+        buddy.dataset.titleId = t ? t.id : "";
+        if (!(opts && opts.sticky)) {
+          clearTimeout(showNpcBuddy._t);
+          showNpcBuddy._t = setTimeout(() => {
+            if (!(opts && opts.keep)) {
+              /* keep visible on home until dismissed by chat open */
+            }
+          }, 8000);
+        }
+      }
+
+      function hideNpcBuddy() {
+        const buddy = $("npcBuddy");
+        if (!buddy) return;
+        buddy.hidden = true;
+        buddy.classList.remove("show");
       }
 
       function markPendingWatch(t, ep) {
@@ -3837,25 +4061,24 @@
       }
 
       function hideReturnNudge() {
-        $("returnNudge").classList.remove("show");
+        /* 绿条已删除 */
       }
 
       function showReturnNudge(pending) {
-        const t = titleById(pending.titleId);
-        const ep = t ? episodeById(t, pending.episodeId) : null;
-        if (!t || !ep) {
-          clearPendingWatch();
-          hideReturnNudge();
-          return;
-        }
-        $("nudgeText").textContent =
-          "《" +
-          t.title +
-          "》第" +
-          ep.n +
-          "集看完了吗？可以先问 NPC，再盖印打分。";
-        $("returnNudge").classList.add("show");
         renderHomeTask();
+        if (pending) {
+          const t = titleById(pending.titleId);
+          if (t) {
+            const npc = npcForTitle(t);
+            if (typeof showNpcBuddy === "function") {
+              showNpcBuddy(
+                t,
+                pickNpcLine(npc) + " 看完了吗？点我聊聊再盖印。",
+                { sticky: true, force: true }
+              );
+            }
+          }
+        }
       }
 
       function checkReturnNudge() {
@@ -3913,60 +4136,148 @@
       }
 
       function npcForTitle(t) {
-        if (!t) {
-          return {
-            name: "探索向导",
-            voice: "向导",
-            style: "温和、好奇",
-          };
-        }
-        if (t.id === "pasteur" || t.muscle === "生物") {
-          return {
+        const base = {
+          id: "guide",
+          name: "探索向导",
+          voice: "向导",
+          style: "温和、好奇",
+          avatar: "",
+          gender: "male",
+          tips: [
+            "嘿，问我一个「为什么…」试试！",
+            "好问题能盖稀有章哦。",
+          ],
+        };
+        if (!t) return base;
+
+        // 先按片名精确匹配（乌鸦≠巴斯德）
+        const byId = {
+          crow: {
+            id: "crow",
+            name: "聪明乌鸦",
+            voice: "乌鸦",
+            style: "机灵、爱试验、会冷幽默",
+            avatar: "./covers/npc/crow.png",
+            gender: "male",
+            tips: [
+              "嘎！别急着下结论——先观察。",
+              "你猜：乌鸦会不会用工具？为什么？",
+              "问我「如果…会怎样」，我们一起做假设。",
+            ],
+            facts: [
+              "冷知识：有些乌鸦会把坚果丢到车轮下，等绿灯再捡——像在用「工具城市」。",
+              "好玩梗：我不是「坏运气」，我是野外实验室的首席观察员。",
+              "分享点：下次看见鸟，先问「它在试什么？」比问「它叫什么」更像科学家。",
+            ],
+          },
+          pasteur: {
+            id: "pasteur",
             name: "微生物侦探巴斯德",
             voice: "侦探",
             style: "爱观察、爱提问、偶尔开玩笑",
-          };
-        }
-        if (t.id === "cellwar" || t.muscle === "人体") {
-          return {
+            avatar: "./covers/npc/pasteur.png",
+            gender: "male",
+            tips: [
+              "显微镜下有大案子，问我「为什么…」！",
+              "疫苗不是魔法——想知道它为什么有效吗？",
+              "嘿，小探险家，来聊一句「如果细菌…」",
+            ],
+            facts: [
+              "冷知识：巴斯德其实是化学家出身，却把「看不见的凶手」抓到了证据链上。",
+              "好玩梗：细菌：我隐身！侦探：抱歉，我带了显微镜。",
+              "分享点：牛奶加热杀菌那招，后来大家叫它「巴氏消毒」——以侦探命名的日常魔法。",
+              "冷知识：狂犬病疫苗靠的是「训练免疫系统认脸」，不是把病毒直接打跑。",
+            ],
+          },
+          cellwar: {
+            id: "cellwar",
             name: "细胞卫队小队长",
             voice: "队长",
             style: "像在战场汇报，又像给队友打气",
+            avatar: "",
+            gender: "male",
+            tips: ["卫队报到！问我为什么细胞要这样打仗。"],
+          },
+          germsquad: {
+            id: "germsquad",
+            name: "细菌病毒特工队长",
+            voice: "特工",
+            style: "秘密行动口吻、爱打比方",
+            avatar: "",
+            gender: "male",
+            tips: ["特工频道开启：问我病毒怎么闯关。"],
+          },
+        };
+        if (byId[t.id]) return byId[t.id];
+
+        if (t.id === "bodymicro" || t.muscle === "人体") {
+          return {
+            id: "cellcap",
+            name: "细胞卫队小队长",
+            voice: "队长",
+            style: "像在战场汇报，又像给队友打气",
+            avatar: "",
+            gender: "male",
+            tips: ["身体里正在开会，问我一个为什么。"],
           };
         }
         if (t.category === "human" || t.muscle === "叙事" || t.muscle === "审美") {
           return {
+            id: "traveler",
             name: "时光旅人",
             voice: "旅人",
             style: "讲故事、带画面感",
+            avatar: "",
+            gender: "male",
+            tips: ["故事开始了——问我「如果当时…」"],
           };
         }
         if (t.category === "finance" || t.muscle === "商业" || t.muscle === "工程") {
           return {
+            id: "foreman",
             name: "发明家工头",
             voice: "工头",
             style: "务实、爱用生活例子",
+            avatar: "",
+            gender: "male",
+            tips: ["工地开工！问我这东西为什么这样造。"],
           };
         }
         if (t.category === "drive" || t.muscle === "意志" || t.muscle === "选择") {
           return {
+            id: "coach",
             name: "训练营教练",
             voice: "教练",
             style: "鼓励但不鸡汤",
+            avatar: "",
+            gender: "male",
+            tips: ["再问一句「为什么要坚持」，我们聊聊。"],
           };
         }
         if (t.muscle === "实验" || t.muscle === "数理") {
           return {
+            id: "doctor",
             name: "疯狂实验博士",
             voice: "博士",
             style: "兴奋、爱打比方",
+            avatar: "",
+            gender: "male",
+            tips: ["实验室开门！问我「如果这样试…」"],
           };
         }
-        return {
-          name: "探索向导",
-          voice: "向导",
-          style: "温和、好奇",
-        };
+        // 其他生物类：向导，不再误判成巴斯德
+        if (t.muscle === "生物") {
+          return {
+            id: "nature",
+            name: "自然观察员",
+            voice: "观察员",
+            style: "安静、细致、爱问为什么",
+            avatar: "",
+            gender: "male",
+            tips: ["蹲下来看——问我你发现了什么。"],
+          };
+        }
+        return base;
       }
 
       function isGoodQuestion(q) {
@@ -4166,10 +4477,68 @@
         const t = activeTitle;
         const npc = npcForTitle(t);
         const hints = (ep && ep.hints) || [];
+        const facts = npc.facts || [];
         const coachTurns = activeChat.filter((m) => m.role === "coach").length;
         const q = (question || "").trim();
-        const shortQ = q.length > 36 ? q.slice(0, 36) + "…" : q;
+        const shortQ = q.length > 28 ? q.slice(0, 28) + "…" : q;
         const place = ep ? ep.title : t ? t.title : "这集";
+        const fact = facts.length
+          ? facts[Math.floor(Math.random() * facts.length)]
+          : "";
+        const hook = hints.length ? hints.slice(0, 2).join("、") : "";
+
+        if (npc.id === "pasteur") {
+          if (coachTurns === 0) {
+            return (
+              "侦探打卡！你问「" +
+              shortQ +
+              "」，很有现场感。在《" +
+              place +
+              "》里，我最想带你盯的线索是：" +
+              ((ep && ep.blurb) || "看不见的微生物") +
+              "。" +
+              (fact ? " " + fact : "") +
+              " 你觉得：凶手更像「细菌」还是「病毒」？为什么？"
+            );
+          }
+          if (coachTurns === 1) {
+            return (
+              "继续推理：" +
+              (hook ? "片子里的关键词有「" + hook + "」。" : "") +
+              (fact ? fact + " " : "") +
+              "把这个冷知识讲给同学听，他们多半会问你「真的假的？」——你再反问一个「为什么」，侦探局就成立了。"
+            );
+          }
+          return (
+            "结案小结：用你自己的话复述这集最酷的一点，然后盖印。想要稀有章「神提问」，再丢一个「如果…会怎样」。下次见，小侦探！"
+          );
+        }
+
+        if (npc.id === "crow") {
+          if (coachTurns === 0) {
+            return (
+              "嘎哈！你问「" +
+              shortQ +
+              "」，很像科学家开场。在《" +
+              place +
+              "》里，先观察再下结论。" +
+              (fact ? " " + fact : "") +
+              " 你猜：如果换你当乌鸦，第一步会先试什么？"
+            );
+          }
+          if (coachTurns === 1) {
+            return (
+              "实验第二步：提出假设。" +
+              (hook ? "抓住「" + hook + "」这些线索。" : "") +
+              (fact ? " " + fact : "") +
+              " 把这个好玩的点讲给朋友，比背定义酷多了。"
+            );
+          }
+          return (
+            "收工！用一句话写下你的发现，盖印。记得问「为什么/如果…」能点亮稀有章。嘎，下次见！"
+          );
+        }
+
         if (coachTurns === 0) {
           return (
             "（" +
@@ -4180,8 +4549,10 @@
             place +
             "》里，我最想先带你盯住：" +
             ((ep && ep.blurb) || (t && t.blurb) || "片子里的关键画面") +
-            "。你猜猜，它可能跟什么有关？" +
-            (hints.length ? " 线索：" + hints.slice(0, 3).join("、") : "")
+            "。" +
+            (fact ? " " + fact : "") +
+            " 你猜猜，它可能跟什么有关？" +
+            (hook ? " 线索：" + hook : "")
           );
         }
         if (coachTurns === 1) {
@@ -4189,12 +4560,13 @@
             "（" +
             npc.name +
             "）可以这样想：" +
-            (hints.length
-              ? hints.slice(0, 3).join("、") + "，常常就藏在刚才的画面里。"
+            (hook
+              ? hook + "，常常就藏在刚才的画面里。"
               : "把片子里一个画面，和生活里类似的东西对上号。") +
+            (fact ? " " + fact : "") +
             " 我是" +
             npc.style +
-            "的人设——你还想盯哪一点继续问？"
+            "的人设——你还想盯哪一点继续问？讲给朋友听也行。"
           );
         }
         return (
@@ -4220,9 +4592,9 @@
         const reply = coachReply(q);
         activeChat.push({ role: "kid", text: q, good: good });
         activeChat.push({ role: "coach", text: reply });
-        $("askInput").value = "";
+        clearAskInput();
         renderChatLog();
-        speakNpc(reply);
+        speakNpc(reply, npcForTitle(activeTitle));
         if (good && activeTitle) {
           const rare = awardRareStamp(
             "good_ask",
@@ -4280,16 +4652,43 @@
         });
       }
 
-      function speakNpc(text) {
+      function speakNpc(text, npc) {
         try {
           if (!window.speechSynthesis) return;
+          const wasSpeaking = window.speechSynthesis.speaking || window.speechSynthesis.pending;
           window.speechSynthesis.cancel();
-          const u = new SpeechSynthesisUtterance(String(text || ""));
+          if (wasSpeaking) resumeBgAfterNpc();
+          const clean = String(text || "")
+            .replace(/^（[^）]+）/, "")
+            .replace(/\s+/g, " ")
+            .trim();
+          if (!clean) return;
+          const u = new SpeechSynthesisUtterance(clean);
           u.lang = "zh-CN";
-          u.rate = 1.02;
-          u.pitch = 1.05;
+          u.rate = npc && npc.id === "crow" ? 1.08 : 1.0;
+          u.pitch = npc && npc.id === "crow" ? 1.15 : 0.92;
+          const voices = window.speechSynthesis.getVoices() || [];
+          const maleHints = /male|男|yunyang|yunjian|kangkang|xiaoyu|xiaomo|xiaoxiao.*neural|david|mark|george|guy/i;
+          const zh = voices.filter((v) => /zh|chinese|中文/i.test(v.lang + v.name));
+          let pick =
+            zh.find((v) => maleHints.test(v.name)) ||
+            zh.find((v) => /Yunyang|Yunjian|Kangkang|Yunxia/i.test(v.name)) ||
+            zh[0] ||
+            voices.find((v) => maleHints.test(v.name));
+          if (pick) u.voice = pick;
+          pauseBgForNpc();
+          let ended = false;
+          const finish = () => {
+            if (ended) return;
+            ended = true;
+            resumeBgAfterNpc();
+          };
+          u.onend = finish;
+          u.onerror = finish;
           window.speechSynthesis.speak(u);
-        } catch (e) {}
+        } catch (e) {
+          resumeBgAfterNpc();
+        }
       }
 
       let ambientCtx = null;
@@ -4331,6 +4730,7 @@
         } catch (e) {}
       }
 
+      let micReady = false;
       function bindHoldTalk(btnId, inputId) {
         const btn = $(btnId);
         const input = $(inputId);
@@ -4338,11 +4738,19 @@
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SR) {
           btn.hidden = true;
+          const hint = $("micHint");
+          if (hint) {
+            hint.textContent =
+              "当前浏览器不支持语音识别（请用 Chrome / Edge）。可直接打字提问。";
+          }
           return;
         }
         let rec = null;
         let base = "";
+        let holding = false;
+
         function stop() {
+          holding = false;
           btn.classList.remove("is-listening");
           if (rec) {
             try {
@@ -4350,39 +4758,77 @@
             } catch (e) {}
             rec = null;
           }
+          resumeBgAfterNpc();
         }
-        function start(ev) {
-          if (ev) ev.preventDefault();
+
+        function beginListen() {
           if (rec) return;
+          sanitizeAskInput();
           base = (input.value || "").trim();
+          if (base === "null" || base === "undefined") base = "";
+          pauseBgForNpc();
           rec = new SR();
           rec.lang = "zh-CN";
           rec.interimResults = true;
-          rec.continuous = false;
+          rec.continuous = true;
           btn.classList.add("is-listening");
-          toast("松开结束 · 可再改字");
+          toast("正在听…松开结束，可再改字");
           rec.onresult = (e) => {
             let text = "";
             for (let i = 0; i < e.results.length; i++) {
-              text += e.results[i][0].transcript;
+              const piece =
+                e.results[i] && e.results[i][0] && e.results[i][0].transcript;
+              if (piece && piece !== "null") text += piece;
             }
-            input.value = (base ? base + " " : "") + text;
+            input.value = (base ? base + " " : "") + String(text || "").trim();
+            sanitizeAskInput();
           };
-          rec.onerror = () => {
+          rec.onerror = (ev) => {
+            const err = ev && ev.error;
             stop();
-            toast("语音没听清，再按住试试或直接打字");
+            const hint = $("micHint");
+            if (err === "not-allowed" || err === "service-not-allowed") {
+              toast("浏览器禁止了本站麦克风：点地址栏锁图标 → 麦克风 → 允许");
+              if (hint) {
+                hint.textContent =
+                  "Windows 系统麦克风已开还不够。请点本页地址栏左侧锁图标，把麦克风设为「允许」，刷新后再试。也可直接打字。";
+              }
+            } else if (err === "no-speech") {
+              toast("没听到声音，再按住靠近话筒试试");
+            } else if (err === "network") {
+              toast("语音识别需要联网，请检查网络后重试");
+            } else {
+              toast("语音暂时不可用，请直接打字提问");
+            }
           };
           rec.onend = () => stop();
           try {
             rec.start();
+            micReady = true;
           } catch (err) {
             stop();
+            toast("无法启动语音，请直接打字");
           }
         }
+
+        function start(ev) {
+          if (ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+          }
+          holding = true;
+          // 不先 getUserMedia 再 stop，避免和识别抢麦报「禁止」
+          beginListen();
+        }
+
         btn.addEventListener("pointerdown", start);
         btn.addEventListener("pointerup", stop);
         btn.addEventListener("pointerleave", stop);
         btn.addEventListener("pointercancel", stop);
+        input.addEventListener("focus", sanitizeAskInput);
+        input.addEventListener("input", () => {
+          if (input.value === "null" || input.value === "undefined") input.value = "";
+        });
       }
 
       function openPendingAsk() {
@@ -4954,12 +5400,14 @@
         toast("主线改为「" + catById(state.focus).name + "」");
       });
 
-      /* —— 背景音乐：打开即播；点「去看」暂停 —— */
+      /* —— 背景音乐：打开即播；点「去看」暂停；NPC 对话时压低 —— */
       const bg = $("bgMusic");
       const musicBtn = $("musicBtn");
       const MUSIC_KEY = "doc-passport-g4-music-muted";
       let musicWanted = localStorage.getItem(MUSIC_KEY) !== "1";
       let musicPausedForWatch = false;
+      let musicNpcDepth = 0;
+      let musicFadeTimer = null;
 
       function syncMusicBtn() {
         const muted = !musicWanted || bg.paused;
@@ -4969,17 +5417,32 @@
         musicBtn.title = musicWanted && !bg.paused ? "关闭背景音乐" : "打开背景音乐";
       }
 
+      function fadeBgTo(target, stepMs) {
+        if (!bg) return;
+        clearInterval(musicFadeTimer);
+        const goal = Math.max(0, Math.min(1, target));
+        musicFadeTimer = setInterval(() => {
+          const cur = bg.volume;
+          if (Math.abs(cur - goal) < 0.03) {
+            bg.volume = goal;
+            clearInterval(musicFadeTimer);
+            musicFadeTimer = null;
+            return;
+          }
+          bg.volume = cur + (goal > cur ? 0.04 : -0.04);
+        }, stepMs || 40);
+      }
+
       function tryPlayBg() {
         if (!musicWanted || musicPausedForWatch) {
           syncMusicBtn();
           return;
         }
-        bg.volume = 0.28;
         bg.muted = false;
+        bg.volume = musicNpcDepth > 0 ? 0.04 : 0.28;
         const p = bg.play();
         if (p && typeof p.then === "function") {
           p.then(syncMusicBtn).catch(() => {
-            /* 浏览器拦截自动播放：等一次点击再播 */
             syncMusicBtn();
           });
         } else {
@@ -4999,10 +5462,29 @@
         tryPlayBg();
       }
 
+      function pauseBgForNpc() {
+        musicNpcDepth += 1;
+        if (!bg || musicPausedForWatch || !musicWanted) return;
+        if (bg.paused) return;
+        fadeBgTo(0.04);
+      }
+
+      function resumeBgAfterNpc() {
+        musicNpcDepth = Math.max(0, musicNpcDepth - 1);
+        if (musicNpcDepth > 0) return;
+        if (!bg || musicPausedForWatch || !musicWanted) return;
+        if (bg.paused) {
+          tryPlayBg();
+          return;
+        }
+        fadeBgTo(0.28);
+      }
+
       musicBtn.addEventListener("click", () => {
         musicWanted = !musicWanted;
         localStorage.setItem(MUSIC_KEY, musicWanted ? "0" : "1");
         musicPausedForWatch = false;
+        musicNpcDepth = 0;
         if (musicWanted) tryPlayBg();
         else {
           bg.pause();
@@ -5064,12 +5546,7 @@
           hideSoftBudget();
         }
       });
-      $("nudgeStamp").addEventListener("click", openPendingStamp);
-      $("nudgeAsk").addEventListener("click", openPendingAsk);
-      $("nudgeDismiss").addEventListener("click", () => {
-        hideReturnNudge();
-        toast("记得回来盖印哦");
-      });
+      // 底部绿条已删除，不再绑定 nudge 按钮
       $("homeTaskStamp").addEventListener("click", () => {
         switchTab("passport");
         openPendingStamp();
