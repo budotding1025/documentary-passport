@@ -306,7 +306,7 @@
     }
     .home-discover {
       flex: 0 0 auto;
-      padding: 10px 12px 8px;
+      padding: 8px 8px 6px;
       background: var(--paper);
       border-top: 1px solid rgba(0,0,0,0.08);
       width: 100%;
@@ -315,7 +315,8 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      padding: 0 2px;
     }
     .home-discover-head h2 {
       margin: 0;
@@ -324,15 +325,16 @@
     }
     .home-trio {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
       width: 100%;
     }
     .home-trio-card {
       position: relative;
+      width: 100%;
       aspect-ratio: 16 / 9;
       min-height: 0;
-      max-height: 22vh;
+      max-height: none;
       border: 1px solid rgba(17,17,17,0.15);
       background: #ddd6c8;
       overflow: hidden;
@@ -345,7 +347,9 @@
     }
     .home-trio-card .bg {
       position: absolute;
-      inset: 0;
+      inset: -8%;
+      width: 116%;
+      height: 116%;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -419,7 +423,7 @@
     }
     @media (max-width: 860px) {
       .home-stage { height: auto; min-height: 0; overflow: visible; }
-      .home-trio { grid-template-columns: 1fr; }
+      .home-trio { grid-template-columns: 1fr; gap: 8px; }
       .home-trio-card { max-height: none; }
       .home-hero { flex: none; min-height: 42vh; }
       .home-task-float { position: static; margin: 10px 4vw; max-width: none; }
