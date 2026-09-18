@@ -3638,10 +3638,16 @@
             const bp = progress(b.category).n;
             return ap - bp || am - bm;
           });
-        extras.slice(0, 12).forEach((t) => {
+        // 每组固定 3 部。补到 3 的倍数再切，避免最后一点只剩 1–2 部。
+        let extraN = 0;
+        for (let ei = 0; ei < extras.length; ei++) {
+          if (extraN >= 12 && pool.length % 3 === 0) break;
+          if (extraN >= 14) break;
+          const t = extras[ei];
           const ep = nextOpenEpisode(t);
-          if (!ep) return;
+          if (!ep) continue;
           used.add(t.id);
+          extraN++;
           pool.push({
             kind: "discover",
             label: progress(t.category).n === 0 ? "换格开眼" : "再发现",
@@ -3649,11 +3655,12 @@
             t: t,
             ep: ep,
           });
-        });
+        }
+        const tail = pool.length % 3;
+        if (tail) pool.splice(pool.length - tail, tail);
         const batches = [];
         for (let i = 0; i < pool.length; i += 3) {
-          const slice = pool.slice(i, i + 3);
-          if (slice.length) batches.push(slice);
+          batches.push(pool.slice(i, i + 3));
         }
         if (!batches.length && hero) {
           // 至少给英雄之外留空提示
