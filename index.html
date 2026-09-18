@@ -427,6 +427,45 @@
       .npc-buddy-bubble::after { display: none; }
     }
 
+    .ask-rotate {
+      margin: 0 0 8px;
+      padding: 8px 10px;
+      border: 1px dashed var(--stamp);
+      background: rgba(255,255,255,0.65);
+      cursor: pointer;
+    }
+    .ask-rotate-label {
+      font-size: 0.72rem;
+      color: var(--stamp-deep);
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .ask-rotate-text {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.4;
+      min-height: 2.6em;
+    }
+    .ask-rotate-dots {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .ask-rotate-dots button {
+      appearance: none;
+      width: 8px;
+      height: 8px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #b7c9be;
+      cursor: pointer;
+    }
+    .ask-rotate-dots button.on { background: var(--stamp-deep); }
+    #askInput.is-rotating { color: var(--stamp-deep); }
+
     .ask-box {
       margin-top: 14px;
       border: 1.5px solid var(--stamp);
@@ -1926,8 +1965,13 @@
             </div>
           </div>
           <div class="chat-log" id="chatLog"></div>
+          <div class="ask-rotate" id="askRotate" title="点这里选用，或直接点「问角色」发送">
+            <div class="ask-rotate-label">推荐问题 · 约 3 秒换一条 · 可点选</div>
+            <p class="ask-rotate-text" id="askRotateText">为什么…？</p>
+            <div class="ask-rotate-dots" id="askRotateDots" aria-hidden="false"></div>
+          </div>
           <div class="ask-row">
-            <input type="text" id="askInput" maxlength="120" placeholder="例如：为什么疫苗能保护人？" autocomplete="off" />
+            <input type="text" id="askInput" maxlength="120" placeholder="也可自己打字或按住说话" autocomplete="off" />
             <button type="button" class="hold-talk" id="askHoldTalk" title="按住说话（需麦克风权限）">按住说话</button>
             <button type="button" class="btn" id="askSend">问角色</button>
           </div>
@@ -3941,6 +3985,7 @@
         syncStars();
         $("commentInput").value = prev && prev.comment ? prev.comment : "";
         clearAskInput();
+        startAskPromptRotate(t, ep);
         renderChatLog();
         showSheetView("stamp");
         $("sheet").classList.add("open");
@@ -3961,17 +4006,118 @@
             if (box && box.scrollIntoView) {
               box.scrollIntoView({ behavior: "smooth", block: "center" });
             }
-            clearAskInput();
-            $("askInput").focus();
-            toast("跟「" + npc.name + "」聊两句吧");
+            toast("跟「" + npc.name + "」聊两句吧 · 可直接点「问角色」");
           }, 120);
         }
+      }
+
+      let askPromptList = [];
+      let askPromptIndex = 0;
+      let askPromptTimer = null;
+      let askInputDirty = false;
+
+      function askPromptsFor(t, ep) {
+        const npc = npcForTitle(t);
+        const place = (ep && ep.title) || (t && t.title) || "这集";
+        if (npc.id === "pasteur") {
+          return [
+            "为什么疫苗能保护人，而不是把人弄得更难受？",
+            "如果没有显微镜，巴斯德还能抓住细菌的证据吗？",
+            "巴氏消毒到底把牛奶里的什么「坏蛋」变乖了？",
+          ];
+        }
+        if (npc.id === "crow") {
+          return [
+            "为什么乌鸦会先观察，再下结论？",
+            "如果我是乌鸦，第一步会试什么工具？",
+            "乌鸦用车轮压坚果，算不算一种实验？",
+          ];
+        }
+        if (npc.id === "cellwar" || npc.id === "cellcap") {
+          return [
+            "为什么白细胞要这样打仗？",
+            "如果病毒偷偷换装，身体怎么认出来？",
+            "发烧到底是敌人还是帮手？",
+          ];
+        }
+        return [
+          "为什么《" + place + "》里最重要的一点是什么？",
+          "如果换个条件，结果还会一样吗？",
+          "这集有什么冷知识，我想讲给同学听？",
+        ];
+      }
+
+      function stopAskPromptRotate() {
+        if (askPromptTimer) {
+          clearInterval(askPromptTimer);
+          askPromptTimer = null;
+        }
+      }
+
+      function paintAskPrompt(idx) {
+        if (!askPromptList.length) return;
+        askPromptIndex = ((idx % askPromptList.length) + askPromptList.length) % askPromptList.length;
+        const q = askPromptList[askPromptIndex];
+        const textEl = $("askRotateText");
+        if (textEl) textEl.textContent = q;
+        const dots = $("askRotateDots");
+        if (dots) {
+          dots.innerHTML = "";
+          askPromptList.forEach((_, i) => {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className = i === askPromptIndex ? "on" : "";
+            b.setAttribute("aria-label", "问题 " + (i + 1));
+            b.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              stopAskPromptRotate();
+              paintAskPrompt(i);
+              askInputDirty = false;
+              startAskPromptRotateTimer();
+            });
+            dots.appendChild(b);
+          });
+        }
+        if (!askInputDirty) {
+          const input = $("askInput");
+          if (input) {
+            input.value = q;
+            input.classList.add("is-rotating");
+          }
+        }
+      }
+
+      function startAskPromptRotateTimer() {
+        stopAskPromptRotate();
+        if (askPromptList.length < 2) return;
+        askPromptTimer = setInterval(() => {
+          if (askInputDirty) return;
+          paintAskPrompt(askPromptIndex + 1);
+        }, 3000);
+      }
+
+      function startAskPromptRotate(t, ep) {
+        askInputDirty = false;
+        askPromptList = askPromptsFor(t, ep);
+        askPromptIndex = 0;
+        paintAskPrompt(0);
+        startAskPromptRotateTimer();
+      }
+
+      function currentAskQuestion() {
+        const typed = sanitizeAskInput();
+        if (askInputDirty && typed.length >= 2) return typed;
+        if (askPromptList.length) return askPromptList[askPromptIndex] || typed;
+        return typed;
       }
 
       function clearAskInput() {
         const el = $("askInput");
         if (!el) return;
         el.value = "";
+        askInputDirty = false;
+        el.classList.remove("is-rotating");
       }
 
       function sanitizeAskInput() {
@@ -4123,6 +4269,7 @@
       }
 
       function closeSheet() {
+        stopAskPromptRotate();
         $("sheet").classList.remove("open");
         $("sheet").setAttribute("aria-hidden", "true");
         activeTitle = null;
@@ -4590,9 +4737,9 @@
 
       function sendAsk() {
         if (!activeEpisode) return;
-        const q = ($("askInput").value || "").trim();
+        const q = (currentAskQuestion() || "").trim();
         if (q.length < 2) {
-          toast("先写下你的小疑问");
+          toast("先选一个推荐问题，或自己写一句");
           return;
         }
         const coachTurns = activeChat.filter((m) => m.role === "coach").length;
@@ -4605,6 +4752,9 @@
         activeChat.push({ role: "kid", text: q, good: good });
         activeChat.push({ role: "coach", text: reply });
         clearAskInput();
+        if (activeTitle && activeEpisode) {
+          startAskPromptRotate(activeTitle, activeEpisode);
+        }
         renderChatLog();
         speakNpc(reply, npcForTitle(activeTitle));
         if (good && activeTitle) {
@@ -5259,6 +5409,20 @@
           sendAsk();
         }
       });
+      $("askInput").addEventListener("input", () => {
+        const v = ($("askInput").value || "").trim();
+        const rotating = askPromptList[askPromptIndex] || "";
+        askInputDirty = v.length > 0 && v !== rotating;
+        if (askInputDirty) $("askInput").classList.remove("is-rotating");
+      });
+      if ($("askRotate")) {
+        $("askRotate").addEventListener("click", (e) => {
+          if (e.target && e.target.closest && e.target.closest(".ask-rotate-dots")) return;
+          askInputDirty = false;
+          paintAskPrompt(askPromptIndex);
+          toast("已选中 · 点「问角色」发送");
+        });
+      }
       document.querySelectorAll(".star-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           activeRating = Number(btn.dataset.star);
