@@ -296,6 +296,18 @@
       background: #111;
       transform: rotate(45deg);
     }
+    .npc-buddy.ask-anchor {
+      bottom: auto;
+      align-items: flex-end;
+    }
+    .npc-buddy.ask-anchor .npc-buddy-bubble::after {
+      right: auto;
+      bottom: auto;
+      top: -5px;
+      left: var(--ask-arrow, 42%);
+      margin-left: -5px;
+      transform: rotate(45deg);
+    }
     .npc-buddy-avatar {
       width: 64px;
       height: 64px;
@@ -447,7 +459,7 @@
       .home-hero { flex: none; min-height: 42vh; }
       .home-task-float { position: static; margin: 10px 4vw; max-width: none; }
       .npc-buddy { position: static; margin: 0 4vw 10px; max-width: none; }
-      .npc-buddy-bubble::after { display: none; }
+      .npc-buddy:not(.ask-anchor) .npc-buddy-bubble::after { display: none; }
     }
 
     .ask-rotate {
@@ -3453,11 +3465,13 @@
         const p = state.pendingWatch;
         if (!p) {
           box.hidden = true;
+          placeBuddyArrow();
           return;
         }
         if (episodeStamped(p.titleId, p.episodeId)) {
           clearPendingWatch();
           box.hidden = true;
+          placeBuddyArrow();
           return;
         }
         const t = titleById(p.titleId);
@@ -3474,6 +3488,7 @@
           "》第" +
           ep.n +
           "集 · 也可先跟 NPC 聊两句";
+        placeBuddyArrow();
       }
 
       function renderHomeRecs() {
@@ -4361,6 +4376,7 @@
         buddy.hidden = false;
         buddy.classList.add("show");
         buddy.dataset.titleId = t ? t.id : "";
+        placeBuddyArrow();
         if (!(opts && opts.sticky)) {
           clearTimeout(showNpcBuddy._t);
           showNpcBuddy._t = setTimeout(() => {
@@ -4376,6 +4392,43 @@
         if (!buddy) return;
         buddy.hidden = true;
         buddy.classList.remove("show");
+        placeBuddyArrow();
+      }
+
+      function placeBuddyArrow() {
+        const buddy = $("npcBuddy");
+        const task = $("homeTask");
+        const ask = $("homeTaskAsk");
+        const bubble = $("npcBuddyText");
+        if (!buddy || !bubble) return;
+        const open =
+          !buddy.hidden &&
+          buddy.classList.contains("show") &&
+          task &&
+          !task.hidden &&
+          ask;
+        if (!open) {
+          buddy.classList.remove("ask-anchor");
+          buddy.style.top = "";
+          bubble.style.removeProperty("--ask-arrow");
+          return;
+        }
+        const hero = buddy.offsetParent || $("homeHero");
+        const heroRect = hero.getBoundingClientRect();
+        const taskRect = task.getBoundingClientRect();
+        buddy.classList.add("ask-anchor");
+        if (getComputedStyle(buddy).position !== "static") {
+          buddy.style.top = Math.round(taskRect.bottom - heroRect.top + 8) + "px";
+        } else {
+          buddy.style.top = "";
+        }
+        requestAnimationFrame(() => {
+          const b = bubble.getBoundingClientRect();
+          const a = ask.getBoundingClientRect();
+          const x = a.left + a.width / 2 - b.left;
+          const clamped = Math.max(16, Math.min(Math.max(16, b.width - 16), x));
+          bubble.style.setProperty("--ask-arrow", Math.round(clamped) + "px");
+        });
       }
 
       function markPendingWatch(t, ep) {
@@ -5923,6 +5976,7 @@
         hideReturnNudge();
         toast("任务还在，随时可盖印");
       });
+      window.addEventListener("resize", placeBuddyArrow);
       document.querySelectorAll("[data-go-tab]").forEach((btn) => {
         btn.addEventListener("click", () => switchTab(btn.getAttribute("data-go-tab")));
       });
