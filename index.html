@@ -1239,6 +1239,18 @@
       color: #777;
       margin: 0;
     }
+    .doc-card .play-tier {
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      margin: 0;
+    }
+    .doc-card .play-tier.stable {
+      color: #2a5a42;
+      font-weight: 600;
+    }
+    .doc-card .play-tier.backup {
+      color: #888;
+    }
     .doc-expand {
       border-top: 1px dashed #ccc;
       padding-top: 8px;
@@ -1746,7 +1758,7 @@
     <button type="button" class="active" data-tab="passport">今日推荐</button>
     <button type="button" data-tab="plate">餐盘版块</button>
     <button type="button" data-tab="wish">点播</button>
-    <button type="button" data-tab="godreply">留言神回复</button>
+    <button type="button" data-tab="godreply">我家的神回复</button>
     <button type="button" data-tab="parent">家长台<span class="tab-badge" id="parentTabBadge" hidden>0</span></button>
   </nav>
 
@@ -1868,8 +1880,8 @@
     </section>
 
     <section id="panel-godreply" class="panel">
-      <h1 class="rise">留言神回复</h1>
-      <p class="lede rise">好问题、稀有章与角色神回复合集。问得漂亮会出现在这里。</p>
+      <h1 class="rise">我家的神回复</h1>
+      <p class="lede rise">本机收藏的好问题与角色神回复，不是公开广场。问得漂亮会出现在这里。</p>
       <div id="godReplyList" class="stamps-log"></div>
     </section>
 
@@ -1878,11 +1890,11 @@
       <p class="lede rise">查看点播提醒、本周时长、喜好与未盖印。孩子电脑导出护照后，可在此导入同步。</p>
       <div id="parentGate" class="wish-form rise">
         <label class="mono" for="parentPin">口令</label>
-        <input id="parentPin" type="password" maxlength="20" placeholder="默认 passport" />
+        <input id="parentPin" type="password" maxlength="20" placeholder="家长口令" />
         <div class="actions" style="margin-top:12px">
           <button type="button" class="btn" id="parentUnlock">打开家长台</button>
         </div>
-        <p class="hint">口令只挡孩子误点；不是账号登录。默认：passport</p>
+        <p class="hint">口令只挡孩子误点；不是账号登录。</p>
         <div class="parent-gate-note" id="parentGateNote" hidden>有点播待处理，解锁后查看今日片源任务。</div>
       </div>
       <div id="parentBody" hidden>
@@ -1919,6 +1931,12 @@
         </div>
         <div id="parentRatings" class="stamps-log"></div>
 
+        <div class="title-row">
+          <h2>链接待修</h2>
+          <span class="mono" id="linkIssueCount">0</span>
+        </div>
+        <div id="parentLinkIssues" class="stamps-log"></div>
+
         <div class="sync-box">
           <div class="mono">护照同步 · 文件或 QQ 粘贴</div>
           <p class="hint" style="margin:6px 0 10px">
@@ -1928,6 +1946,7 @@
             <button type="button" class="btn" id="parentExport">导出文件</button>
             <button type="button" class="btn ghost" id="parentCopy">复制文字</button>
             <button type="button" class="btn ghost" id="parentImportBtn">选文件导入</button>
+            <button type="button" class="btn ghost" id="parentExportShareable">导出可分享名单</button>
             <button type="button" class="btn ghost" id="parentLock">锁定</button>
           </div>
           <textarea id="parentPasteInput" maxlength="500000" placeholder="从 QQ 复制整段护照 JSON，粘贴到这里…" style="margin-top:12px;min-height:100px"></textarea>
@@ -1987,6 +2006,7 @@
         <div class="actions" style="margin-top:10px">
           <a class="btn" id="stampWatch" href="#" target="_blank" rel="noopener">去看这一集</a>
           <a class="btn ghost" id="stampAlt" href="#" target="_blank" rel="noopener" hidden>备用入口</a>
+          <button type="button" class="btn ghost" id="stampLinkBroken">链接打不开</button>
         </div>
 
         <div class="ask-box" id="askBox">
@@ -2045,7 +2065,7 @@
           <h2>评论 / 感受</h2>
           <span class="mono">选填</span>
         </div>
-        <textarea id="commentInput" maxlength="160" placeholder="想推荐给朋友的一句话，或随便写点感受。"></textarea>
+        <textarea id="commentInput" maxlength="160" placeholder="写给自己或给爸爸妈妈的一句话。"></textarea>
 
         <div class="actions" style="margin-top:14px">
           <button type="button" class="btn" id="stampBtn">写完盖印</button>
@@ -2059,14 +2079,14 @@
     <div class="watch-bay-bar">
       <div class="meta" id="watchBayMeta">观看舱</div>
       <a class="btn ghost" id="watchBayExternal" href="#" target="_blank" rel="noopener" style="color:#f3efe6;border-color:rgba(243,239,230,0.45)">外链打开</a>
+      <button type="button" class="btn ghost" id="watchBayBroken" style="color:#f3efe6;border-color:rgba(243,239,230,0.45)">链接打不开</button>
       <button type="button" class="btn" id="watchBayStamp">回护照盖印</button>
       <button type="button" class="btn ghost" id="watchBayClose" style="color:#f3efe6;border-color:rgba(243,239,230,0.45)">关闭</button>
     </div>
-    <iframe class="watch-bay-frame" id="watchBayFrame" title="观看舱" referrerpolicy="no-referrer"></iframe>
     <div class="watch-bay-fallback" id="watchBayFallback">
       <div>
-        <p>这部片子的网站不让嵌进页面（很常见）。</p>
-        <p class="hint" style="color:rgba(243,239,230,0.7)">已用外链打开；看完点「回护照盖印」即可。</p>
+        <p>片子在新标签页播放。</p>
+        <p class="hint" style="color:rgba(243,239,230,0.7)">看完点「回护照盖印」即可。</p>
       </div>
     </div>
   </div>
@@ -2125,6 +2145,8 @@
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
       const STORE_KEY_LEGACY = "doc-passport-g4-v1";
+      // 家长口令（防误点，非账号）。可自行改这一行。
+      const PARENT_PIN = "g4home";
       const cats = DOC_CATALOG.categories;
       const titles = DOC_CATALOG.titles;
       const rotation = DOC_CATALOG.rotation;
@@ -2173,6 +2195,7 @@
           rareStamps: [], // {id, kind, label, titleId, episodeId, at}
           medals: [], // {id, label, at}
           godReplies: [], // {titleId, title, episodeId, episodeTitle, q, a, npc, at}
+          linkIssues: [], // {titleId, episodeId, title, episodeTitle, url, at, note}
           week: weekIndex(),
           focus: rotation[weekIndex() % rotation.length],
           swapUsed: false,
@@ -2382,11 +2405,6 @@
           ext.href = url || "#";
           ext.textContent = url ? "再次打开片源" : "暂无链接";
         }
-        const frame = $("watchBayFrame");
-        if (frame) {
-          frame.removeAttribute("src");
-          frame.style.display = "none";
-        }
         bay.classList.add("show", "show-fallback");
         bay.setAttribute("aria-hidden", "false");
         const fb = $("watchBayFallback");
@@ -2408,11 +2426,6 @@
         bay.classList.remove("show", "show-fallback");
         bay.setAttribute("aria-hidden", "true");
         delete bay.dataset.openedExt;
-        const frame = $("watchBayFrame");
-        if (frame) {
-          frame.style.display = "";
-          frame.removeAttribute("src");
-        }
         stopPersonaAmbient();
         expectMusicResumeOnReturn = false;
         resumeBgAfterWatch();
@@ -2507,6 +2520,8 @@
             if (wish.category && wish.category !== "other" && t.category === wish.category) {
               score += 1;
             }
+            if (isShareable(t)) score += 8;
+            else if (t.play === "ok") score -= 2;
             return { t: t, score: score };
           })
           .filter((x) => x.score > 0)
@@ -2532,8 +2547,14 @@
         return hit;
       }
 
+      function openLinkIssues() {
+        return (state.linkIssues || []).filter((x) => !x.doneAt);
+      }
+
       function syncParentBadge() {
-        const n = openWishes().length;
+        const wishN = openWishes().length;
+        const linkN = openLinkIssues().length;
+        const n = wishN + linkN;
         const badge = $("parentTabBadge");
         if (!badge) return;
         if (n > 0) {
@@ -2548,11 +2569,18 @@
             gateNote.hidden = false;
             const w = primaryWishForToday();
             const isYday = w && w.dayKey === yesterdayKey();
-            gateNote.textContent = isYday
-              ? "昨天孩子点播了「" +
+            if (wishN && isYday) {
+              gateNote.textContent =
+                "昨天孩子点播了「" +
                 (w.topic || "未写主题") +
-                "」· 今日需更新片源（解锁查看）"
-              : "有 " + n + " 条点播待处理 · 解锁后查看今日片源任务";
+                "」· 今日需更新片源（解锁查看）";
+            } else if (wishN) {
+              gateNote.textContent =
+                "有 " + wishN + " 条点播待处理 · 解锁后查看今日片源任务";
+            } else {
+              gateNote.textContent =
+                "有 " + linkN + " 条链接待修 · 解锁后在家长台查看";
+            }
           } else {
             gateNote.hidden = true;
           }
@@ -2655,6 +2683,8 @@
                   dayOpens: state.dayOpens || [],
                   rareStamps: state.rareStamps || [],
                   medals: state.medals || [],
+                  godReplies: state.godReplies || [],
+                  linkIssues: state.linkIssues || [],
                   week: state.week,
               focus: state.focus,
               swapUsed: !!state.swapUsed,
@@ -2728,6 +2758,8 @@
             dayOpens: data.dayOpens || [],
             rareStamps: data.rareStamps || [],
             medals: data.medals || [],
+            godReplies: data.godReplies || [],
+            linkIssues: data.linkIssues || [],
             week: data.week,
             focus: data.focus,
             swapUsed: data.swapUsed,
@@ -2863,6 +2895,7 @@
         if (!Array.isArray(next.rareStamps)) next.rareStamps = [];
         if (!Array.isArray(next.medals)) next.medals = [];
         if (!Array.isArray(next.godReplies)) next.godReplies = [];
+        if (!Array.isArray(next.linkIssues)) next.linkIssues = [];
         next.wishes = (next.wishes || []).map((w) =>
           Object.assign({ handledAt: null, handleNote: "" }, w)
         );
@@ -2915,6 +2948,110 @@
 
       function titleById(id) {
         return titles.find((t) => t.id === id);
+      }
+
+      function isShareable(t) {
+        if (!t) return false;
+        if (typeof t.shareable === "boolean") return t.shareable;
+        return t.play === "stable";
+      }
+
+      function playTierLabel(t) {
+        if (!t) return "";
+        if (isShareable(t) || t.play === "stable") return "正版";
+        if (t.play === "ok") return "仅自家备用，可能下架";
+        return "失效 / 待修";
+      }
+
+      function isOfficialAlt(url) {
+        if (!url) return false;
+        const u = String(url).toLowerCase();
+        if (
+          /pan\.baidu|baidu\.com\/s\/|lanzou|aliyundrive|alipan\.com|quark\.cn|123pan|thunder|magnet:|ed2k:/.test(
+            u
+          )
+        ) {
+          return false;
+        }
+        return /cctv\.com|tv\.cctv|bilibili\.com\/bangumi|iqiyi\.com|v\.qq\.com|v\.youku\.com|open\.163\.com|open\.sina\.com\.cn/.test(
+          u
+        );
+      }
+
+      function reportLinkBroken(t, ep, href) {
+        if (!t) {
+          toast("先打开一部片子再报修");
+          return;
+        }
+        const episode = ep || (t && nextOpenEpisode(t)) || episodesOf(t)[0];
+        const url = href || (episode && episode.link) || t.link || "";
+        const key =
+          t.id + "::" + (episode ? episode.id : "") + "::" + url;
+        state.linkIssues = state.linkIssues || [];
+        if (
+          state.linkIssues.some(
+            (x) =>
+              x.titleId === t.id &&
+              x.episodeId === (episode && episode.id) &&
+              x.url === url &&
+              !x.doneAt
+          )
+        ) {
+          toast("家长台已有这条待修");
+          return;
+        }
+        state.linkIssues.unshift({
+          id: key + "::" + Date.now(),
+          titleId: t.id,
+          episodeId: episode ? episode.id : "",
+          title: t.title,
+          episodeTitle: episode ? episode.title : "",
+          url: url,
+          play: t.play || "",
+          shareable: !!isShareable(t),
+          at: Date.now(),
+          note: "链接打不开",
+        });
+        save(state);
+        syncParentBadge();
+        toast("已记到家长台 · 链接待修");
+      }
+
+      function exportShareableList() {
+        const rows = titles
+          .filter((t) => isShareable(t))
+          .map((t) => ({
+            id: t.id,
+            title: t.title,
+            grade: "四年级",
+            category: (catById(t.category) || {}).name || t.category,
+            blurb: t.blurb || "",
+            link: t.link || "",
+            playNote: t.playNote || "",
+            episodeHint: t.episodeHint || "",
+            parentNote: t.parentNote || "",
+            questions: t.afterWatchQuestions || t.questions || [],
+          }));
+        const text = JSON.stringify(
+          {
+            kind: "documentary-shareable-list",
+            version: 1,
+            exportedAt: new Date().toISOString(),
+            count: rows.length,
+            titles: rows,
+          },
+          null,
+          2
+        );
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(
+          new Blob([text], { type: "application/json" })
+        );
+        a.download =
+          "documentary-shareable-" + dayKey() + ".json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        toast("已导出可分享名单 · " + rows.length + " 部");
       }
 
       function stampsFor(catId) {
@@ -3036,6 +3173,7 @@
           '<div class="doc-main">' +
           '<div class="row1"><div class="doc-title"></div><div class="tag"></div></div>' +
           '<div class="doc-duration"></div>' +
+          '<p class="play-tier"></p>' +
           '<div class="doc-blurb"></div>' +
           '<div class="doc-rating"></div>' +
           (locked ? '<p class="lock-hint">工作日限 30 分钟内 · 周五 18:00 后 / 周末再看</p>' : "") +
@@ -3061,6 +3199,12 @@
             (t.slot === "A" ? "A · " : "B · ") + (cat ? cat.short : "");
         }
         el.querySelector(".doc-duration").textContent = titleDurationLabel(t);
+        const tierEl = el.querySelector(".play-tier");
+        const tier = playTierLabel(t);
+        tierEl.textContent = tier;
+        tierEl.classList.add(
+          isShareable(t) || t.play === "stable" ? "stable" : "backup"
+        );
         el.querySelector(".doc-blurb").textContent = t.blurb || t.mapPin || "";
         const ratingEl = el.querySelector(".doc-rating");
         if (avg > 0) {
@@ -3283,14 +3427,24 @@
           let picked = null;
           for (let i = 0; i < preferIds.length; i++) {
             const t = titleById(preferIds[i]);
-            if (t && !usedTitles.has(t.id) && nextOpenEpisode(t)) {
+            if (
+              t &&
+              isShareable(t) &&
+              !usedTitles.has(t.id) &&
+              nextOpenEpisode(t)
+            ) {
               picked = t;
               break;
             }
           }
           if (!picked) {
             const pool = titles
-              .filter((t) => !usedTitles.has(t.id) && nextOpenEpisode(t))
+              .filter(
+                (t) =>
+                  isShareable(t) &&
+                  !usedTitles.has(t.id) &&
+                  nextOpenEpisode(t)
+              )
               .filter(
                 (t) =>
                   t.muscle === "生物" ||
@@ -3343,6 +3497,7 @@
           const candidate = titles.find(
             (t) =>
               t.category === c.id &&
+              isShareable(t) &&
               !usedTitles.has(t.id) &&
               nextOpenEpisode(t)
           );
@@ -3368,7 +3523,7 @@
         // 填满到 3
         if (recs.length < 3) {
           const snack = titles.find((t) => {
-            if (usedTitles.has(t.id)) return false;
+            if (!isShareable(t) || usedTitles.has(t.id)) return false;
             const ep = nextOpenEpisode(t);
             return ep && episodeMinutes(ep, t) <= 10;
           });
@@ -3385,7 +3540,7 @@
         }
 
         if (!recs.length) {
-          const t = titles.find((x) => nextOpenEpisode(x));
+          const t = titles.find((x) => isShareable(x) && nextOpenEpisode(x));
           if (t) {
             pushRec({
               kind: "fallback",
@@ -3805,13 +3960,16 @@
         const pool = [];
         primary.forEach((r) => {
           if (r && r.t && !used.has(r.t.id)) {
+            if (r.kind !== "continue" && !isShareable(r.t)) return;
             used.add(r.t.id);
             pool.push(r);
           }
         });
         // 扩充轮换池：年龄友好短片 / 未碰过的格
         const extras = titles
-          .filter((t) => !used.has(t.id) && nextOpenEpisode(t))
+          .filter(
+            (t) => isShareable(t) && !used.has(t.id) && nextOpenEpisode(t)
+          )
           .sort((a, b) => {
             const am = episodeMinutes(nextOpenEpisode(a), a);
             const bm = episodeMinutes(nextOpenEpisode(b), b);
@@ -4158,10 +4316,10 @@
         $("stampWatch").href = ep.link || t.link;
         $("stampWatch").textContent = "去看这一集";
         const alt = $("stampAlt");
-        if (t.altLink) {
+        if (t.altLink && isOfficialAlt(t.altLink)) {
           alt.hidden = false;
           alt.href = t.altLink;
-          alt.textContent = t.altLabel || "备用";
+          alt.textContent = t.altLabel || "备用入口";
         } else {
           alt.hidden = true;
         }
@@ -5440,20 +5598,28 @@
             (cat ? cat.name : wish.category || "其他") +
             " · 留言日 " +
             wish.dayKey +
-            "。请今天补链接进片库，或确认库里已有合适片子。";
+            "。请优先找正版（stable）源；找不到先记在待办，不要用投稿直链顶上。";
           const sug = suggestTitlesForWish(wish);
           if (sug.length) {
             suggestEl.hidden = false;
             suggestEl.textContent =
-              "库内相近可先用：" +
-              sug.map((t) => "《" + t.title + "》").join("、") +
-              "。不够再新找片源。";
+              "库内相近（已标正版优先）：" +
+              sug
+                .map(
+                  (t) =>
+                    "《" +
+                    t.title +
+                    "》" +
+                    (isShareable(t) ? "·正版" : "·仅备用")
+                )
+                .join("、") +
+              "。不够再新找 stable 片源。";
           } else {
             suggestEl.hidden = false;
             suggestEl.textContent =
-              "库内暂无明显相近片 · 建议今天新找「" +
+              "库内暂无相近正版片 · 建议今天新找「" +
               (wish.topic || "该主题") +
-              "」相关纪录片链接并加入片库。";
+              "」的官方/正版链接；找不到就先留待办，勿用投稿顶上。";
           }
         } else {
           alert.hidden = true;
@@ -5584,25 +5750,87 @@
         rBox.innerHTML = "";
         if (!rated.length) {
           rBox.innerHTML = '<div class="empty">还没有评分或评论。</div>';
-          return;
+        } else {
+          rated.forEach((s, i) => {
+            const t = titleById(s.titleId);
+            const tier = playTierLabel(t);
+            const row = document.createElement("div");
+            row.className = "stamp-row";
+            row.style.animationDelay = i * 0.03 + "s";
+            row.innerHTML = '<div class="t"></div><div class="n"></div>';
+            row.querySelector(".t").textContent =
+              (t ? t.title : s.titleId) +
+              " · " +
+              (s.episodeTitle || "") +
+              " · " +
+              (s.rating ? starsText(s.rating) : "未评星") +
+              (tier ? " · " + tier : "") +
+              (s.quick ? " · 快盖" : "");
+            row.querySelector(".n").textContent =
+              (s.note || "") + (s.comment ? " ｜ 评：" + s.comment : "");
+            rBox.appendChild(row);
+          });
         }
-        rated.forEach((s, i) => {
-          const t = titleById(s.titleId);
-          const row = document.createElement("div");
-          row.className = "stamp-row";
-          row.style.animationDelay = i * 0.03 + "s";
-          row.innerHTML = '<div class="t"></div><div class="n"></div>';
-          row.querySelector(".t").textContent =
-            (t ? t.title : s.titleId) +
-            " · " +
-            (s.episodeTitle || "") +
-            " · " +
-            (s.rating ? starsText(s.rating) : "未评星") +
-            (s.quick ? " · 快盖" : "");
-          row.querySelector(".n").textContent =
-            (s.note || "") + (s.comment ? " ｜ 评：" + s.comment : "");
-          rBox.appendChild(row);
-        });
+
+        const issues = openLinkIssues();
+        const issueCount = $("linkIssueCount");
+        const iBox = $("parentLinkIssues");
+        if (issueCount) issueCount.textContent = issues.length + " 条";
+        if (iBox) {
+          iBox.innerHTML = "";
+          if (!issues.length) {
+            iBox.innerHTML =
+              '<div class="empty">没有待修链接。孩子或你在盖印页点「链接打不开」会出现在这里。</div>';
+          } else {
+            issues.forEach((x, i) => {
+              const t = titleById(x.titleId);
+              const row = document.createElement("div");
+              row.className = "stamp-row";
+              row.style.animationDelay = i * 0.03 + "s";
+              row.innerHTML =
+                '<div class="t"></div><div class="n"></div><div class="actions" style="margin-top:8px"></div>';
+              row.querySelector(".t").textContent =
+                "《" +
+                (x.title || (t && t.title) || x.titleId) +
+                "》" +
+                (x.episodeTitle ? " · " + x.episodeTitle : "") +
+                " · " +
+                (x.shareable || (t && isShareable(t)) ? "正版" : "仅备用");
+              row.querySelector(".n").textContent =
+                (x.url || "无链接") +
+                " · " +
+                (x.note || "链接打不开");
+              const doneBtn = document.createElement("button");
+              doneBtn.type = "button";
+              doneBtn.className = "btn";
+              doneBtn.textContent = "已修好";
+              doneBtn.addEventListener("click", () => {
+                state.linkIssues = (state.linkIssues || []).map((it) =>
+                  it.id === x.id ||
+                  (it.titleId === x.titleId &&
+                    it.episodeId === x.episodeId &&
+                    it.url === x.url &&
+                    !it.doneAt)
+                    ? Object.assign({}, it, { doneAt: Date.now() })
+                    : it
+                );
+                save(state);
+                renderParent();
+                toast("已勾掉待修");
+              });
+              const openBtn = document.createElement("button");
+              openBtn.type = "button";
+              openBtn.className = "btn ghost";
+              openBtn.textContent = "打开链接";
+              openBtn.addEventListener("click", () => {
+                if (x.url) window.open(x.url, "_blank", "noopener,noreferrer");
+              });
+              row.querySelector(".actions").appendChild(doneBtn);
+              row.querySelector(".actions").appendChild(openBtn);
+              iBox.appendChild(row);
+            });
+          }
+        }
       }
 
       function renderAll() {
@@ -5662,8 +5890,8 @@
       $("wishSubmit").addEventListener("click", submitWish);
       $("parentUnlock").addEventListener("click", () => {
         const pin = ($("parentPin").value || "").trim();
-        if (pin !== "passport" && pin !== "Passport") {
-          toast("口令不对（默认 passport）");
+        if (pin !== PARENT_PIN) {
+          toast("口令不对");
           return;
         }
         parentOpen = true;
@@ -5709,6 +5937,9 @@
         });
       }
       $("parentExport").addEventListener("click", downloadPassport);
+      if ($("parentExportShareable")) {
+        $("parentExportShareable").addEventListener("click", exportShareableList);
+      }
       if ($("passportExport")) $("passportExport").addEventListener("click", downloadPassport);
       $("parentCopy").addEventListener("click", copyPassportText);
       if ($("passportCopy")) $("passportCopy").addEventListener("click", copyPassportText);
@@ -5773,6 +6004,17 @@
           closeWatchBay();
           if (t && ep) openStamp(t, ep);
           else openPendingStamp();
+        });
+      }
+      if ($("watchBayBroken")) {
+        $("watchBayBroken").addEventListener("click", () => {
+          reportLinkBroken(
+            watchBayTitle,
+            watchBayEpisode,
+            watchBayEpisode
+              ? watchBayEpisode.link || (watchBayTitle && watchBayTitle.link)
+              : ""
+          );
         });
       }
       document.querySelectorAll(".prompt-chip").forEach((btn) => {
@@ -5946,6 +6188,17 @@
           );
         }
       });
+      if ($("stampLinkBroken")) {
+        $("stampLinkBroken").addEventListener("click", () => {
+          reportLinkBroken(
+            activeTitle,
+            activeEpisode,
+            activeEpisode
+              ? activeEpisode.link || (activeTitle && activeTitle.link)
+              : ""
+          );
+        });
+      }
       $("softBudgetRest").addEventListener("click", () => {
         hideSoftBudget();
         toast("好的，今天先到这儿，早点睡");
