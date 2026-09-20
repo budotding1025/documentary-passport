@@ -7,7 +7,7 @@
  */
 window.DOC_CATALOG = {
   grade: 4,
-  title: "四年级 · 纪录片小探险家",
+  title: "看世界护照 · 四年级小探险家",
   categories: [
     { id: "drive", name: "自驱力", short: "自驱", muscles: ["意志", "选择"] },
     { id: "nature", name: "科学探索", short: "科学", muscles: ["生物", "实验", "数理"] },
