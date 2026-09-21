@@ -766,6 +766,44 @@
       font-size: 1.05rem;
       letter-spacing: 0.06em;
     }
+    .find-bar {
+      display: grid;
+      gap: 10px;
+      margin: 8px 0 4px;
+    }
+    .find-bar input {
+      width: 100%;
+      border: 1px solid var(--ink);
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+      font-size: 1rem;
+    }
+    .find-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .find-chip {
+      border: 1px solid var(--ink);
+      background: transparent;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font: inherit;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+    .find-chip.on {
+      background: var(--stamp-deep);
+      color: #f7f3ea;
+      border-color: var(--stamp-deep);
+    }
+    .btn.fav-on {
+      color: #b45309;
+      border-color: #b45309;
+      background: #fff7ed;
+    }
     .mono {
       font-family: "JetBrains Mono", monospace;
       font-size: 0.72rem;
@@ -1884,6 +1922,16 @@
       <h1 class="rise">餐盘版块</h1>
       <p class="lede rise">四格片库。工作日灰色＝单集超过 30 分钟；周五 18:00 起与周末全开放。</p>
       <div class="plate rise" id="plateGrid"></div>
+      <div class="find-bar rise">
+        <input id="plateSearch" type="search" placeholder="搜片名，例如：细胞、巴斯德" autocomplete="off" />
+        <div class="find-chips" id="plateChips">
+          <button type="button" class="find-chip on" data-shelf="all">全部</button>
+          <button type="button" class="find-chip" data-shelf="seen">我看过的</button>
+          <button type="button" class="find-chip" data-shelf="fav">我的收藏</button>
+          <button type="button" class="find-chip" data-shelf="short">短片</button>
+          <button type="button" class="find-chip" data-shelf="open">还没看完</button>
+        </div>
+      </div>
       <div class="title-row">
         <h2>本格片库</h2>
         <span class="mono" id="plateFilterLabel">全部</span>
@@ -2239,6 +2287,7 @@
           medals: [], // {id, label, at}
           godReplies: [], // {titleId, title, episodeId, episodeTitle, q, a, npc, at}
           linkIssues: [], // {titleId, episodeId, title, episodeTitle, url, at, note}
+          favorites: [], // titleId，还想再看
           week: weekIndex(),
           focus: rotation[weekIndex() % rotation.length],
           swapUsed: false,
@@ -2727,8 +2776,9 @@
                   rareStamps: state.rareStamps || [],
                   medals: state.medals || [],
                   godReplies: state.godReplies || [],
-                  linkIssues: state.linkIssues || [],
-                  week: state.week,
+              linkIssues: state.linkIssues || [],
+              favorites: state.favorites || [],
+              week: state.week,
               focus: state.focus,
               swapUsed: !!state.swapUsed,
               filter: state.filter || null,
@@ -2803,6 +2853,7 @@
             medals: data.medals || [],
             godReplies: data.godReplies || [],
             linkIssues: data.linkIssues || [],
+            favorites: data.favorites || [],
             week: data.week,
             focus: data.focus,
             swapUsed: data.swapUsed,
@@ -2939,6 +2990,8 @@
         if (!Array.isArray(next.medals)) next.medals = [];
         if (!Array.isArray(next.godReplies)) next.godReplies = [];
         if (!Array.isArray(next.linkIssues)) next.linkIssues = [];
+        if (!Array.isArray(next.favorites)) next.favorites = [];
+        next.favorites = next.favorites.filter((id, i, arr) => arr.indexOf(id) === i);
         next.wishes = (next.wishes || []).map((w) =>
           Object.assign({ handledAt: null, handleNote: "" }, w)
         );
@@ -3322,6 +3375,15 @@
         }
 
         const acts = el.querySelector(".actions");
+        const fav = document.createElement("button");
+        fav.type = "button";
+        fav.className = "btn ghost" + (isFavorite(t) ? " fav-on" : "");
+        fav.textContent = isFavorite(t) ? "★ 已收藏" : "☆ 收藏";
+        fav.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggleFavorite(t);
+        });
+        acts.appendChild(fav);
         const open = document.createElement("button");
         open.type = "button";
         open.className = "btn";
@@ -4190,15 +4252,88 @@
         });
 
         const filter = state.filter;
-        $("plateFilterLabel").textContent = filter
-          ? catById(filter).name + " · 再点清空"
-          : "点格子筛选";
+        const shelfName = {
+          all: "",
+          seen: "我看过的",
+          fav: "我的收藏",
+          short: "短片",
+          open: "还没看完",
+        }[plateShelf] || "";
+        const q = (plateQuery || "").trim();
+        $("plateFilterLabel").textContent = [
+          filter ? catById(filter).name : "全部版块",
+          shelfName,
+          q ? "「" + q + "」" : "",
+        ]
+          .filter(Boolean)
+          .join(" · ");
+        document.querySelectorAll("#plateChips .find-chip").forEach((btn) => {
+          btn.classList.toggle("on", btn.getAttribute("data-shelf") === plateShelf);
+        });
+        const searchEl = $("plateSearch");
+        if (searchEl && searchEl.value !== plateQuery) searchEl.value = plateQuery;
         const list = $("plateList");
         list.innerHTML = "";
-        const pool = filter ? titles.filter((t) => t.category === filter) : titles;
+        let pool = filter ? titles.filter((t) => t.category === filter) : titles.slice();
+        if (plateShelf === "seen") {
+          pool = pool.filter((t) => titleTouched(t));
+          pool.sort((a, b) => latestStampAt(b) - latestStampAt(a));
+        } else if (plateShelf === "fav") {
+          pool = pool.filter((t) => isFavorite(t));
+        } else if (plateShelf === "short") {
+          pool = pool.filter((t) =>
+            episodesOf(t).some((ep) => episodeMinutes(ep, t) <= 30)
+          );
+        } else if (plateShelf === "open") {
+          pool = pool.filter((t) => !titleFullyDone(t));
+        }
+        if (q) {
+          const needle = q.toLowerCase();
+          pool = pool.filter((t) =>
+            (t.title + " " + (t.blurb || "") + " " + (t.mapPin || ""))
+              .toLowerCase()
+              .indexOf(needle) >= 0
+          );
+        }
         pool.forEach((t, i) => list.appendChild(renderCard(t, i)));
-        if (!pool.length) list.innerHTML = '<div class="empty">无片</div>';
+        if (!pool.length) {
+          const empty = {
+            seen: "还没有盖过印的片子。看完一集回来盖印，就会出现在这里。",
+            fav: "还没有收藏。在片子上点「收藏」，下次从这里找。",
+            short: "这一格里没有工作日能看的短片。",
+            open: "这一格里的片子都看完了。",
+            all: "没有找到。换个词，或点「全部」。",
+          };
+          list.innerHTML =
+            '<div class="empty">' + (q ? empty.all : empty[plateShelf] || empty.all) + "</div>";
+        }
       }
+
+      function isFavorite(t) {
+        return !!(t && (state.favorites || []).indexOf(t.id) >= 0);
+      }
+
+      function toggleFavorite(t) {
+        if (!t) return;
+        if (!Array.isArray(state.favorites)) state.favorites = [];
+        const i = state.favorites.indexOf(t.id);
+        if (i >= 0) state.favorites.splice(i, 1);
+        else state.favorites.unshift(t.id);
+        save(state);
+        renderPlate();
+        toast(i >= 0 ? "已取消收藏" : "已放进我的收藏");
+      }
+
+      function latestStampAt(t) {
+        let at = 0;
+        (state.stamps || []).forEach((s) => {
+          if (s.titleId === t.id && (s.at || 0) > at) at = s.at || 0;
+        });
+        return at;
+      }
+
+      let plateShelf = "all";
+      let plateQuery = "";
 
       let activeTitle = null;
       let activeEpisode = null;
@@ -6372,6 +6507,20 @@
 
       tryPlayBg();
       syncMusicBtn();
+
+      const plateSearch = $("plateSearch");
+      if (plateSearch) {
+        plateSearch.addEventListener("input", () => {
+          plateQuery = plateSearch.value || "";
+          renderPlate();
+        });
+      }
+      document.querySelectorAll("#plateChips .find-chip").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          plateShelf = btn.getAttribute("data-shelf") || "all";
+          renderPlate();
+        });
+      });
 
       renderAll();
       checkReturnNudge();
