@@ -4320,6 +4320,13 @@
           }
           card.querySelector(".ep-title").textContent =
             "第 " + ep.n + " 集 · " + ep.title;
+          if (/家长陪|可能恶心|可能不适/.test(ep.blurb || "")) {
+            const warn = document.createElement("span");
+            warn.className = "parent-warn";
+            warn.textContent = "需家长陪看";
+            card.querySelector(".ep-title").appendChild(document.createTextNode(" "));
+            card.querySelector(".ep-title").appendChild(warn);
+          }
           const tag = card.querySelector(".tag");
           if (!allowed) {
             tag.classList.add("soft");
