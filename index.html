@@ -350,10 +350,6 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 6px;
       width: 100%;
-      transition: opacity 0.28s ease;
-    }
-    .home-trio.is-swap {
-      opacity: 0;
     }
     .home-trio-card {
       position: relative;
@@ -380,10 +376,15 @@
       object-position: center;
       display: block;
       opacity: 0;
-      transition: opacity 0.4s ease;
     }
     .home-trio-card .bg.is-in {
       opacity: 1;
+    }
+    .home-trio-parent {
+      color: #fecaca;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-bottom: 3px;
     }
     .home-trio-card .veil {
       position: absolute;
@@ -3850,9 +3851,12 @@
         }
 
         bindTrioHover();
-        presentTrioBatch(0, false);
         preloadTrioAhead(0);
-        startHomeTrioRotate();
+        waitBatchArt(0).then(() => {
+          if (homeTrioBatches !== packs.batches) return;
+          presentTrioBatch(0);
+          startHomeTrioRotate();
+        });
       }
 
       let homeHeroRec = null;
@@ -3864,6 +3868,7 @@
       let homeTrioHoverBound = false;
       let trioPaintToken = 0;
       const thumbReady = new Map();
+      const thumbKeep = [];
 
       function heroArtUrl(t) {
         if (!t) return "";
@@ -3887,9 +3892,7 @@
         if (img.dataset.src === url && img.classList.contains("is-in")) return;
         const show = () => {
           if (img.dataset.src !== url) return;
-          const done = () => img.classList.add("is-in");
-          if (img.decode) img.decode().then(done).catch(done);
-          else done();
+          img.classList.add("is-in");
         };
         img.classList.remove("is-in");
         img.dataset.src = url;
@@ -3923,9 +3926,14 @@
             if (!ok) thumbReady.delete(url);
             resolve(ok);
           };
-          img.onload = () => finish(true);
+          img.onload = () => {
+            if (img.decode) img.decode().then(() => finish(true)).catch(() => finish(true));
+            else finish(true);
+          };
           img.onerror = () => finish(false);
+          img.decoding = "sync";
           img.src = url;
+          thumbKeep.push(img);
         });
         thumbReady.set(url, p);
         return p;
@@ -3946,7 +3954,7 @@
       let thumbQueue = [];
       let thumbWorkers = 0;
       function pumpThumbs() {
-        while (thumbWorkers < 3 && thumbQueue.length) {
+        while (thumbWorkers < 8 && thumbQueue.length) {
           const url = thumbQueue.shift();
           thumbWorkers++;
           ensureThumb(url).then(() => {
@@ -4002,24 +4010,10 @@
         });
       }
 
-      function presentTrioBatch(idx, fade) {
+      function presentTrioBatch(idx) {
         const token = ++trioPaintToken;
-        const trio = $("homeTrio");
-        const run = () => {
-          if (token !== trioPaintToken) return;
-          paintHomeTrioBatch(idx);
-          if (!trio) return;
-          requestAnimationFrame(() => {
-            if (token !== trioPaintToken) return;
-            trio.classList.remove("is-swap");
-          });
-        };
-        if (fade && trio && trio.childElementCount) {
-          trio.classList.add("is-swap");
-          setTimeout(run, 200);
-          return;
-        }
-        run();
+        if (token !== trioPaintToken) return;
+        paintHomeTrioBatch(idx);
       }
 
       async function rotateHomeTrio(gen) {
@@ -4036,7 +4030,8 @@
           }
           return;
         }
-        presentTrioBatch(next, true);
+        presentTrioBatch(next);
+        preloadTrioAhead(next);
         homeTrioTimer = setTimeout(() => rotateHomeTrio(gen), 5000);
       }
 
@@ -4057,16 +4052,26 @@
           const card = document.createElement("article");
           card.className = "home-trio-card";
           const art = thumbArtUrl(rec.t);
+          const weekendOnly = !episodeAllowed(rec.ep, rec.t);
+          const parent = needsParentWatch(rec.t)
+            ? '<div class="home-trio-parent"></div>'
+            : "";
           card.innerHTML =
-            '<img class="bg" alt="" decoding="async" fetchpriority="high"><div class="veil"></div><div class="body"><div class="tag"></div><div class="name"></div></div>';
+            '<img class="bg" alt="" decoding="sync" fetchpriority="high"><div class="veil"></div><div class="body">' +
+            parent +
+            '<div class="tag"></div><div class="name"></div></div>';
           revealImg(card.querySelector(".bg"), art);
+          if (parent) {
+            card.querySelector(".home-trio-parent").textContent = parentWarnLabel(rec.t);
+          }
           card.querySelector(".tag").textContent =
             (rec.label || "发现") +
             " · 第" +
             rec.ep.n +
-            "集 · 约" +
-            episodeMinutes(rec.ep, rec.t) +
-            "分";
+            "集 · " +
+            (weekendOnly
+              ? "周末看"
+              : "约" + episodeMinutes(rec.ep, rec.t) + "分");
           card.querySelector(".name").textContent = rec.t.title;
           card.addEventListener("click", () => {
             beginWatch(rec.t, rec.ep, rec.ep.link || rec.t.link);
@@ -4086,8 +4091,11 @@
             e.preventDefault();
             e.stopPropagation();
             stopHomeTrioRotate();
-            presentTrioBatch(i, true);
-            startHomeTrioRotate();
+            waitBatchArt(i).then(() => {
+              presentTrioBatch(i);
+              preloadTrioAhead(i);
+              startHomeTrioRotate();
+            });
           });
           dots.appendChild(d);
         });
@@ -4111,48 +4119,42 @@
             };
           }
         }
-        const used = new Set();
-        if (hero) used.add(hero.t.id);
+        // 自家轮播：微生物 → 经济 → 英语 → 数学。不限可分享。
+        const focusPath = [
+          ["germsquad", "微生物"],
+          ["pasteur", "微生物"],
+          ["bacteriasecret", "微生物"],
+          ["cellwar", "微生物"],
+          ["bodymicro", "微生物"],
+          ["howmade", "经济"],
+          ["mademenspend", "经济"],
+          ["clarksonfarm", "经济"],
+          ["econmachine", "经济"],
+          ["englishadv", "英语"],
+          ["mathchosen", "数学"],
+          ["dimensions", "数学"],
+          ["thecode", "数学"],
+          ["logicjoy", "数学"],
+          ["mathstory", "数学"],
+        ];
         const pool = [];
-        primary.forEach((r) => {
-          if (r && r.t && !used.has(r.t.id)) {
-            if (r.kind !== "continue" && !isShareable(r.t)) return;
-            used.add(r.t.id);
-            pool.push(r);
-          }
-        });
-        // 扩充轮换池：年龄友好短片 / 未碰过的格
-        const extras = titles
-          .filter(
-            (t) => isShareable(t) && !used.has(t.id) && nextOpenEpisode(t)
-          )
-          .sort((a, b) => {
-            const am = episodeMinutes(nextOpenEpisode(a), a);
-            const bm = episodeMinutes(nextOpenEpisode(b), b);
-            const ap = progress(a.category).n;
-            const bp = progress(b.category).n;
-            return ap - bp || am - bm;
-          });
-        // 每组固定 3 部。补到 3 的倍数再切，避免最后一点只剩 1–2 部。
-        let extraN = 0;
-        for (let ei = 0; ei < extras.length; ei++) {
-          if (extraN >= 12 && pool.length % 3 === 0) break;
-          if (extraN >= 14) break;
-          const t = extras[ei];
-          const ep = nextOpenEpisode(t);
-          if (!ep) continue;
-          used.add(t.id);
-          extraN++;
+        focusPath.forEach((row) => {
+          const t = titleById(row[0]);
+          if (!t) return;
+          const eps = episodesOf(t);
+          const ep =
+            eps.find((e) => !episodeStamped(t.id, e.id)) || eps[0] || null;
+          if (!ep) return;
+          const done = titleFullyDone(t);
+          const touched = titleTouched(t);
           pool.push({
-            kind: "discover",
-            label: progress(t.category).n === 0 ? "换格开眼" : "再发现",
+            kind: done ? "replay" : touched ? "continue" : "focus",
+            label: done ? row[1] + " · 再看" : touched ? "接着看 · " + row[1] : row[1],
             reason: "",
             t: t,
             ep: ep,
           });
-        }
-        const tail = pool.length % 3;
-        if (tail) pool.splice(pool.length - tail, tail);
+        });
         const batches = [];
         for (let i = 0; i < pool.length; i += 3) {
           batches.push(pool.slice(i, i + 3));
