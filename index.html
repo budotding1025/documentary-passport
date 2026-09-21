@@ -568,6 +568,7 @@
     .watch-bay-bar {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 12px;
       padding: 10px 14px;
       background: #111;
@@ -578,6 +579,29 @@
       flex: 1;
       font-size: 0.9rem;
       line-height: 1.35;
+    }
+    .watch-bay-close {
+      appearance: none;
+      border: 3px solid #111;
+      background: #f4e04a;
+      color: #111;
+      font: inherit;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 14px 22px;
+      cursor: pointer;
+      box-shadow: 0 0 0 4px rgba(244, 224, 74, 0.35);
+    }
+    .watch-bay-close:hover { background: #ffe56a; }
+    .watch-bay-fallback .lead {
+      font-size: 1.05rem;
+      margin: 0 0 8px;
+    }
+    .watch-bay-fallback .hint {
+      color: rgba(243, 239, 230, 0.82);
+      margin: 0 0 22px;
+      line-height: 1.5;
     }
     .watch-bay-frame {
       flex: 1;
@@ -2173,7 +2197,7 @@
       <a class="btn ghost" id="watchBayExternal" href="#" target="_blank" rel="noopener" style="color:#f3efe6;border-color:rgba(243,239,230,0.45)">外链打开</a>
       <button type="button" class="btn ghost" id="watchBayBroken" style="color:#f3efe6;border-color:rgba(243,239,230,0.45)">链接打不开</button>
       <button type="button" class="btn" id="watchBayStamp">回护照盖印</button>
-      <button type="button" class="btn ghost" id="watchBayClose" style="color:#f3efe6;border-color:rgba(243,239,230,0.45)">关闭</button>
+      <button type="button" class="watch-bay-close" id="watchBayClose">关闭，回到看世界护照</button>
     </div>
     <div class="watch-bay-fallback" id="watchBayFallback">
       <div>
@@ -2503,13 +2527,11 @@
         const fb = $("watchBayFallback");
         if (fb) {
           fb.innerHTML =
-            "<div><p>片子在新标签页播放；本页背景音乐已暂停。</p>" +
-            '<p class="hint" style="color:rgba(243,239,230,0.75);margin:10px 0 16px">关掉视频标签、回到本页后音乐会自动恢复。也可点「回护照盖印」。</p>' +
-            '<div class="actions" style="justify-content:center">' +
-            '<a class="btn" id="watchBayOpenNow" href="' +
-            (url || "#") +
-            '" target="_blank" rel="noopener">打开片源观看</a>' +
-            "</div></div>";
+            '<div><p class="lead">片子在另一个标签页里播放。</p>' +
+            '<p class="hint">点下面的黄按钮，关掉这块黑屏，就回到看世界护照。</p>' +
+            '<button type="button" class="watch-bay-close" id="watchBayCloseBig">关闭，回到看世界护照</button></div>';
+          const big = $("watchBayCloseBig");
+          if (big) big.addEventListener("click", closeWatchBay);
         }
       }
 
