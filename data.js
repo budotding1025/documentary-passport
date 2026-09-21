@@ -1,4 +1,4 @@
-/** 四年级纪录片库：工作日 A / 周末 B；四格 + 审美/商业肌肉
+/** 纪录片库：工作日 A / 周末 B；四格 + 审美/商业肌肉
  * play: stable=正版页 | ok=可用公开源 | search=仅搜索投稿 | risk=孩子端常打不开
  * blurb: 卡片外可见的一句话简介，方便选片
  * 每部只归一个 category；盖印下沉到集（episodes[]）。
@@ -6,8 +6,7 @@
  * 无 episodes 的片子，界面会自动当成「整部 / 1 集」打卡。
  */
 window.DOC_CATALOG = {
-  grade: 4,
-  title: "看世界护照 · 四年级小探险家",
+  title: "看世界护照",
   categories: [
     { id: "drive", name: "自驱力", short: "自驱", muscles: ["意志", "选择"] },
     { id: "nature", name: "科学探索", short: "科学", muscles: ["生物", "实验", "数理"] },
@@ -89,7 +88,7 @@ window.DOC_CATALOG = {
       shareable: true,
       playNote: "腾讯视频《人生七年（英国版）》正版；部分集需会员",
       mapPin: "英国 · 每七年一次回访",
-      parentNote: "跨几十年人生，含阶层落差、婚姻与失落；四年级必须家长陪看，建议只选早年几部，勿一口气追到中年",
+      parentNote: "跨几十年人生，含阶层落差、婚姻与失落；必须家长陪看，建议只选早年几部，勿一口气追到中年",
       episodes: [
         { id: "sevenup-7", n: 1, title: "7岁", blurb: "一群七岁孩子谈学校、家和长大以后想做什么。", duration: "约 40–60 分钟", link: "https://v.qq.com/x/cover/fh87amml4j6fivp.html", hints: ["童年", "梦想", "阶层"] },
         { id: "sevenup-14", n: 2, title: "14岁", blurb: "青春期：学校、朋友、对未来的想象开始分化。", duration: "约 60–90 分钟", link: "https://v.qq.com/x/cover/fh87amml4j6fivp.html", hints: ["青春", "学校", "变化"] },
@@ -430,7 +429,7 @@ window.DOC_CATALOG = {
       altLink: "https://www.bilibili.com/bangumi/media/md23238797/",
       altLabel: "B 站正版",
       mapPin: "七大洲 · 一个地球",
-      parentNote: "含捕猎、冰面求生等真实镜头；四年级建议家长陪看前两集再决定追不追",
+      parentNote: "含捕猎、冰面求生等真实镜头；建议家长陪看前两集再决定追不追",
       episodes: [
         { id: "sevenworlds-1", n: 1, title: "南极洲", blurb: "最冷的大陆：企鹅、海豹怎样过冬。", duration: "约 50 分钟", link: "https://v.qq.com/x/cover/5s6jjhvb15xrm59/e00323zwrsu.html", hints: ["南极", "冰", "企鹅"] },
         { id: "sevenworlds-2", n: 2, title: "亚洲", blurb: "从雨林到雪山：亚洲怎样装下这么多生命。", duration: "约 50 分钟", link: "https://v.qq.com/x/cover/5s6jjhvb15xrm59.html", hints: ["亚洲", "多样", "适应"] },
@@ -918,7 +917,7 @@ window.DOC_CATALOG = {
       linkLabel: "爱奇艺正版",
       play: "stable",
       shareable: true,
-      playNote: "8 集全；在爱奇艺选集。考古向，四年级挑感兴趣的集",
+      playNote: "8 集全；在爱奇艺选集。考古向，挑感兴趣的集",
       mapPin: "考古 · 文明从哪来",
       parentNote: "信息密、偏成人叙事，建议陪看一集再决定追不追",
       episodes: [
@@ -1044,7 +1043,7 @@ window.DOC_CATALOG = {
       duration: "约 15 分钟",
       episodeHint: "工作日加餐 · 只看 1 集",
       muscle: "审美",
-      blurb: "拆雨伞、铅笔、书包：日常物件原来是这样设计的。观察力训练，很适合四年级。",
+      blurb: "拆雨伞、铅笔、书包：日常物件原来是这样设计的。练观察力。",
       link: "https://www.bilibili.com/video/BV1hwKfzmEr4/",
       linkLabel: "B 站直达",
       play: "ok",
@@ -1281,7 +1280,7 @@ window.DOC_CATALOG = {
       duration: "约 50 分钟 × 3 集",
       episodeHint: "周末 1 集 · 可先看「形状」",
       muscle: "数理",
-      blurb: "数字、形状、预测：自然和建筑里藏着的「密码」。四年级数学启蒙好入口。",
+      blurb: "数字、形状、预测：自然和建筑里藏着的「密码」。数学兴趣的入口。",
       link: "https://www.bilibili.com/video/BV1Mx411R7oQ/?p=1",
       linkLabel: "B 站直达",
       play: "ok",
@@ -1371,7 +1370,7 @@ window.DOC_CATALOG = {
       duration: "约 45 分钟 × 10 集",
       episodeHint: "周末先看第2集《从哪里来》",
       muscle: "商业",
-      blurb: "央视十集：钱从贸易工具变成大家认的凭证。四年级先看第2集，后面几集再决定。",
+      blurb: "央视十集：钱从贸易工具变成大家认的凭证。先看第2集，后面几集再决定。",
       link: "https://www.docuchina.cn/2013/08/19/VIDA1376894286831456.shtml",
       linkLabel: "中国纪录片网",
       play: "stable",
@@ -1429,7 +1428,7 @@ window.DOC_CATALOG = {
       duration: "约 90 分钟",
       episodeHint: "家长陪看 · 可拆两晚",
       muscle: "选择",
-      blurb: "为什么总想刷手机？平台怎样用注意力赚钱。四年级须家长在场，一起讨论「谁在用我的时间」。",
+      blurb: "为什么总想刷手机？平台怎样用注意力赚钱。须家长在场，一起讨论「谁在用我的时间」。",
       link: "https://www.bilibili.com/video/BV1jG411D7U5/",
       linkLabel: "B 站直达",
       play: "ok",
@@ -1466,7 +1465,7 @@ window.DOC_CATALOG = {
       duration: "约 25 分钟 × 6 集",
       episodeHint: "工作日或周末 1 集",
       muscle: "数理",
-      blurb: "动画讲物理直觉：空气、速度、旋转与力。四年级够用的运动物理入口。",
+      blurb: "动画讲物理直觉：空气、速度、旋转与力。运动物理的入口。",
       link: "https://tv.cctv.com/2018/06/26/VIDECsJMIfpvWVBBkY90G5gC180626.shtml",
       linkLabel: "央视网",
       play: "stable",
@@ -1491,7 +1490,7 @@ window.DOC_CATALOG = {
       category: "nature",
       slot: "B",
       role: "side",
-      duration: "约 60 分钟 × 4（四年级看前 2）",
+      duration: "约 60 分钟 × 4（先看前 2）",
       episodeHint: "宇宙的语言 · 东方奇才",
       muscle: "数理",
       blurb: "数学从埃及、巴比伦走到东方：数字与几何怎么变成今天的工具。先看前两集。",
@@ -1512,7 +1511,7 @@ window.DOC_CATALOG = {
       slot: "B",
       role: "side",
       duration: "约 50 分钟 × 8 集",
-      episodeHint: "周末 1 集 · 四年级可先听第1集",
+      episodeHint: "周末 1 集 · 可先听第1集",
       muscle: "叙事",
       blurb: "英语从日耳曼方言走到全球：词从哪来、为什么今天长这样。可当故事听，不必一次听懂所有词。",
       link: "https://www.bilibili.com/video/BV1vs41117JH/?p=1",
@@ -1602,7 +1601,7 @@ window.DOC_CATALOG = {
       shareable: true,
       playNote: "爱奇艺正版 6 集；多数需会员",
       mapPin: "黄州 · 一词二赋",
-      parentNote: "含乌台诗案、贬谪；四年级可陪看前两集建立故事感",
+      parentNote: "含乌台诗案、贬谪；可陪看前两集建立故事感",
       episodes: [
         { id: "sudongpo-1", n: 1, title: "雪泥鸿爪", blurb: "成名到入狱：人生怎么一下子拐弯。", duration: "约 30 分钟", link: "https://www.iqiyi.com/v_1jygjko81xk.html", hints: ["转折", "乌台"] },
         { id: "sudongpo-2", n: 2, title: "一蓑烟雨", blurb: "黄州苦日子：怎样把自己活成「东坡」。", duration: "约 30 分钟", link: "https://www.iqiyi.com/a_1pa4vhct4vt.html", hints: ["黄州", "超越"] },
@@ -1751,7 +1750,7 @@ window.DOC_CATALOG = {
       mapPin: "第一次 · 选择",
       altLink: "https://v.cctv.com/jishi/rsdyc/index.shtml",
       altLabel: "央视网专题",
-      parentNote: "《出生》《结婚》《告别》等偏成人，四年级请先选《入学》《长大》；全程建议家长选片",
+      parentNote: "《出生》《结婚》《告别》等偏成人，请先选《入学》《长大》；全程建议家长选片",
       episodes: [
         { id: "firsts-1", n: 1, title: "出生", blurb: "新生命到来：医院里的第一次挑战。（家长慎选）", duration: "约 30 分钟", link: "https://tv.cctv.com/2020/05/23/VIDE3S46KAvfUypiCk3IocCv200523.shtml", hints: ["出生", "家长选"] },
         { id: "firsts-2", n: 2, title: "入学", blurb: "第一次走进小学：选择、适应与眼泪。", duration: "约 30 分钟", link: "https://www.bilibili.com/bangumi/media/md28227065", hints: ["入学", "适应"] },

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>看世界护照 · 四年级小探险家</title>
+  <title>看世界护照</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -1822,7 +1822,7 @@
 </head>
 <body>
   <header class="app-bar rise">
-    <div class="brand">看世界护照 <span>四年级 · 小探险家</span></div>
+    <div class="brand">看世界护照 <span>为你选的纪录片</span></div>
     <div class="app-bar-right">
       <span class="music-credit" title="Pixabay Content License">
         <a href="https://pixabay.com/music/solo-piano-calm-nature-510279/" target="_blank" rel="noopener">Calm Nature · AtlasAudio</a>
@@ -1886,7 +1886,7 @@
         <div class="passport rise">
           <div class="pass-top">
             <div>
-              <div class="pass-id">Explorer · Grade 4</div>
+              <div class="pass-id">你的护照</div>
               <div class="explorer-name" id="explorerName">小探险家</div>
               <div class="name-edit">
                 <input id="nameInput" maxlength="12" placeholder="写上名字" />
@@ -3139,7 +3139,6 @@
           .map((t) => ({
             id: t.id,
             title: t.title,
-            grade: "四年级",
             category: (catById(t.category) || {}).name || t.category,
             blurb: t.blurb || "",
             link: t.link || "",
