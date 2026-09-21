@@ -969,7 +969,7 @@ window.DOC_CATALOG = {
       linkLabel: "腾讯视频正版",
       play: "stable",
       shareable: true,
-      playNote: "腾讯视频出品正版；部分集可能需会员",
+      playNote: "腾讯视频出品正版，需会员才能看。没有免费正片页，不用投稿代替。",
       mapPin: "名画 · 故事",
       episodes: [
         { id: "howpaint-1", n: 1, title: "捣练图：传世名画C位之争", blurb: "传世名画怎么排C位？画面里藏着什么故事。", duration: "约 5 分钟", link: "https://v.qq.com/x/cover/mzc00200r8ravfe/b0034jr2q96.html", hints: ["名画", "故事"] },
@@ -995,7 +995,7 @@ window.DOC_CATALOG = {
       linkLabel: "B 站正版",
       play: "stable",
       shareable: true,
-      playNote: "正版番剧 30 集；高清可能要大会员",
+      playNote: "B 站正版番剧，整部需大会员。大会员只解开 B 站买下版权的片子。",
       mapPin: "名画 · 微打卡",
       episodes: [
         { id: "artfun-1", n: 1, title: "美国式哥特（上）", blurb: "名画里的一对人：表情为什么这么怪？", duration: "约 2 分钟", link: "https://www.bilibili.com/bangumi/play/ep272748", hints: ["名画", "表情"] },
