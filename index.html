@@ -4127,6 +4127,8 @@
           ["cellwar", "微生物"],
           ["bodymicro", "微生物"],
           ["howmade", "经济"],
+          ["ccecon", "经济"],
+          ["money", "经济", "money-2"],
           ["mademenspend", "经济"],
           ["clarksonfarm", "经济"],
           ["econmachine", "经济"],
@@ -4142,11 +4144,13 @@
           const t = titleById(row[0]);
           if (!t) return;
           const eps = episodesOf(t);
-          const ep =
-            eps.find((e) => !episodeStamped(t.id, e.id)) || eps[0] || null;
+          const pinned = row[2] ? eps.find((e) => e.id === row[2]) : null;
+          const ep = pinned
+            ? pinned
+            : eps.find((e) => !episodeStamped(t.id, e.id)) || eps[0] || null;
           if (!ep) return;
-          const done = titleFullyDone(t);
-          const touched = titleTouched(t);
+          const done = pinned ? episodeStamped(t.id, pinned.id) : titleFullyDone(t);
+          const touched = pinned ? done : titleTouched(t);
           pool.push({
             kind: done ? "replay" : touched ? "continue" : "focus",
             label: done ? row[1] + " · 再看" : touched ? "接着看 · " + row[1] : row[1],
