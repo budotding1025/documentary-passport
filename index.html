@@ -1198,6 +1198,64 @@
       border-color: var(--stamp);
       color: var(--stamp-deep);
     }
+    .stamp-quiz {
+      margin: 14px 0 4px;
+      padding: 12px;
+      border: 1.5px solid var(--ink);
+      background: var(--card);
+    }
+    .stamp-quiz h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+    }
+    .stamp-quiz .hint { margin-top: 0; }
+    .quiz-choices {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .quiz-choice {
+      appearance: none;
+      text-align: left;
+      border: 1px solid var(--ink);
+      background: #fff;
+      padding: 10px 12px;
+      font: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      line-height: 1.35;
+    }
+    .quiz-choice.on {
+      background: var(--stamp-soft);
+      border-color: var(--stamp-deep);
+      box-shadow: inset 3px 0 0 var(--stamp-deep);
+    }
+    .home-yesterday {
+      margin: 14px 4vw 0;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 14px 16px;
+      border: 1px solid var(--ink);
+      background: linear-gradient(135deg, #f7f3ea, #ebe4d6);
+    }
+    .home-yesterday-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .home-yesterday-text {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+    .home-yesterday-meta {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
     .ask-box {
       margin-top: 14px;
       border: 1.5px solid var(--stamp);
@@ -1904,6 +1962,12 @@
         <div class="home-trio" id="homeTrio"></div>
         <div class="home-trio-dots" id="homeTrioDots" aria-hidden="true"></div>
       </section>
+      <section class="home-yesterday rise" id="homeYesterday" hidden>
+        <div class="home-yesterday-label">昨天你说</div>
+        <p class="home-yesterday-text" id="homeYesterdayText"></p>
+        <div class="home-yesterday-meta" id="homeYesterdayMeta"></div>
+        <button type="button" class="btn ghost" id="homeYesterdayOpen">翻翻这集</button>
+      </section>
       </div>
 
       <section class="home-more">
@@ -1928,7 +1992,7 @@
         <div class="album-grid rise" id="albumGrid"></div>
         <div class="title-row">
           <h2>最近盖印</h2>
-          <span class="mono" id="titleHint">可快速盖印 · 语音也可</span>
+          <span class="mono" id="titleHint">想一想再盖印 · 语音也可</span>
         </div>
         <div class="stamps-log" id="stampsLog"></div>
       </section>
@@ -2148,6 +2212,13 @@
           <p class="mic-hint" id="micHint">Windows 麦克风开着还不够：首次按住说话时，请在地址栏锁图标里允许「本网站」使用麦克风。选允许后就能语音；说完可改字再发送。也支持直接打字。</p>
         </div>
 
+        <div class="stamp-quiz" id="stampQuiz">
+          <h3>想一想再盖印</h3>
+          <p class="hint" id="stampQuizHint">选一个就行，没有标准答案。</p>
+          <p id="stampQuizQ" style="margin:8px 0 0;font-weight:700"></p>
+          <div class="quiz-choices" id="stampQuizChoices"></div>
+        </div>
+
         <div class="title-row" style="margin-top:18px">
           <h2>五星评分</h2>
           <span class="mono">必选</span>
@@ -2159,32 +2230,26 @@
           <button type="button" class="star-btn" data-star="4" aria-label="4星">★</button>
           <button type="button" class="star-btn" data-star="5" aria-label="5星">★</button>
         </div>
-        <p class="hint" id="starHint">点星星就能快速盖印；留言选填。</p>
+        <p class="hint" id="starHint">先答题、再点星星。本周快速盖印有次数。</p>
 
         <div class="actions" style="margin-top:12px">
-          <button type="button" class="btn" id="stampQuickBtn">快速盖印（只打星）</button>
+          <button type="button" class="btn ghost" id="stampQuickBtn">快速盖印（本周有限次）</button>
         </div>
 
         <div class="title-row" style="margin-top:18px">
-          <h2>看完反馈</h2>
-          <span class="mono">选填</span>
+          <h2>我的发现</h2>
+          <span class="mono">写一句更好玩</span>
         </div>
         <div class="prompt-row" id="promptRow">
-          <button type="button" class="prompt-chip" data-prompt="remember">记得最清楚的一件事</button>
-          <button type="button" class="prompt-chip" data-prompt="aha">有个「原来是这样」</button>
-          <button type="button" class="prompt-chip" data-prompt="wonder">有个地方还想弄懂</button>
+          <button type="button" class="prompt-chip" data-prompt="remember">记得最清楚的</button>
+          <button type="button" class="prompt-chip" data-prompt="aha">原来是这样</button>
+          <button type="button" class="prompt-chip" data-prompt="wonder">还想弄懂</button>
         </div>
-        <textarea id="noteInput" maxlength="160" placeholder="想写再写；不写也能快速盖印。"></textarea>
-        <p class="hint">写一句也行，方便自己以后翻护照。</p>
-
-        <div class="title-row" style="margin-top:14px">
-          <h2>评论 / 感受</h2>
-          <span class="mono">选填</span>
-        </div>
-        <textarea id="commentInput" maxlength="160" placeholder="写给自己或给爸爸妈妈的一句话。"></textarea>
+        <textarea id="noteInput" maxlength="160" placeholder="点上面一句开头，再补几个字。写 8 个字也算过关。"></textarea>
+        <p class="hint">这句会留在护照里，首页「昨天你说」也会翻出来。</p>
 
         <div class="actions" style="margin-top:14px">
-          <button type="button" class="btn" id="stampBtn">写完盖印</button>
+          <button type="button" class="btn" id="stampBtn">盖印</button>
           <button type="button" class="btn ghost" id="sheetCloseStamp">关闭</button>
         </div>
       </div>
@@ -2272,12 +2337,191 @@
         aha: "这集让我明白原来：",
         wonder: "这集里我还想弄懂的是：",
       };
+      const WEEKLY_QUICK_CAP = 3;
+      let stampQuiz = null;
+      let stampQuizAnswer = null;
 
       function weekIndex(d) {
         const t = d || new Date();
         const start = new Date(t.getFullYear(), 0, 1);
         const day = Math.floor((t - start) / 86400000);
         return Math.floor((day + start.getDay()) / 7);
+      }
+
+      function weekQuickCount() {
+        const w = weekIndex();
+        return (state.stamps || []).filter((s) => {
+          if (!s || !s.quick || !s.at) return false;
+          return weekIndex(new Date(s.at)) === w;
+        }).length;
+      }
+
+      function buildStampQuiz(t, ep) {
+        const hints = ((ep && ep.hints) || []).filter(Boolean);
+        const id = (t && t.id) || "";
+        const microbe = [
+          "germsquad",
+          "pasteur",
+          "cellwar",
+          "bacteriasecret",
+          "bodymicro",
+          "curiosity",
+        ];
+        const econ = [
+          "howmade",
+          "ccecon",
+          "money",
+          "mademenspend",
+          "clarksonfarm",
+          "econmachine",
+        ];
+        const math = [
+          "mathchosen",
+          "dimensions",
+          "thecode",
+          "logicjoy",
+          "mathstory",
+          "newtoncoach",
+        ];
+        if (microbe.indexOf(id) >= 0) {
+          return {
+            q: "这集讲的更像哪一类？",
+            choices: [
+              { id: "bact", text: "细菌 / 微生物" },
+              { id: "virus", text: "病毒" },
+              { id: "fungi", text: "真菌 / 霉菌" },
+              { id: "unsure", text: "还分不太清，下次再看" },
+            ],
+          };
+        }
+        if (econ.indexOf(id) >= 0) {
+          return {
+            q: "价钱贵，更像因为什么？",
+            choices: [
+              { id: "cost", text: "做出来花的成本高" },
+              { id: "want", text: "想买的人多，或东西少" },
+              { id: "ad", text: "广告 / 样子让人更想要" },
+              { id: "unsure", text: "我还没想清楚" },
+            ],
+          };
+        }
+        if (id === "englishadv") {
+          return {
+            q: "学英语，你觉得最有用的是？",
+            choices: [
+              { id: "word", text: "多认识词和故事" },
+              { id: "talk", text: "能跟人说话、看电影" },
+              { id: "world", text: "打开更多世界的门" },
+              { id: "unsure", text: "还在想" },
+            ],
+          };
+        }
+        if (math.indexOf(id) >= 0) {
+          return {
+            q: "数学在这集里更像？",
+            choices: [
+              { id: "shape", text: "形状 / 空间" },
+              { id: "number", text: "数字 / 规律" },
+              { id: "think", text: "一种想问题的方法" },
+              { id: "unsure", text: "还想再看一遍" },
+            ],
+          };
+        }
+        if (hints.length >= 2) {
+          const picks = hints.slice(0, 3);
+          return {
+            q: "这集里哪个词最贴？",
+            choices: picks
+              .map((h, i) => ({ id: "h" + i, text: h }))
+              .concat([{ id: "unsure", text: "说不准，还要想想" }]),
+          };
+        }
+        return {
+          q: "看完这集，你现在更想说哪一句？",
+          choices: [
+            { id: "remember", text: "我记得最清楚的一件事", prompt: "remember" },
+            { id: "aha", text: "有个「原来是这样」", prompt: "aha" },
+            { id: "wonder", text: "有个地方还想弄懂", prompt: "wonder" },
+          ],
+        };
+      }
+
+      function renderStampQuiz() {
+        const box = $("stampQuiz");
+        const qEl = $("stampQuizQ");
+        const list = $("stampQuizChoices");
+        if (!box || !qEl || !list) return;
+        if (!stampQuiz) {
+          box.hidden = true;
+          return;
+        }
+        box.hidden = false;
+        qEl.textContent = stampQuiz.q;
+        list.innerHTML = "";
+        stampQuiz.choices.forEach((c) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className =
+            "quiz-choice" + (stampQuizAnswer === c.id ? " on" : "");
+          btn.textContent = c.text;
+          btn.addEventListener("click", () => {
+            stampQuizAnswer = c.id;
+            if (c.prompt) {
+              activePrompt = c.prompt;
+              document.querySelectorAll(".prompt-chip").forEach((b) => {
+                b.classList.toggle("on", b.getAttribute("data-prompt") === activePrompt);
+                b.classList.toggle("active", b.getAttribute("data-prompt") === activePrompt);
+              });
+              const cur = ($("noteInput").value || "").trim();
+              const isBare = !cur || Object.values(PROMPTS).indexOf(cur) >= 0;
+              if (isBare) $("noteInput").value = PROMPTS[activePrompt];
+            }
+            renderStampQuiz();
+            toast("选好了 · 下面打星就能盖印");
+          });
+          list.appendChild(btn);
+        });
+        const left = WEEKLY_QUICK_CAP - weekQuickCount();
+        const quickBtn = $("stampQuickBtn");
+        if (quickBtn) {
+          quickBtn.textContent =
+            left > 0
+              ? "快速盖印（本周还剩 " + left + " 次）"
+              : "快速盖印（本周已用完）";
+        }
+      }
+
+      function yesterdayDiscovery() {
+        const y = yesterdayKey();
+        const list = (state.stamps || [])
+          .filter((s) => {
+            if (!s || !s.at) return false;
+            if (dayKey(new Date(s.at)) !== y) return false;
+            const note = (s.note || "").trim();
+            if (!note || note === "快速盖印") return false;
+            if (Object.values(PROMPTS).indexOf(note) >= 0) return false;
+            return note.length >= 4;
+          })
+          .sort((a, b) => (b.at || 0) - (a.at || 0));
+        return list[0] || null;
+      }
+
+      function renderYesterdaySaid() {
+        const box = $("homeYesterday");
+        if (!box) return;
+        const s = yesterdayDiscovery();
+        if (!s) {
+          box.hidden = true;
+          return;
+        }
+        const t = titleById(s.titleId);
+        box.hidden = false;
+        $("homeYesterdayText").textContent = s.note;
+        $("homeYesterdayMeta").textContent =
+          (t ? "《" + t.title + "》" : "") +
+          (s.episodeTitle ? " · " + s.episodeTitle : "");
+        box.dataset.titleId = s.titleId || "";
+        box.dataset.episodeId = s.episodeId || "";
       }
 
       function load() {
@@ -4231,6 +4475,7 @@
       function renderPassport() {
         renderHomeRecs();
         renderHomeTask();
+        renderYesterdaySaid();
         renderAlbum();
         $("explorerName").textContent = state.name || "小探险家";
         $("nameInput").value = state.name === "小探险家" ? "" : state.name;
@@ -4281,8 +4526,13 @@
             (s.episodeTitle || "一集") +
             (s.rating ? " · " + starsText(s.rating) : "") +
             (s.muscle ? " · " + s.muscle : "");
-          row.querySelector(".n").textContent =
-            s.note + (s.comment ? " ｜ 评：" + s.comment : "");
+          row.querySelector(".n").textContent = [
+            s.note && s.note !== "快速盖印" ? s.note : "",
+            s.quizA ? "想一想：" + s.quizA : "",
+            s.quick ? "（快速盖印）" : "",
+          ]
+            .filter(Boolean)
+            .join(" · ");
           log.appendChild(row);
         });
       }
@@ -4640,14 +4890,18 @@
         document.querySelectorAll(".prompt-chip").forEach((b) => {
           b.classList.toggle("active", b.dataset.prompt === activePrompt);
         });
-        $("noteInput").value = prev
-          ? prev.note && prev.note !== "快速盖印"
+        const prevNote =
+          prev && prev.note && prev.note !== "快速盖印"
             ? prev.note
-            : ""
-          : "";
+            : prev && prev.comment
+              ? prev.comment
+              : "";
+        $("noteInput").value = prevNote;
         activeRating = prev && prev.rating ? Number(prev.rating) : 0;
         syncStars();
-        $("commentInput").value = prev && prev.comment ? prev.comment : "";
+        stampQuiz = buildStampQuiz(t, ep);
+        stampQuizAnswer = prev && prev.quizId ? prev.quizId : null;
+        renderStampQuiz();
         clearAskInput();
         startAskPromptRotate(t, ep);
         renderChatLog();
@@ -4672,6 +4926,13 @@
             }
             toast("跟「" + npc.name + "」聊两句吧 · 可直接点「问角色」");
           }, 120);
+        } else {
+          setTimeout(() => {
+            const quiz = $("stampQuiz");
+            if (quiz && quiz.scrollIntoView) {
+              quiz.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+          }, 200);
         }
       }
 
@@ -5729,15 +5990,27 @@
       function stamp(opts) {
         const quick = !!(opts && opts.quick);
         if (!activeTitle || !activeEpisode) return;
+        if (stampQuiz && !stampQuizAnswer) {
+          toast("先选一个「想一想」的答案");
+          const quiz = $("stampQuiz");
+          if (quiz && quiz.scrollIntoView) {
+            quiz.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          return;
+        }
         if (!activeRating) {
           toast("先点星星评个分再盖印");
+          return;
+        }
+        if (quick && weekQuickCount() >= WEEKLY_QUICK_CAP) {
+          toast("本周快速盖印用完了 · 写一句「我的发现」再盖");
           return;
         }
         let note = ($("noteInput").value || "").trim();
         const bare = Object.values(PROMPTS).some((p) => note === p);
         if (bare) note = "";
         if (!quick && note && note.length < 4) {
-          toast("反馈再写完整一点，或改用快速盖印");
+          toast("发现再写完整一点，或改用快速盖印");
           return;
         }
         if (quick && !note) note = "快速盖印";
@@ -5746,7 +6019,10 @@
         const ask =
           activeChat.filter((m) => m.role === "kid").map((m) => m.text).join(" / ") ||
           ($("askInput").value || "").trim();
-        const comment = ($("commentInput").value || "").trim();
+        const quizChoice = stampQuiz
+          ? (stampQuiz.choices.find((c) => c.id === stampQuizAnswer) || {}).text ||
+            ""
+          : "";
         const hadGoodAsk = activeChat.some((m) => m.role === "kid" && m.good);
         let rareDrop = null;
         if (hadGoodAsk) {
@@ -5762,7 +6038,7 @@
         if (
           !quick &&
           note &&
-          note.length >= 18 &&
+          note.length >= 8 &&
           note.indexOf("快速盖印") < 0
         ) {
           const deep = awardRareStamp("deep_note", "深度思考", t, ep);
@@ -5778,7 +6054,10 @@
           note: note || (quick ? "快速盖印" : ""),
           prompt: activePrompt,
           rating: activeRating,
-          comment,
+          comment: "",
+          quizId: stampQuizAnswer || "",
+          quizQ: stampQuiz ? stampQuiz.q : "",
+          quizA: quizChoice,
           ask,
           agentChat: activeChat.slice(),
           at: Date.now(),
@@ -5797,12 +6076,14 @@
         const loot = pickBlindBox(t, ep, { rare: rareDrop, medal: medal });
         setTimeout(() => {
           renderAll();
-          showBlindBox(
-            loot,
-            weekdayBudgetDone()
-              ? "今日时长差不多了，收工早点睡哦。"
-              : "惊喜很短，收进图鉴继续探索。"
-          );
+          if (!quick) {
+            showBlindBox(
+              loot,
+              weekdayBudgetDone()
+                ? "今日时长差不多了，收工早点睡哦。"
+                : "惊喜很短，收进图鉴继续探索。"
+            );
+          }
           if (medal) toast("♛ 探索者大勋章已解锁");
           else if (rareDrop) toast("✦ " + rareDrop.label + " · 已收入图鉴");
           else if (weekdayBudgetDone()) {
@@ -5811,8 +6092,15 @@
                 WEEKDAY_DAILY_CAP +
                 " 分钟 · 工作日早点睡哦（不强制）"
             );
+          } else if (quick) {
+            toast(
+              "快速盖印 · 本周还剩 " +
+                Math.max(0, WEEKLY_QUICK_CAP - weekQuickCount()) +
+                " 次 · " +
+                label
+            );
           } else {
-            toast((quick ? "快速盖印 · " : "绿色印章已落 · ") + label);
+            toast("绿色印章已落 · " + label);
           }
         }, 900);
       }
@@ -6340,6 +6628,20 @@
           if (isBare) $("noteInput").value = PROMPTS[activePrompt];
         });
       });
+      if ($("homeYesterdayOpen")) {
+        $("homeYesterdayOpen").addEventListener("click", () => {
+          const box = $("homeYesterday");
+          const titleId = box && box.dataset.titleId;
+          const episodeId = box && box.dataset.episodeId;
+          const t = titleById(titleId);
+          const ep = t ? episodeById(t, episodeId) : null;
+          if (!t || !ep) {
+            toast("这集暂时找不到了");
+            return;
+          }
+          openStamp(t, ep);
+        });
+      }
       $("saveName").addEventListener("click", () => {
         const n = ($("nameInput").value || "").trim();
         state.name = n || "小探险家";
