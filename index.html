@@ -2488,7 +2488,7 @@
         recordDayOpen(t, ep);
         stopPersonaAmbient();
         pauseBgForWatch();
-        openWatchBay(t, ep, href || ep.link || t.link || "");
+        openWatchBay(t, ep, href || watchUrl(t, ep));
         hideSoftBudget();
         softWatchPending = null;
       }
@@ -2558,7 +2558,7 @@
       function beginWatch(t, ep, href, ev) {
         if (ev) ev.preventDefault();
         if (!t || !ep) return;
-        const url = href || ep.link || t.link || "";
+        const url = href || watchUrl(t, ep);
         if (!episodeAllowed(ep, t) && !episodeStamped(t.id, ep.id)) {
           toast(
             "工作日限 30 分钟内 · 这一集约 " +
@@ -3096,6 +3096,7 @@
 
       function playTierLabel(t) {
         if (!t) return "";
+        if (t.play === "missing") return "片源暂缺";
         if (isShareable(t) || t.play === "stable") return "正版";
         if (t.play === "ok") return "仅自家备用，可能下架";
         return "失效 / 待修";
@@ -3111,8 +3112,41 @@
         ) {
           return false;
         }
-        return /cctv\.com|tv\.cctv|bilibili\.com\/bangumi|iqiyi\.com|v\.qq\.com|v\.youku\.com|open\.163\.com|open\.sina\.com\.cn/.test(
+        return /cctv\.com|tv\.cctv|docuchina\.cn|jishi\.cntv|bilibili\.com\/bangumi|iqiyi\.com|v\.qq\.com|v\.youku\.com|open\.163\.com|163\.com\/opencourse|netflix\.com|dimensions-math\.org/.test(
           u
+        );
+      }
+
+      /** 自家现在点开的地址（watchLink）；集链接优先 */
+      function watchUrl(t, ep) {
+        if (ep && ep.link) return ep.link;
+        if (!t) return "";
+        return t.watchLink || t.link || "";
+      }
+
+      function watchLabelOf(t) {
+        return (t && (t.watchLabel || t.linkLabel)) || "打开片源";
+      }
+
+      /** 工具用正版备份，最多 2 条 */
+      function officialList(t) {
+        if (!t) return [];
+        if (Array.isArray(t.official) && t.official.length) {
+          return t.official.filter((o) => o && o.url).slice(0, 2);
+        }
+        const out = [];
+        if (t.altLink && isOfficialAlt(t.altLink)) {
+          out.push({ url: t.altLink, label: t.altLabel || "正版备份" });
+        }
+        return out;
+      }
+
+      function officialBackupNote(t) {
+        const list = officialList(t);
+        if (!list.length) return "正版备份：尚无（工具上线前须补或标片源暂缺）";
+        return (
+          "正版备份：" +
+          list.map((o) => o.label || "正版").join(" · ")
         );
       }
 
@@ -3122,7 +3156,7 @@
           return;
         }
         const episode = ep || (t && nextOpenEpisode(t)) || episodesOf(t)[0];
-        const url = href || (episode && episode.link) || t.link || "";
+        const url = href || watchUrl(t, episode);
         const key =
           t.id + "::" + (episode ? episode.id : "") + "::" + url;
         state.linkIssues = state.linkIssues || [];
@@ -3163,8 +3197,11 @@
             title: t.title,
             category: (catById(t.category) || {}).name || t.category,
             blurb: t.blurb || "",
-            link: t.link || "",
+            link: t.watchLink || t.link || "",
+            watchLink: t.watchLink || t.link || "",
+            official: Array.isArray(t.official) ? t.official : [],
             playNote: t.playNote || "",
+            watchNote: t.watchNote || "",
             episodeHint: t.episodeHint || "",
             parentNote: t.parentNote || "",
             questions: t.afterWatchQuestions || t.questions || [],
@@ -3744,12 +3781,12 @@
         const acts = el.querySelector(".actions");
         const watch = document.createElement("a");
         watch.className = "btn";
-        watch.href = rec.ep.link || rec.t.link;
+        watch.href = watchUrl(rec.t, rec.ep);
         watch.target = "_blank";
         watch.rel = "noopener";
         watch.textContent = "去看 · 今晚任务";
         watch.addEventListener("click", (e) => {
-          beginWatch(rec.t, rec.ep, rec.ep.link || rec.t.link, e);
+          beginWatch(rec.t, rec.ep, watchUrl(rec.t, rec.ep), e);
         });
         const stamp = document.createElement("button");
         stamp.type = "button";
@@ -4095,7 +4132,7 @@
               : "约" + episodeMinutes(rec.ep, rec.t) + "分");
           card.querySelector(".name").textContent = rec.t.title;
           card.addEventListener("click", () => {
-            beginWatch(rec.t, rec.ep, rec.ep.link || rec.t.link);
+            beginWatch(rec.t, rec.ep, watchUrl(rec.t, rec.ep));
           });
           trio.appendChild(card);
         });
@@ -4439,14 +4476,15 @@
             : " · 工作日限 ≤30 分钟（周五 18:00 后放开）");
         $("sheetPin").textContent = [
           t.mapPin || "",
-          t.playNote || "",
+          t.watchNote || t.playNote || "",
+          officialBackupNote(t),
           needsParentWatch(t) ? "" : t.parentNote ? "家长：" + t.parentNote : "",
-          "点「去看」会打开外链；看完请回到本页盖印打分。",
+          "点「去看」打开自用片源；看完回到本页盖印。",
         ]
           .filter(Boolean)
           .join(" · ");
-        $("sheetWatchAll").href = t.link;
-        $("sheetWatchAll").textContent = "片源首页 · " + (t.linkLabel || "打开");
+        $("sheetWatchAll").href = watchUrl(t);
+        $("sheetWatchAll").textContent = "片源首页 · " + watchLabelOf(t);
 
         const prog = $("epProgress");
         prog.hidden = false;
@@ -4516,12 +4554,12 @@
           const acts = card.querySelector(".ep-actions");
           const watch = document.createElement("a");
           watch.className = "btn";
-          watch.href = ep.link || t.link;
+          watch.href = watchUrl(t, ep);
           watch.target = "_blank";
           watch.rel = "noopener";
           watch.textContent = "去看这一集";
           watch.addEventListener("click", (e) => {
-            beginWatch(t, ep, ep.link || t.link, e);
+            beginWatch(t, ep, watchUrl(t, ep), e);
           });
           const stampBtn = document.createElement("button");
           stampBtn.type = "button";
@@ -4588,13 +4626,14 @@
           $("stampCoverWrap").hidden = true;
           $("stampCover").removeAttribute("src");
         }
-        $("stampWatch").href = ep.link || t.link;
+        $("stampWatch").href = watchUrl(t, ep);
         $("stampWatch").textContent = "去看这一集";
         const alt = $("stampAlt");
-        if (t.altLink && isOfficialAlt(t.altLink)) {
+        const offs = officialList(t).filter((o) => o.url !== watchUrl(t, ep));
+        if (offs.length) {
           alt.hidden = false;
-          alt.href = t.altLink;
-          alt.textContent = t.altLabel || "备用入口";
+          alt.href = offs[0].url;
+          alt.textContent = offs[0].label || "正版备份";
         } else {
           alt.hidden = true;
         }
@@ -6256,7 +6295,7 @@
           beginWatch(
             homeHeroRec.t,
             homeHeroRec.ep,
-            homeHeroRec.ep.link || homeHeroRec.t.link
+            watchUrl(homeHeroRec.t, homeHeroRec.ep)
           );
         });
       }
@@ -6286,9 +6325,7 @@
           reportLinkBroken(
             watchBayTitle,
             watchBayEpisode,
-            watchBayEpisode
-              ? watchBayEpisode.link || (watchBayTitle && watchBayTitle.link)
-              : ""
+            watchUrl(watchBayTitle, watchBayEpisode)
           );
         });
       }
@@ -6439,7 +6476,7 @@
         beginWatch(
           activeTitle,
           openEps[0],
-          openEps[0].link || activeTitle.link,
+          watchUrl(activeTitle, openEps[0]),
           e
         );
       });
@@ -6448,19 +6485,19 @@
           beginWatch(
             activeTitle,
             activeEpisode,
-            activeEpisode.link || activeTitle.link,
+            watchUrl(activeTitle, activeEpisode),
             e
           );
         }
       });
       $("stampAlt").addEventListener("click", (e) => {
         if (activeTitle && activeEpisode) {
-          beginWatch(
-            activeTitle,
-            activeEpisode,
-            activeTitle.altLink || activeEpisode.link || activeTitle.link,
-            e
-          );
+          const offs = officialList(activeTitle);
+          const url =
+            (offs[0] && offs[0].url) ||
+            activeTitle.altLink ||
+            watchUrl(activeTitle, activeEpisode);
+          beginWatch(activeTitle, activeEpisode, url, e);
         }
       });
       if ($("stampLinkBroken")) {
@@ -6468,9 +6505,7 @@
           reportLinkBroken(
             activeTitle,
             activeEpisode,
-            activeEpisode
-              ? activeEpisode.link || (activeTitle && activeTitle.link)
-              : ""
+            watchUrl(activeTitle, activeEpisode)
           );
         });
       }
