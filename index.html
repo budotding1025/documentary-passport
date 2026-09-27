@@ -326,6 +326,28 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-4px); }
     }
+    .home-continue {
+      flex: 0 0 auto;
+      padding: 8px 8px 2px;
+      background: var(--paper);
+      border-top: 1px solid rgba(0,0,0,0.08);
+      width: 100%;
+    }
+    .home-continue-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scroll-snap-type: x mandatory;
+    }
+    .home-continue-card {
+      flex: 0 0 200px;
+      scroll-snap-align: start;
+    }
+    .home-continue-card.locked {
+      opacity: 0.62;
+      filter: grayscale(0.35);
+    }
     .home-discover {
       flex: 0 0 auto;
       padding: 8px 8px 6px;
@@ -421,24 +443,39 @@
     .home-trio-dots button,
     .home-trio-dot {
       appearance: none;
-      width: 10px;
-      height: 10px;
+      width: 28px;
+      height: 28px;
       padding: 0;
       border: 0;
       border-radius: 50%;
-      background: #bbb;
+      background: transparent;
       display: inline-block;
       cursor: pointer;
+      position: relative;
+    }
+    .home-trio-dots button::after,
+    .home-trio-dot::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      margin: -5px 0 0 -5px;
+      border-radius: 50%;
+      background: #bbb;
       transition: transform 0.2s var(--ease), background 0.2s var(--ease);
     }
-    .home-trio-dots button:hover,
-    .home-trio-dot:hover {
+    .home-trio-dots button:hover::after,
+    .home-trio-dot:hover::after {
       transform: scale(1.2);
       background: #888;
     }
-    .home-trio-dots button.on,
-    .home-trio-dots i.on,
-    .home-trio-dot.on {
+    .home-trio-dots button.on::after,
+    .home-trio-dot.on::after {
+      background: #111;
+    }
+    .home-trio-dots i.on {
       background: #111;
     }
     .home-trio-dots i {
@@ -1436,10 +1473,88 @@
       background: #1a1a18;
     }
     .doc-card .doc-main { display: grid; gap: 6px; min-width: 0; padding: 2px 4px 2px 0; }
-    #plateList {
+    #plateList.poster-wall {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+      gap: 16px 12px;
+    }
+    #plateList.poster-wall > .empty {
+      grid-column: 1 / -1;
+    }
+    .poster {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+      cursor: pointer;
+      background: transparent;
+    }
+    .poster:hover .poster-frame {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    }
+    .poster-frame {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border: 1px solid var(--ink);
+      background: #d8d4c8;
+      overflow: hidden;
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    }
+    .poster-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+    }
+    .poster-img.is-in { opacity: 1; }
+    .poster-badge {
+      position: absolute;
+      left: 6px;
+      bottom: 6px;
+      padding: 2px 7px;
+      background: rgba(20, 18, 14, 0.78);
+      color: #f7f3ea;
+      font-size: 0.72rem;
+      letter-spacing: 0.02em;
+    }
+    .poster-fav {
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 252, 246, 0.92);
+      color: #6a6a66;
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .poster-fav.on {
+      color: #b45309;
+    }
+    .poster-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .poster.done .poster-frame {
+      box-shadow: inset 0 0 0 2px var(--stamp);
+    }
+    .poster.locked {
+      opacity: 0.55;
+      filter: grayscale(0.35);
+    }
+    .poster.locked:hover .poster-frame {
+      transform: none;
+      box-shadow: none;
     }
     @media (max-width: 520px) {
       .doc-card {
@@ -1449,9 +1564,11 @@
       .doc-cover-slot {
         width: 108px;
       }
-      #plateList {
-        grid-template-columns: 1fr;
+      #plateList.poster-wall {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px 8px;
       }
+      .poster-title { font-size: 0.86rem; }
     }
     .doc-card .doc-duration {
       font-family: "JetBrains Mono", monospace;
@@ -2034,6 +2151,12 @@
         </div>
       </div>
 
+      <section class="home-continue" id="homeContinue" hidden>
+        <div class="home-discover-head">
+          <h2>接着看</h2>
+        </div>
+        <div class="home-continue-row" id="homeContinueRow"></div>
+      </section>
       <section class="home-discover" id="homeDiscover">
         <div class="home-discover-head">
           <h2>再发现三部</h2>
@@ -2093,7 +2216,7 @@
 
     <section id="panel-plate" class="panel">
       <h1 class="rise">餐盘版块</h1>
-      <p class="lede rise">靠封面找片。工作日灰色＝单集超过 30 分钟；周五 18:00 起与周末全开放。</p>
+      <p class="lede rise">点封面打开选集。灰色封面＝工作日看不了的长片。周五 18:00 起、周末和法定节假日全开放；调休上班仍按工作日。</p>
       <div class="find-bar rise">
         <input id="plateSearch" type="search" placeholder="搜片名，例如：细胞、巴斯德、货币" autocomplete="off" />
         <div class="find-chips" id="plateChips">
@@ -2109,7 +2232,7 @@
         <h2>本格片库</h2>
         <span class="mono" id="plateFilterLabel">全部</span>
       </div>
-      <div class="menu-list" id="plateList"></div>
+      <div class="poster-wall" id="plateList"></div>
     </section>
 
     <section id="panel-wish" class="panel">
@@ -2253,6 +2376,7 @@
         </div>
         <div class="ep-list" id="epList"></div>
         <div class="actions" style="margin-top:14px">
+          <button type="button" class="btn ghost" id="sheetFav">☆ 收藏</button>
           <a class="btn ghost" id="sheetWatchAll" href="#" target="_blank" rel="noopener">打开片源首页</a>
           <button type="button" class="btn ghost" id="sheetCloseBrowse">关闭</button>
         </div>
@@ -2661,32 +2785,123 @@
         return "★".repeat(v) + "☆".repeat(5 - v);
       }
 
+      // 国务院办公厅放假调休：国办发明电〔2024〕12号（2025）、〔2025〕7号（2026）。
+      // rest = 放假（含连休），work = 调休上班。2027 年通知公布后再补。
+      const CN_REST_DAYS = {
+        "2025-01-01": "元旦",
+        "2025-01-28": "春节",
+        "2025-01-29": "春节",
+        "2025-01-30": "春节",
+        "2025-01-31": "春节",
+        "2025-02-01": "春节",
+        "2025-02-02": "春节",
+        "2025-02-03": "春节",
+        "2025-02-04": "春节",
+        "2025-04-04": "清明",
+        "2025-04-05": "清明",
+        "2025-04-06": "清明",
+        "2025-05-01": "劳动节",
+        "2025-05-02": "劳动节",
+        "2025-05-03": "劳动节",
+        "2025-05-04": "劳动节",
+        "2025-05-05": "劳动节",
+        "2025-05-31": "端午",
+        "2025-06-01": "端午",
+        "2025-06-02": "端午",
+        "2025-10-01": "国庆",
+        "2025-10-02": "国庆",
+        "2025-10-03": "国庆",
+        "2025-10-04": "国庆",
+        "2025-10-05": "国庆",
+        "2025-10-06": "国庆",
+        "2025-10-07": "国庆",
+        "2025-10-08": "国庆",
+        "2026-01-01": "元旦",
+        "2026-01-02": "元旦",
+        "2026-01-03": "元旦",
+        "2026-02-15": "春节",
+        "2026-02-16": "春节",
+        "2026-02-17": "春节",
+        "2026-02-18": "春节",
+        "2026-02-19": "春节",
+        "2026-02-20": "春节",
+        "2026-02-21": "春节",
+        "2026-02-22": "春节",
+        "2026-02-23": "春节",
+        "2026-04-04": "清明",
+        "2026-04-05": "清明",
+        "2026-04-06": "清明",
+        "2026-05-01": "劳动节",
+        "2026-05-02": "劳动节",
+        "2026-05-03": "劳动节",
+        "2026-05-04": "劳动节",
+        "2026-05-05": "劳动节",
+        "2026-06-19": "端午",
+        "2026-06-20": "端午",
+        "2026-06-21": "端午",
+        "2026-09-25": "中秋",
+        "2026-09-26": "中秋",
+        "2026-09-27": "中秋",
+        "2026-10-01": "国庆",
+        "2026-10-02": "国庆",
+        "2026-10-03": "国庆",
+        "2026-10-04": "国庆",
+        "2026-10-05": "国庆",
+        "2026-10-06": "国庆",
+        "2026-10-07": "国庆",
+      };
+      const CN_WORK_DAYS = {
+        "2025-01-26": 1,
+        "2025-02-08": 1,
+        "2025-04-27": 1,
+        "2025-09-28": 1,
+        "2025-10-11": 1,
+        "2026-01-04": 1,
+        "2026-02-14": 1,
+        "2026-02-28": 1,
+        "2026-05-09": 1,
+        "2026-09-20": 1,
+        "2026-10-10": 1,
+      };
+
+      function cnDayKind(d) {
+        const t = d || new Date();
+        const key = dayKey(t);
+        if (CN_WORK_DAYS[key]) return "work";
+        if (CN_REST_DAYS[key]) return "rest";
+        const day = t.getDay();
+        if (day === 0 || day === 6) return "weekend";
+        return "weekday";
+      }
+
       function isWeekend(d) {
         const t = d || new Date();
-        const day = t.getDay(); // 0 Sun … 5 Fri … 6 Sat
-        if (day === 0 || day === 6) return true;
-        // 周五 18:00 起算周末（放学后可看长片）
-        if (day === 5 && t.getHours() >= 18) return true;
+        const kind = cnDayKind(t);
+        if (kind === "work") return false;
+        if (kind === "rest" || kind === "weekend") return true;
+        // 普通周五 18:00 起算周末（放学后可看长片）；调休上班日不算
+        if (t.getDay() === 5 && t.getHours() >= 18) return true;
         return false;
       }
 
       function dayGateLabel() {
+        const t = new Date();
+        const holiday = CN_REST_DAYS[dayKey(t)];
+        const makeup = !!CN_WORK_DAYS[dayKey(t)];
         if (!isWeekend()) {
           const m = todayWatchMinutes();
+          const prefix = makeup ? "调休上班" : "工作日";
           if (m >= WEEKDAY_DAILY_CAP) {
-            return (
-              "工作日 · 今日已看约 " +
-              m +
-              " 分钟 · 建议早点睡（不强制）"
-            );
+            return prefix + " · 今日已看约 " + m + " 分钟 · 建议早点睡（不强制）";
           }
           return (
-            "工作日 · 单集≤30 分钟 · 今日已看约 " +
+            prefix +
+            " · 单集≤30 分钟 · 今日已看约 " +
             m +
             " 分钟（建议合计≤30）"
           );
         }
-        const t = new Date();
+        if (holiday) return holiday + " · 放假 · 长短片都可看";
         if (t.getDay() === 5) return "周五晚 · 已算周末 · 长短片都可看";
         return "周末 · 长短片都可看";
       }
@@ -3677,7 +3892,7 @@
           '<p class="play-tier"></p>' +
           '<div class="doc-blurb"></div>' +
           '<div class="doc-rating"></div>' +
-          (locked ? '<p class="lock-hint">工作日限 30 分钟内 · 周五 18:00 后 / 周末再看</p>' : "") +
+          (locked ? '<p class="lock-hint">工作日限 30 分钟内 · 周五晚、周末和节假日再看</p>' : "") +
           '<div class="expand-slot"></div>' +
           '<div class="actions"></div></div>';
         const coverImg = el.querySelector(".doc-cover");
@@ -3803,6 +4018,60 @@
         return el;
       }
 
+      function posterBadge(t, locked, full, partial, progress) {
+        if (locked) return "周末看";
+        if (full) return "看完了";
+        if (partial) return progress.n + "/" + progress.total;
+        if (needsParentWatch(t)) return "陪看";
+        return "";
+      }
+
+      function renderPoster(t) {
+        const p = titleProgress(t);
+        const full = titleFullyDone(t);
+        const partial = !full && titleTouched(t);
+        const locked = !isWeekend() && !titleHasOpenEpisode(t);
+        const el = document.createElement("article");
+        el.className =
+          "poster" +
+          (full ? " done" : "") +
+          (partial ? " partial" : "") +
+          (locked ? " locked" : "");
+        const badge = posterBadge(t, locked, full, partial, p);
+        el.innerHTML =
+          '<div class="poster-frame">' +
+          '<img class="poster-img" alt="" loading="lazy" decoding="async" />' +
+          (badge ? '<span class="poster-badge"></span>' : "") +
+          '<button type="button" class="poster-fav" aria-label="收藏"></button>' +
+          "</div>" +
+          '<div class="poster-title"></div>';
+        const img = el.querySelector(".poster-img");
+        const art = coverSrc(t);
+        if (art) {
+          img.alt = t.title;
+          revealImg(img, art);
+        }
+        if (badge) el.querySelector(".poster-badge").textContent = badge;
+        el.querySelector(".poster-title").textContent = t.title;
+        const fav = el.querySelector(".poster-fav");
+        const starred = isFavorite(t);
+        fav.textContent = starred ? "★" : "☆";
+        fav.classList.toggle("on", starred);
+        fav.setAttribute("aria-label", starred ? "取消收藏" : "收藏");
+        fav.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggleFavorite(t);
+        });
+        el.addEventListener("click", () => {
+          if (locked) {
+            toast("工作日只开放 30 分钟以内 · 周五 18:00 后与周末可看长片");
+            return;
+          }
+          openBrowse(t);
+        });
+        return el;
+      }
+
       function renderMenu() {
         const focus = catById(state.focus);
         const weekend = isWeekend();
@@ -3823,7 +4092,7 @@
         if ($("menuBMeta"))
           $("menuBMeta").textContent = weekend
             ? "全开放"
-            : "周五 18:00 前灰色不可选";
+            : "工作日与调休上班灰色不可选";
         $("dockFocus").textContent = focus ? focus.name : "—";
         $("swapLeft").textContent = state.swapUsed ? "0" : "1";
         $("swapBtn").disabled = !!state.swapUsed;
@@ -3849,6 +4118,58 @@
             (ep) => episodeAllowed(ep, t) && !episodeStamped(t.id, ep.id)
           ) || null
         );
+      }
+
+      function continueWatching(limit) {
+        const cap = limit || 6;
+        const recentByTitle = {};
+        (state.stamps || []).forEach((s) => {
+          if (!s.titleId) return;
+          const prev = recentByTitle[s.titleId];
+          if (!prev || (s.at || 0) > (prev.at || 0)) recentByTitle[s.titleId] = s;
+        });
+        return Object.keys(recentByTitle)
+          .map((id) => {
+            const t = titleById(id);
+            if (!t || titleFullyDone(t)) return null;
+            const ep = episodesOf(t).find((e) => !episodeStamped(t.id, e.id));
+            if (!ep) return null;
+            return { t: t, ep: ep, at: recentByTitle[id].at || 0 };
+          })
+          .filter(Boolean)
+          .sort((a, b) => b.at - a.at)
+          .slice(0, cap);
+      }
+
+      function renderContinueRow() {
+        const box = $("homeContinue");
+        const row = $("homeContinueRow");
+        if (!box || !row) return;
+        const items = continueWatching(6);
+        row.innerHTML = "";
+        if (!items.length) {
+          box.hidden = true;
+          return;
+        }
+        box.hidden = false;
+        items.forEach((item) => {
+          const t = item.t;
+          const ep = item.ep;
+          const locked = !episodeAllowed(ep, t);
+          const card = document.createElement("article");
+          card.className = "home-trio-card home-continue-card" + (locked ? " locked" : "");
+          card.innerHTML =
+            '<img class="bg" alt="" decoding="async"><div class="veil"></div><div class="body">' +
+            '<div class="tag"></div><div class="name"></div></div>';
+          revealImg(card.querySelector(".bg"), coverSrc(t));
+          card.querySelector(".tag").textContent =
+            (locked ? "周末 · " : "下一集 · ") + "第" + ep.n + "集";
+          card.querySelector(".name").textContent = t.title;
+          card.addEventListener("click", () => {
+            beginWatch(t, ep, watchUrl(t, ep));
+          });
+          row.appendChild(card);
+        });
       }
 
       function buildDailyRecs() {
@@ -4256,6 +4577,7 @@
       let homeTrioGen = 0;
       let homeTrioHover = false;
       let homeTrioHoverBound = false;
+      let homeTrioManual = false;
       let trioPaintToken = 0;
       const thumbReady = new Map();
       const thumbKeep = [];
@@ -4409,8 +4731,15 @@
         }
       }
 
+      function trioUsesManual() {
+        return !!(
+          window.matchMedia && window.matchMedia("(pointer: coarse)").matches
+        );
+      }
+
       function startHomeTrioRotate() {
         stopHomeTrioRotate();
+        if (homeTrioManual || trioUsesManual()) return;
         if (homeTrioBatches.length < 2) return;
         const gen = homeTrioGen;
         const arm = () => {
@@ -4420,16 +4749,30 @@
         arm();
       }
 
+      function holdTrioStill() {
+        homeTrioManual = true;
+        homeTrioHover = false;
+        stopHomeTrioRotate();
+      }
+
       function bindTrioHover() {
         if (homeTrioHoverBound) return;
         const box = $("homeDiscover");
         if (!box) return;
         homeTrioHoverBound = true;
-        box.addEventListener("pointerenter", () => {
+        if (trioUsesManual()) homeTrioManual = true;
+        box.addEventListener("pointerenter", (e) => {
+          if (e.pointerType && e.pointerType !== "mouse") return;
           homeTrioHover = true;
         });
-        box.addEventListener("pointerleave", () => {
+        box.addEventListener("pointerleave", (e) => {
+          if (e.pointerType && e.pointerType !== "mouse") return;
           homeTrioHover = false;
+        });
+        box.addEventListener("pointerdown", (e) => {
+          if (e.pointerType === "touch" || e.pointerType === "pen" || trioUsesManual()) {
+            holdTrioStill();
+          }
         });
       }
 
@@ -4513,11 +4856,15 @@
           d.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
-            stopHomeTrioRotate();
+            if (trioUsesManual() || (e.pointerType && e.pointerType !== "mouse")) {
+              holdTrioStill();
+            } else {
+              stopHomeTrioRotate();
+            }
             waitBatchArt(i).then(() => {
               presentTrioBatch(i);
               preloadTrioAhead(i);
-              startHomeTrioRotate();
+              if (!homeTrioManual) startHomeTrioRotate();
             });
           });
           dots.appendChild(d);
@@ -4594,6 +4941,7 @@
       }
 
       function renderPassport() {
+        renderContinueRow();
         renderHomeRecs();
         renderHomeTask();
         renderYesterdaySaid();
@@ -4727,11 +5075,11 @@
           pool = pool.filter((t) => titleSearchHay(t).indexOf(needle) >= 0);
         }
         preloadPlateCovers(pool);
-        pool.forEach((t, i) => list.appendChild(renderCard(t, i)));
+        pool.forEach((t) => list.appendChild(renderPoster(t)));
         if (!pool.length) {
           const empty = {
             seen: "还没有盖过印的片子。看完一集回来盖印，就会出现在这里。",
-            fav: "还没有收藏。在片子上点「收藏」，下次从这里找。",
+            fav: "还没有收藏。点封面上的星，下次从这里找。",
             short: "这一格里没有工作日能看的短片。",
             open: "这一格里的片子都看完了。",
             all: "没有找到。换个词，或点「全部」。",
@@ -4753,7 +5101,16 @@
         else state.favorites.unshift(t.id);
         save(state);
         renderPlate();
+        if (activeTitle && activeTitle.id === t.id) syncSheetFav(t);
         toast(i >= 0 ? "已取消收藏" : "已放进我的收藏");
+      }
+
+      function syncSheetFav(t) {
+        const btn = $("sheetFav");
+        if (!btn || !t) return;
+        const on = isFavorite(t);
+        btn.textContent = on ? "★ 已收藏" : "☆ 收藏";
+        btn.classList.toggle("fav-on", on);
       }
 
       function latestStampAt(t) {
@@ -4884,7 +5241,7 @@
           (t.play ? " · " + (playLabel[t.play] || t.play) : "") +
           (isWeekend()
             ? " · 今日已开放长片"
-            : " · 工作日限 ≤30 分钟（周五 18:00 后放开）");
+            : " · 工作日限 ≤30 分钟（周五晚、周末和节假日放开）");
         $("sheetPin").textContent = [
           t.mapPin || "",
           t.watchNote || t.playNote || "",
@@ -4896,6 +5253,7 @@
           .join(" · ");
         $("sheetWatchAll").href = watchUrl(t);
         $("sheetWatchAll").textContent = "片源首页 · " + watchLabelOf(t);
+        syncSheetFav(t);
 
         const prog = $("epProgress");
         prog.hidden = false;
@@ -6613,6 +6971,11 @@
         b.addEventListener("click", () => switchTab(b.dataset.tab));
       });
       $("sheetCloseBrowse").addEventListener("click", closeSheet);
+      if ($("sheetFav")) {
+        $("sheetFav").addEventListener("click", () => {
+          if (activeTitle) toggleFavorite(activeTitle);
+        });
+      }
       $("sheetCloseStamp").addEventListener("click", closeSheet);
       $("stampBack").addEventListener("click", () => {
         if (activeTitle) openBrowse(activeTitle);
