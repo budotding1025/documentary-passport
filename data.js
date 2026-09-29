@@ -3953,26 +3953,72 @@ window.DOC_CATALOG = {
     {
       "id": "econmachine",
       "heroArt": "./covers/hero/econmachine.jpg",
-      "title": "经济机器是怎样运行的",
+      "title": "瑞·达利欧动画三部曲",
       "category": "finance",
       "slot": "A",
       "role": "main",
-      "duration": "约 30 分钟 × 1",
-      "episodeHint": "可工作日看完",
+      "duration": "约 29–43 分钟 × 3",
+      "episodeHint": "先看经济机器 · 原则 II 偏长",
       "muscle": "商业",
-      "blurb": "桥水基金用动画讲清：交易、借贷、周期。30 分钟建立「钱怎么流动」的骨架。",
+      "blurb": "桥水三部动画：钱怎么流动、做事的原则、国家兴衰大周期。B 站同一合集。",
       "link": "https://www.bilibili.com/video/BV1jsoMBtEWA/",
       "linkLabel": "B 站直达",
       "play": "ok",
       "shareable": false,
       "playNote": "尚无正版备份 · 自用 watchLink；工具上线前须补或下架",
-      "mapPin": "交易 · 信贷 · 周期",
+      "mapPin": "交易 · 原则 · 大周期",
+      "parentNote": "第3集讲国家兴衰与冲突，信息偏成人；建议家长陪看",
       "altLink": "https://www.youtube.com/watch?v=rFV7wdEX-Mo",
-      "altLabel": "YouTube（备）",
+      "altLabel": "YouTube 经济机器（备）",
       "watchLink": "https://www.bilibili.com/video/BV1jsoMBtEWA/",
       "watchLabel": "B 站直达",
-      "watchNote": "自用：约 30 分钟完整投稿（播放量靠前）；有字幕。工具上线前须补 official，否则标「片源暂缺」。",
-      "official": []
+      "watchNote": "自用：B 站「瑞·达利欧」合集三部动画；有字幕。工具上线前须补 official，否则标「片源暂缺」。",
+      "official": [],
+      "episodes": [
+        {
+          "id": "econmachine-1",
+          "n": 1,
+          "title": "经济机器是怎样运行的",
+          "blurb": "交易、借贷、短周期与长周期。先建立「钱怎么流动」的骨架。",
+          "duration": "约 31 分钟",
+          "link": "https://www.bilibili.com/video/BV1jsoMBtEWA/",
+          "hints": [
+            "经济机器",
+            "信贷",
+            "周期",
+            "达利欧",
+            "桥水"
+          ]
+        },
+        {
+          "id": "econmachine-2",
+          "n": 2,
+          "title": "成功的原则",
+          "blurb": "把《原则》收成约半小时动画：拥抱现实、五步流程、头脑开放。",
+          "duration": "约 29 分钟",
+          "link": "https://www.bilibili.com/video/BV1UcdmBpEWF/",
+          "hints": [
+            "原则",
+            "成功",
+            "五步",
+            "达利欧"
+          ]
+        },
+        {
+          "id": "econmachine-3",
+          "n": 3,
+          "title": "原则 II · 应对变化中的世界秩序",
+          "blurb": "国家为什么兴盛、衰落。比前两部更长，适合周末看。",
+          "duration": "约 43 分钟",
+          "link": "https://www.bilibili.com/video/BV1EQo4BQE29/",
+          "hints": [
+            "世界秩序",
+            "大周期",
+            "原则2",
+            "国家"
+          ]
+        }
+      ]
     },
     {
       "id": "ccecon",

@@ -3561,7 +3561,18 @@
         next.wishes = (next.wishes || []).map((w) =>
           Object.assign({ handledAt: null, handleNote: "" }, w)
         );
+        const remapOldEp = (titleId, episodeId) => {
+          if (titleId === "econmachine" && episodeId === "econmachine-all") {
+            return "econmachine-1";
+          }
+          return episodeId;
+        };
         next.stamps = (next.stamps || []).map((s) => {
+          if (s.episodeId) {
+            s = Object.assign({}, s, {
+              episodeId: remapOldEp(s.titleId, s.episodeId),
+            });
+          }
           if (s.episodeId) {
             return Object.assign(
               { rating: 0, comment: "", ask: "", agentChat: [], prompt: "remember" },
@@ -3580,6 +3591,19 @@
             agentChat: s.agentChat || [],
           });
         });
+        next.dayOpens = (next.dayOpens || []).map((o) =>
+          Object.assign({}, o, {
+            episodeId: remapOldEp(o.titleId, o.episodeId),
+          })
+        );
+        if (next.pendingWatch && next.pendingWatch.episodeId) {
+          next.pendingWatch = Object.assign({}, next.pendingWatch, {
+            episodeId: remapOldEp(
+              next.pendingWatch.titleId,
+              next.pendingWatch.episodeId
+            ),
+          });
+        }
         return next;
       }
 
@@ -4901,7 +4925,7 @@
           ["money", "经济", "money-2"],
           ["mademenspend", "经济"],
           ["clarksonfarm", "经济"],
-          ["econmachine", "经济"],
+          ["econmachine", "经济", "econmachine-1"],
           ["englishadv", "英语"],
           ["mathchosen", "数学"],
           ["dimensions", "数学"],
