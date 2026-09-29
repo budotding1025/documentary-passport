@@ -3950,6 +3950,275 @@ window.DOC_CATALOG = {
       "watchNote": "自用：BBC The Code 全 3 集分P。工具上线前须补 official，否则标「片源暂缺」。",
       "official": []
     },
+      {
+        "id": "capitalstory",
+        "heroArt": "./covers/hero/capitalstory.jpg",
+        "title": "资本的故事（第一季）",
+        "category": "finance",
+        "slot": "A",
+        "role": "side",
+        "duration": "约 8 分钟 × 17 集",
+        "episodeHint": "工作日很合适 · 一集一个故事",
+        "muscle": "商业",
+        "blurb": "央视财经微纪录：股票从哪来、泡沫怎么破、公司怎样靠资本长大。每集约 8 分钟。",
+        "link": "https://jingji.cctv.com/2013/01/08/VIDE1357612213762880.shtml",
+        "linkLabel": "央视网",
+        "play": "stable",
+        "shareable": true,
+        "playNote": "正版备份 1 条 · 自用走 watchLink；工具前可再补 1 条",
+        "mapPin": "股票 · 泡沫 · 公司",
+        "parentNote": "讲金融危机、骗局与杠杆，偏成人财经；建议家长陪看前几集再决定追不追",
+        "watchLink": "https://jingji.cctv.com/2013/01/08/VIDE1357612213762880.shtml",
+        "watchLabel": "央视网",
+        "watchNote": "自用：央视财经《资本的故事》第一季正版页（现收 17 集）。第二、三季可再补。",
+        "official": [
+          {
+            "kind": "cctv",
+            "url": "http://jingji.cntv.cn/special/zbgs/wjlp/index.shtml",
+            "label": "央视网专题 · 第一季"
+          }
+        ],
+        "episodes": [
+          {
+            "id": "capitalstory-1",
+            "n": 1,
+            "title": "股票的力量",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/08/VIDE1357612213762880.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "股票的力量"
+            ]
+          },
+          {
+            "id": "capitalstory-2",
+            "n": 2,
+            "title": "泡沫的诱惑",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/09/VIDE1357697917540341.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "泡沫的诱惑"
+            ]
+          },
+          {
+            "id": "capitalstory-3",
+            "n": 3,
+            "title": "南海骗局",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/10/VIDE1357782133353155.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "南海骗局"
+            ]
+          },
+          {
+            "id": "capitalstory-4",
+            "n": 4,
+            "title": "汉密尔顿的旋转门",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/14/VIDE1358129713212840.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "汉密尔顿的旋转门"
+            ]
+          },
+          {
+            "id": "capitalstory-5",
+            "n": 5,
+            "title": "梧桐树下的承诺",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/15/VIDE1358218111715493.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "梧桐树下的承诺"
+            ]
+          },
+          {
+            "id": "capitalstory-6",
+            "n": 6,
+            "title": "给风险定价",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/16/VIDE1358302351613678.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "给风险定价"
+            ]
+          },
+          {
+            "id": "capitalstory-7",
+            "n": 7,
+            "title": "注水的股票",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/17/VIDE1358389127933890.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "注水的股票"
+            ]
+          },
+          {
+            "id": "capitalstory-8",
+            "n": 8,
+            "title": "巨人的诞生",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/17/VIDE1358412483859715.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "巨人的诞生"
+            ]
+          },
+          {
+            "id": "capitalstory-9",
+            "n": 9,
+            "title": "镀金的美元",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/17/VIDE1358412739384674.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "镀金的美元"
+            ]
+          },
+          {
+            "id": "capitalstory-10",
+            "n": 10,
+            "title": "风险的价值",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/18/VIDE1358475177555295.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "风险的价值"
+            ]
+          },
+          {
+            "id": "capitalstory-11",
+            "n": 11,
+            "title": "日本泡沫",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/21/VIDE1358733968669790.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "日本泡沫"
+            ]
+          },
+          {
+            "id": "capitalstory-12",
+            "n": 12,
+            "title": "八佰伴倒闭",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/22/VIDE1358820382865737.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "八佰伴倒闭"
+            ]
+          },
+          {
+            "id": "capitalstory-13",
+            "n": 13,
+            "title": "门口的野蛮人",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/23/VIDE1358907505111927.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "门口的野蛮人"
+            ]
+          },
+          {
+            "id": "capitalstory-14",
+            "n": 14,
+            "title": "英镑狙击手",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/24/VIDE1358993343531372.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "英镑狙击手"
+            ]
+          },
+          {
+            "id": "capitalstory-15",
+            "n": 15,
+            "title": "创新的温床",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/31/VIDE1359600863836161.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "创新的温床"
+            ]
+          },
+          {
+            "id": "capitalstory-16",
+            "n": 16,
+            "title": "峭壁边缘的华尔街",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/31/VIDE1359601030597619.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "峭壁边缘的华尔街"
+            ]
+          },
+          {
+            "id": "capitalstory-17",
+            "n": 17,
+            "title": "华尔街的3A游戏",
+            "blurb": "约 8 分钟。资本史上一个独立小故事。",
+            "duration": "约 8 分钟",
+            "link": "https://jingji.cctv.com/2013/01/31/VIDE1359601036563651.shtml",
+            "hints": [
+              "资本",
+              "股票",
+              "公司",
+              "华尔街的3A游戏"
+            ]
+          }
+        ]
+      },
     {
       "id": "econmachine",
       "heroArt": "./covers/hero/econmachine.jpg",
