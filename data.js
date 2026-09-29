@@ -4226,23 +4226,34 @@ window.DOC_CATALOG = {
       "category": "finance",
       "slot": "A",
       "role": "main",
-      "duration": "约 29–43 分钟 × 3",
-      "episodeHint": "先看经济机器 · 第3集偏长",
+      "duration": "约 3–43 分钟 · 10 集",
+      "episodeHint": "先看经济机器 · 原则 8 集很短 · 世界秩序周末看",
       "muscle": "商业",
-      "blurb": "三部动画：钱怎么在经济里流动、做事要守什么原则、国家为什么兴盛又衰落。",
+      "blurb": "达利欧三块：钱怎么流动、《成功的原则》动画 8 集、国家兴衰大周期。原则每集约 3–5 分钟。",
       "link": "https://www.bilibili.com/video/BV1jsoMBtEWA/",
       "linkLabel": "B 站直达",
       "play": "ok",
       "shareable": false,
-      "playNote": "尚无正版备份 · 自用 watchLink；工具上线前须补或下架",
-      "mapPin": "钱怎么流动 · 做事原则 · 世界秩序",
-      "parentNote": "第3集讲国家兴衰与冲突，信息偏成人；建议家长陪看",
-      "altLink": "https://www.youtube.com/watch?v=rFV7wdEX-Mo",
-      "altLabel": "YouTube 经济机器（备）",
+      "playNote": "正版备份 2 条 · 自用走 watchLink；原则 8 集有官方 YouTube 高清",
+      "mapPin": "钱怎么流动 · 成功的原则 · 世界秩序",
+      "parentNote": "世界秩序一集讲国家兴衰与冲突，偏成人；建议家长陪看",
+      "altLink": "https://www.youtube.com/watch?v=B9XGUpQZY38",
+      "altLabel": "YouTube 官方 · 成功的原则（完整高清）",
       "watchLink": "https://www.bilibili.com/video/BV1jsoMBtEWA/",
       "watchLabel": "B 站直达",
-      "watchNote": "自用：B 站「瑞·达利欧」合集三部动画；有字幕。工具上线前须补 official，否则标「片源暂缺」。",
-      "official": [],
+      "watchNote": "自用：经济机器与世界秩序走合集页；《成功的原则》8 集走 B 站 720p 中文动画按时码开播。官方英文字幕高清在 YouTube。",
+      "official": [
+        {
+          "kind": "youtube",
+          "url": "https://www.youtube.com/watch?v=B9XGUpQZY38",
+          "label": "YouTube 官方 · Principles for Success"
+        },
+        {
+          "kind": "web",
+          "url": "https://www.principles.com/principles-for-success",
+          "label": "principles.com 官方页"
+        }
+      ],
       "episodes": [
         {
           "id": "econmachine-1",
@@ -4262,22 +4273,133 @@ window.DOC_CATALOG = {
         {
           "id": "econmachine-2",
           "n": 2,
-          "title": "成功的原则",
-          "blurb": "把《原则》收成约半小时动画：拥抱现实、五步流程、头脑开放。",
-          "duration": "约 29 分钟",
-          "link": "https://www.bilibili.com/video/BV1UcdmBpEWF/",
+          "title": "成功的原则① · 探险召唤",
+          "blurb": "为什么要自己想清楚真相。成功不只靠已知道的，更靠怎么面对未知。官方英文字幕高清：YouTube 同刻度。",
+          "duration": "约 4 分钟",
+          "link": "https://www.bilibili.com/video/BV1UcdmBpEWF/?t=0",
           "hints": [
             "原则",
-            "成功",
-            "五步",
-            "达利欧"
+            "真相",
+            "独立思考",
+            "探险",
+            "达利欧",
+            "成功的原则"
           ]
         },
         {
           "id": "econmachine-3",
           "n": 3,
+          "title": "成功的原则② · 拥抱现实",
+          "blurb": "梦想要落地：先看清现实，再动手。痛苦加反思才会进步。",
+          "duration": "约 4 分钟",
+          "link": "https://www.bilibili.com/video/BV1UcdmBpEWF/?t=227",
+          "hints": [
+            "现实",
+            "痛苦",
+            "反思",
+            "进步",
+            "达利欧",
+            "成功的原则"
+          ]
+        },
+        {
+          "id": "econmachine-4",
+          "n": 4,
+          "title": "成功的原则③ · 五步流程",
+          "blurb": "定目标、找问题、查原因、做方案、去执行。五步循环就是进化。",
+          "duration": "约 3 分钟",
+          "link": "https://www.bilibili.com/video/BV1UcdmBpEWF/?t=478",
+          "hints": [
+            "五步",
+            "目标",
+            "问题",
+            "执行",
+            "达利欧",
+            "成功的原则"
+          ]
+        },
+        {
+          "id": "econmachine-5",
+          "n": 5,
+          "title": "成功的原则④ · 深渊",
+          "blurb": "1982 年大失败之后怎么站起来：客观面对、反思、继续往前。",
+          "duration": "约 3 分钟",
+          "link": "https://www.bilibili.com/video/BV1UcdmBpEWF/?t=653",
+          "hints": [
+            "失败",
+            "深渊",
+            "谦逊",
+            "1982",
+            "达利欧",
+            "成功的原则"
+          ]
+        },
+        {
+          "id": "econmachine-6",
+          "n": 6,
+          "title": "成功的原则⑤ · 一切都是机器",
+          "blurb": "事情会反复发生。把问题分类、用原则处理，并平衡风险与回报。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1UcdmBpEWF/?t=857",
+          "hints": [
+            "机器",
+            "规律",
+            "风险",
+            "回报",
+            "达利欧",
+            "成功的原则"
+          ]
+        },
+        {
+          "id": "econmachine-7",
+          "n": 7,
+          "title": "成功的原则⑥ · 两大障碍",
+          "blurb": "自我意识和思维盲点会挡住真相。先认出它们。",
+          "duration": "约 4 分钟",
+          "link": "https://www.bilibili.com/video/BV1UcdmBpEWF/?t=1136",
+          "hints": [
+            "障碍",
+            "自我",
+            "盲点",
+            "达利欧",
+            "成功的原则"
+          ]
+        },
+        {
+          "id": "econmachine-8",
+          "n": 8,
+          "title": "成功的原则⑦ · 头脑开放",
+          "blurb": "愿意听认真想过的不同意见，才能更接近真相、做出更好决定。",
+          "duration": "约 4 分钟",
+          "link": "https://www.bilibili.com/video/BV1UcdmBpEWF/?t=1380",
+          "hints": [
+            "开放",
+            "分歧",
+            "真相",
+            "达利欧",
+            "成功的原则"
+          ]
+        },
+        {
+          "id": "econmachine-9",
+          "n": 9,
+          "title": "成功的原则⑧ · 奋力拼搏",
+          "blurb": "成功不只是到达目标，更是和同伴一起进化、好好拼搏的过程。",
+          "duration": "约 4 分钟",
+          "link": "https://www.bilibili.com/video/BV1UcdmBpEWF/?t=1624",
+          "hints": [
+            "拼搏",
+            "协作",
+            "进化",
+            "达利欧",
+            "成功的原则"
+          ]
+        },
+        {
+          "id": "econmachine-10",
+          "n": 10,
           "title": "世界秩序 · 国家为什么兴衰",
-          "blurb": "大国为什么强起来、又为什么弱下去。比前两部更长，适合周末看。",
+          "blurb": "大国为什么强起来、又为什么弱下去。比前面更长，适合周末看。",
           "duration": "约 43 分钟",
           "link": "https://www.bilibili.com/video/BV1EQo4BQE29/",
           "hints": [

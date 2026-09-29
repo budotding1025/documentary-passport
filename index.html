@@ -3565,6 +3565,10 @@
           if (titleId === "econmachine" && episodeId === "econmachine-all") {
             return "econmachine-1";
           }
+          if (titleId === "econmachine" && episodeId === "econmachine-3") {
+            // 旧「世界秩序」整部，现为第 10 集；原第 3 集号让给《成功的原则》短集
+            return "econmachine-10";
+          }
           return episodeId;
         };
         next.stamps = (next.stamps || []).map((s) => {
