@@ -1,0 +1,31 @@
+---
+description: Playback gate must follow real clock + China State Council holiday calendar
+globs: index.html,data.js
+alwaysApply: true
+---
+
+# 中国日历播放门禁
+
+长片能否播放，只认两件事：
+
+1. **本机实际日期时间**（`new Date()` / `dayKey`），禁止假时钟、调试开关、手动「当作周末」。
+2. **国务院办公厅放假调休表**（`CN_REST_DAYS` / `CN_WORK_DAYS`），来源为当年国办发明电通知。
+
+## 开放长片
+
+- 周六、周日（且当天不是调休上班）
+- `CN_REST_DAYS` 法定放假日（含连休）
+- 普通周五本地时间 ≥ 18:00
+- 法定假日前一夜本地时间 ≥ 18:00（`isHolidayEve`）
+
+## 不开放长片（工作日规则）
+
+- 普通周一至周五白天
+- `CN_WORK_DAYS` 调休上班日（即使是周六日）
+- 工作日仅开放单集 ≤ 30 分钟的短片
+
+## 改日历时
+
+- 新年国务院通知发布后，只增补 `CN_REST_DAYS` / `CN_WORK_DAYS`，不要另写一套日期逻辑。
+- 文案用 `PLAY_GATE_HINT_*` / `PLAY_GATE_TOAST_LOCKED`，保持「按日历」表述一致。
+- 改完后对照官方通知抽查：放假日 `isWeekend===true`，调休上班日 `isWeekend===false`。

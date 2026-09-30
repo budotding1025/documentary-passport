@@ -2772,7 +2772,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20260930-guoqing"></script>
+  <script src="./data.js?v=20260930-calendar"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -3030,8 +3030,10 @@
         return "★".repeat(v) + "☆".repeat(5 - v);
       }
 
-      // 国务院办公厅放假调休：国办发明电〔2024〕12号（2025）、〔2025〕7号（2026）。
-      // rest = 放假（含连休），work = 调休上班。2027 年通知公布后再补。
+      // 播放门禁唯一依据：本机实际日期时间 + 国务院办公厅放假调休表（CN_REST_DAYS / CN_WORK_DAYS）。
+      // 禁止假时钟、手动「当周末」、或绕过日历的临时开放。新年国务院通知发布后只增补表内日期。
+      // 开放：周六日、法定放假日、普通周五≥18:00、法定假日前夜≥18:00。关闭长片：普通工作日、调休上班日。
+      // 国务院办公厅放假调休：国办发明电〔2024〕12号（2025）、〔2025〕7号（2026）。2027 年通知公布后再补。
       const CN_REST_DAYS = {
         "2025-01-01": "元旦",
         "2025-01-28": "春节",
@@ -3178,6 +3180,14 @@
       }
 
       const WEEKDAY_DAILY_CAP = 30;
+      const PLAY_GATE_HINT_LOCKED =
+        "工作日限短片 · 周五与法定假日前夜 18:00 起、周末和法定假日开放长片；调休上班日除外";
+      const PLAY_GATE_HINT_OPEN = "今日按日历已开放长片";
+      const PLAY_GATE_HINT_WEEKDAY_META =
+        " · 工作日限 ≤30 分钟（按中国日历：周末/法定假日/节前夜与周五晚开放）";
+      const PLAY_GATE_HINT_OPEN_META = " · 今日已开放长片";
+      const PLAY_GATE_TOAST_LOCKED =
+        "今天按日历是工作日，只开放 30 分钟内短片；周五/法定假日前夜 18:00 后与放假日可看长片";
 
       function stampDayKey(s) {
         return s && s.at ? dayKey(new Date(s.at)) : "";
@@ -4396,7 +4406,7 @@
           '<p class="play-tier"></p>' +
           '<div class="doc-blurb"></div>' +
           '<div class="doc-rating"></div>' +
-          (locked ? '<p class="lock-hint">工作日限 30 分钟内 · 周五晚、周末和节假日再看</p>' : "") +
+          (locked ? '<p class="lock-hint">' + PLAY_GATE_HINT_LOCKED + "</p>" : "") +
           '<div class="expand-slot"></div>' +
           '<div class="actions"></div></div>';
         const coverImg = el.querySelector(".doc-cover");
@@ -4497,7 +4507,7 @@
         open.type = "button";
         open.className = "btn";
         open.textContent = locked
-          ? "周末再看"
+          ? "按日历再看"
           : full
             ? "选集 / 笔记"
             : partial
@@ -4506,7 +4516,7 @@
         open.addEventListener("click", (e) => {
           e.stopPropagation();
           if (locked) {
-            toast("工作日只开放 30 分钟以内 · 周五 18:00 后与周末可看长片");
+            toast(PLAY_GATE_TOAST_LOCKED);
             return;
           }
           openBrowse(t);
@@ -4514,7 +4524,7 @@
         acts.appendChild(open);
         el.addEventListener("click", () => {
           if (locked) {
-            toast("工作日只开放 30 分钟以内 · 周五 18:00 后与周末可看长片");
+            toast(PLAY_GATE_TOAST_LOCKED);
             return;
           }
           openBrowse(t);
@@ -4523,7 +4533,7 @@
       }
 
       function posterBadge(t, locked, full, partial, progress) {
-        if (locked) return "周末看";
+        if (locked) return "假日再看";
         if (full) return "看完了";
         if (partial) return progress.n + "/" + progress.total;
         if (t.kid && t.kid.watch === "parent") return "必须陪看";
@@ -4572,7 +4582,7 @@
         });
         el.addEventListener("click", () => {
           if (locked) {
-            toast("工作日只开放 30 分钟以内 · 周五 18:00 后与周末可看长片");
+            toast(PLAY_GATE_TOAST_LOCKED);
             return;
           }
           openBrowse(t);
@@ -5065,7 +5075,7 @@
             heroParent.hidden = true;
             heroParent.textContent = "";
           }
-          heroEp.textContent = "去餐盘逛逛，或等周五晚 / 周末看长片";
+          heroEp.textContent = "去餐盘逛逛，或等周五晚 / 法定假日看长片";
           setHeroArt("");
         }
 
@@ -5365,7 +5375,7 @@
             rec.ep.n +
             "集 · " +
             (weekendOnly
-              ? "周末看"
+              ? "假日再看"
               : "约" + episodeMinutes(rec.ep, rec.t) + "分");
           card.querySelector(".name").textContent = rec.t.title;
           card.addEventListener("click", () => {
@@ -5894,7 +5904,7 @@
 
       function openBrowse(t) {
         if (!isWeekend() && !titleHasOpenEpisode(t)) {
-          toast("工作日只开放 30 分钟以内的集 · 周末全开放");
+          toast(PLAY_GATE_TOAST_LOCKED);
           return;
         }
         activeTitle = t;
@@ -5945,9 +5955,7 @@
         $("sheetMeta").textContent =
           t.episodeHint +
           (t.play ? " · " + (playLabel[t.play] || t.play) : "") +
-          (isWeekend()
-            ? " · 今日已开放长片"
-            : " · 工作日限 ≤30 分钟（周五晚、周末和节假日放开）");
+          (isWeekend() ? PLAY_GATE_HINT_OPEN_META : PLAY_GATE_HINT_WEEKDAY_META);
         $("sheetPin").textContent = [
           t.mapPin || "",
           t.watchNote || t.playNote || "",
@@ -8073,7 +8081,7 @@
         );
         if (!openEps.length) {
           e.preventDefault();
-          toast("工作日只开放 30 分钟以内的集");
+          toast(PLAY_GATE_TOAST_LOCKED);
           return;
         }
         beginWatch(
