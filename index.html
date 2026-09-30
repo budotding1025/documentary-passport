@@ -2445,7 +2445,7 @@
 
     <section id="panel-plate" class="panel">
       <h1 class="rise">餐盘版块</h1>
-      <p class="lede rise">点封面打开选集。灰色封面＝工作日看不了的长片。周五 18:00 起、周末和法定节假日全开放；调休上班仍按工作日。</p>
+      <p class="lede rise">点封面打开选集。灰色封面＝工作日看不了的长片。周五与法定假日前夜 18:00 起、周末和国庆等假期全开放；调休上班（如 10/10）仍按工作日。</p>
       <div class="find-bar rise">
         <input id="plateSearch" type="search" placeholder="搜片名或标签：细胞、好懂、陪看、商业" autocomplete="off" />
         <div class="find-chips" id="plateChips">
@@ -2772,7 +2772,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20260930-moneystory"></script>
+  <script src="./data.js?v=20260930-guoqing"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -3109,6 +3109,11 @@
         "2026-10-10": 1,
       };
 
+      function nextDay(d) {
+        const t = d || new Date();
+        return new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1);
+      }
+
       function cnDayKind(d) {
         const t = d || new Date();
         const key = dayKey(t);
@@ -3119,6 +3124,14 @@
         return "weekday";
       }
 
+      // 法定假日前一晚 18:00 起按放假开放（如国庆前夜）；调休上班日除外
+      function isHolidayEve(d) {
+        const t = d || new Date();
+        if (CN_WORK_DAYS[dayKey(t)] || CN_REST_DAYS[dayKey(t)]) return false;
+        if (!CN_REST_DAYS[dayKey(nextDay(t))]) return false;
+        return t.getHours() >= 18;
+      }
+
       function isWeekend(d) {
         const t = d || new Date();
         const kind = cnDayKind(t);
@@ -3126,6 +3139,7 @@
         if (kind === "rest" || kind === "weekend") return true;
         // 普通周五 18:00 起算周末（放学后可看长片）；调休上班日不算
         if (t.getDay() === 5 && t.getHours() >= 18) return true;
+        if (isHolidayEve(t)) return true;
         return false;
       }
 
@@ -3133,9 +3147,18 @@
         const t = new Date();
         const holiday = CN_REST_DAYS[dayKey(t)];
         const makeup = !!CN_WORK_DAYS[dayKey(t)];
+        const eveName = CN_REST_DAYS[dayKey(nextDay(t))];
         if (!isWeekend()) {
           const m = todayWatchMinutes();
           const prefix = makeup ? "调休上班" : "工作日";
+          if (eveName) {
+            return (
+              prefix +
+              " · 明日" +
+              eveName +
+              " · 单集≤30 分钟 · 18:00 后开放长片"
+            );
+          }
           if (m >= WEEKDAY_DAILY_CAP) {
             return prefix + " · 今日已看约 " + m + " 分钟 · 建议早点睡（不强制）";
           }
@@ -3147,6 +3170,9 @@
           );
         }
         if (holiday) return holiday + " · 放假 · 长短片都可看";
+        if (eveName && isHolidayEve(t)) {
+          return "节前夜 · 明日" + eveName + " · 长短片都可看";
+        }
         if (t.getDay() === 5) return "周五晚 · 已算周末 · 长短片都可看";
         return "周末 · 长短片都可看";
       }
