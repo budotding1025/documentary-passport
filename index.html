@@ -2772,7 +2772,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js"></script>
+  <script src="./data.js?v=20260930-moneystory"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5717,32 +5717,36 @@
         if (searchEl && searchEl.value !== plateQuery) searchEl.value = plateQuery;
         const list = $("plateList");
         list.innerHTML = "";
-        let pool = filter ? titles.filter((t) => t.category === filter) : titles.slice();
-        if (plateShelf === "seen") {
-          pool = pool.filter((t) => titleTouched(t));
-          pool.sort((a, b) => latestStampAt(b) - latestStampAt(a));
-        } else if (plateShelf === "fav") {
-          pool = pool.filter((t) => isFavorite(t));
-        } else if (plateShelf === "short") {
-          pool = pool.filter((t) =>
-            episodesOf(t).some((ep) => episodeMinutes(ep, t) <= 30)
-          );
-        } else if (plateShelf === "open") {
-          pool = pool.filter((t) => !titleFullyDone(t));
-        } else if (plateShelf === "easy") {
-          pool = pool.filter((t) => t.kid && t.kid.understand === "easy");
-        } else if (plateShelf === "parent") {
-          pool = pool.filter((t) => t.kid && t.kid.watch === "parent");
-        } else if (plateShelf === "biz") {
-          pool = pool.filter((t) => t.muscle === "商业");
-        } else if (plateShelf === "eng") {
-          pool = pool.filter((t) => t.muscle === "工程");
-        } else if (plateShelf === "source") {
-          pool = pool.filter((t) => sourceNeedsBackup(t));
-        }
+        // 搜片名时跨全部片库，不吃「短片/好懂」等筛选，避免长片搜不到
+        let pool;
         if (q) {
+          pool = titles.slice();
           const needle = q.toLowerCase();
           pool = pool.filter((t) => titleSearchHay(t).indexOf(needle) >= 0);
+        } else {
+          pool = filter ? titles.filter((t) => t.category === filter) : titles.slice();
+          if (plateShelf === "seen") {
+            pool = pool.filter((t) => titleTouched(t));
+            pool.sort((a, b) => latestStampAt(b) - latestStampAt(a));
+          } else if (plateShelf === "fav") {
+            pool = pool.filter((t) => isFavorite(t));
+          } else if (plateShelf === "short") {
+            pool = pool.filter((t) =>
+              episodesOf(t).some((ep) => episodeMinutes(ep, t) <= 30)
+            );
+          } else if (plateShelf === "open") {
+            pool = pool.filter((t) => !titleFullyDone(t));
+          } else if (plateShelf === "easy") {
+            pool = pool.filter((t) => t.kid && t.kid.understand === "easy");
+          } else if (plateShelf === "parent") {
+            pool = pool.filter((t) => t.kid && t.kid.watch === "parent");
+          } else if (plateShelf === "biz") {
+            pool = pool.filter((t) => t.muscle === "商业");
+          } else if (plateShelf === "eng") {
+            pool = pool.filter((t) => t.muscle === "工程");
+          } else if (plateShelf === "source") {
+            pool = pool.filter((t) => sourceNeedsBackup(t));
+          }
         }
         preloadPlateCovers(pool);
         pool.forEach((t) => list.appendChild(renderPoster(t)));
@@ -8147,6 +8151,10 @@
       if (plateSearch) {
         plateSearch.addEventListener("input", () => {
           plateQuery = plateSearch.value || "";
+          if ((plateQuery || "").trim()) {
+            plateShelf = "all";
+            state.filter = null;
+          }
           renderPlate();
         });
       }
