@@ -348,6 +348,155 @@
       opacity: 0.62;
       filter: grayscale(0.35);
     }
+    .home-path {
+      flex: 0 0 auto;
+      padding: 10px 8px 8px;
+      background: linear-gradient(180deg, #f3efe4 0%, var(--paper) 100%);
+      border-top: 1px solid rgba(0,0,0,0.08);
+      width: 100%;
+    }
+    .home-path-blurb {
+      margin: 0 2px 8px;
+      font-size: 0.86rem;
+      color: rgba(17,17,17,0.72);
+      line-height: 1.45;
+    }
+    .home-path-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .home-path-card {
+      border: 1px solid rgba(17,17,17,0.14);
+      background: #fffdf8;
+      padding: 10px 12px;
+      cursor: pointer;
+      text-align: left;
+      min-height: 108px;
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    }
+    .home-path-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+    }
+    .home-path-card.done {
+      opacity: 0.7;
+    }
+    .home-path-card.wish {
+      cursor: default;
+      background: rgba(255,255,255,0.45);
+      border-style: dashed;
+    }
+    .home-path-card .step-n {
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      color: rgba(17,17,17,0.55);
+      margin-bottom: 4px;
+    }
+    .home-path-card .step-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .home-path-card .step-why {
+      font-size: 0.78rem;
+      color: rgba(17,17,17,0.68);
+      line-height: 1.35;
+    }
+    .home-path-card .step-meta {
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: rgba(17,17,17,0.5);
+    }
+    .home-path-more {
+      margin: 8px 2px 0;
+      font-size: 0.82rem;
+    }
+    .home-path-more button {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--ink, #1a1a1a);
+      text-decoration: underline;
+      cursor: pointer;
+      font: inherit;
+    }
+    .path-board {
+      margin-top: 18px;
+      padding: 14px 14px 10px;
+      border: 1px solid rgba(17,17,17,0.12);
+      background: linear-gradient(180deg, #f7f2e6, #f3efe4);
+    }
+    .path-board h2 {
+      margin: 0 0 4px;
+      font-size: 1.1rem;
+    }
+    .path-board .path-lede {
+      margin: 0 0 12px;
+      font-size: 0.88rem;
+      color: rgba(17,17,17,0.7);
+      line-height: 1.45;
+    }
+    .path-step {
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      gap: 10px;
+      align-items: start;
+      padding: 10px 0;
+      border-top: 1px solid rgba(17,17,17,0.08);
+    }
+    .path-step:first-of-type {
+      border-top: 0;
+    }
+    .path-step .phase {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: rgba(17,17,17,0.5);
+      padding-top: 2px;
+    }
+    .path-step .body .lab {
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .path-step .body .why {
+      font-size: 0.82rem;
+      color: rgba(17,17,17,0.68);
+      line-height: 1.4;
+    }
+    .path-step .body .discuss {
+      margin: 6px 0 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0.78rem;
+      color: rgba(17,17,17,0.62);
+    }
+    .path-step .body .discuss li {
+      margin-top: 3px;
+    }
+    .path-step .go {
+      align-self: center;
+    }
+    .path-step.done .lab {
+      text-decoration: line-through;
+      opacity: 0.75;
+    }
+    .path-step.wish {
+      opacity: 0.85;
+    }
+    @media (max-width: 720px) {
+      .home-path-steps {
+        grid-template-columns: 1fr;
+      }
+      .path-step {
+        grid-template-columns: 48px 1fr;
+      }
+      .path-step .go {
+        grid-column: 2;
+        justify-self: start;
+      }
+    }
     .home-discover {
       flex: 0 0 auto;
       padding: 8px 8px 6px;
@@ -1545,6 +1694,67 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+    .poster-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 5px;
+    }
+    .kid-tag {
+      font-size: 0.66rem;
+      letter-spacing: 0.02em;
+      padding: 2px 6px;
+      border: 1px solid rgba(17,17,17,0.14);
+      background: rgba(255,253,248,0.9);
+      color: rgba(17,17,17,0.72);
+      line-height: 1.2;
+    }
+    .kid-tag.easy { border-color: rgba(42,90,66,0.35); color: #2a5a42; }
+    .kid-tag.think { border-color: rgba(146,104,36,0.4); color: #8a5a12; }
+    .kid-tag.hard { border-color: rgba(140,50,50,0.35); color: #8c3232; }
+    .kid-tag.solo { opacity: 0.85; }
+    .kid-tag.together { border-color: rgba(74,103,65,0.4); color: #3a5234; }
+    .kid-tag.parent {
+      border-color: rgba(153,27,27,0.4);
+      color: #991b1b;
+      font-weight: 700;
+    }
+    .kid-tag.source {
+      border-color: rgba(100,100,100,0.35);
+      color: #666;
+    }
+    .kid-tag.muscle {
+      border-style: dashed;
+    }
+    .sheet-kid-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0 0;
+    }
+    .sheet-kid-tags[hidden] { display: none !important; }
+    .path-switch {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 2px 8px;
+    }
+    .path-switch-btn {
+      border: 1px solid rgba(17,17,17,0.16);
+      background: transparent;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      color: rgba(17,17,17,0.7);
+    }
+    .path-switch-btn.on {
+      background: var(--ink, #111);
+      color: #f7f3ea;
+      border-color: transparent;
+    }
+    .find-chips.secondary {
+      margin-top: 6px;
+    }
     .poster.done .poster-frame {
       box-shadow: inset 0 0 0 2px var(--stamp);
     }
@@ -2157,9 +2367,22 @@
         </div>
         <div class="home-continue-row" id="homeContinueRow"></div>
       </section>
+      <section class="home-path rise" id="homePath">
+        <div class="home-discover-head">
+          <h2 id="homePathTitle">经济规律 · 世界规则</h2>
+          <span class="mono" id="homePathProgress">路线</span>
+        </div>
+        <div class="path-switch" id="homePathSwitch" aria-label="切换推荐路线"></div>
+        <p class="home-path-blurb" id="homePathBlurb"></p>
+        <div class="home-path-steps" id="homePathSteps"></div>
+        <p class="home-path-more">
+          <button type="button" id="homePathOpenFull">看完整推荐路线</button>
+        </p>
+      </section>
       <section class="home-discover" id="homeDiscover">
         <div class="home-discover-head">
-          <h2>再发现三部</h2>
+          <h2>同主题再发现</h2>
+          <span class="mono">精选轮播</span>
         </div>
         <div class="home-trio" id="homeTrio"></div>
         <div class="home-trio-dots" id="homeTrioDots" aria-hidden="true"></div>
@@ -2192,6 +2415,12 @@
           </div>
           <div class="visa-grid" id="visaGrid"></div>
         </div>
+        <div class="path-board rise" id="pathBoard">
+          <h2 id="pathBoardTitle">推荐路线</h2>
+          <div class="path-switch" id="pathBoardSwitch" aria-label="切换推荐路线"></div>
+          <p class="path-lede" id="pathBoardBlurb"></p>
+          <div id="pathBoardSteps"></div>
+        </div>
         <div class="title-row" style="margin-top:18px">
           <h2>我的图鉴</h2>
           <span class="mono" id="albumMeta">收集印章</span>
@@ -2218,13 +2447,20 @@
       <h1 class="rise">餐盘版块</h1>
       <p class="lede rise">点封面打开选集。灰色封面＝工作日看不了的长片。周五 18:00 起、周末和法定节假日全开放；调休上班仍按工作日。</p>
       <div class="find-bar rise">
-        <input id="plateSearch" type="search" placeholder="搜片名，例如：细胞、巴斯德、货币" autocomplete="off" />
+        <input id="plateSearch" type="search" placeholder="搜片名或标签：细胞、好懂、陪看、商业" autocomplete="off" />
         <div class="find-chips" id="plateChips">
           <button type="button" class="find-chip on" data-shelf="all">全部</button>
           <button type="button" class="find-chip" data-shelf="seen">我看过的</button>
           <button type="button" class="find-chip" data-shelf="fav">我的收藏</button>
           <button type="button" class="find-chip" data-shelf="short">短片</button>
           <button type="button" class="find-chip" data-shelf="open">还没看完</button>
+        </div>
+        <div class="find-chips secondary" id="plateFitChips">
+          <button type="button" class="find-chip" data-shelf="easy">好懂</button>
+          <button type="button" class="find-chip" data-shelf="parent">必须陪看</button>
+          <button type="button" class="find-chip" data-shelf="biz">商业</button>
+          <button type="button" class="find-chip" data-shelf="eng">工程</button>
+          <button type="button" class="find-chip" data-shelf="source">片源待补</button>
         </div>
       </div>
       <div class="plate rise" id="plateGrid"></div>
@@ -2323,6 +2559,12 @@
         </div>
         <div id="parentLinkIssues" class="stamps-log"></div>
 
+        <div class="title-row">
+          <h2>片源待补</h2>
+          <span class="mono" id="sourceGapCount">0</span>
+        </div>
+        <div id="parentSourceGaps" class="stamps-log"></div>
+
         <div class="sync-box">
           <div class="mono">护照同步 · 文件或 QQ 粘贴</div>
           <p class="hint" style="margin:6px 0 10px">
@@ -2358,6 +2600,7 @@
         <div class="pass-id" id="sheetCat">—</div>
         <h3 id="sheetTitle">—</h3>
         <p class="sheet-parent-warn" id="sheetParentWarn" hidden>需家长陪同</p>
+        <div class="sheet-kid-tags" id="sheetKidTags" hidden></div>
         <p class="doc-duration" id="sheetDuration" style="margin:6px 0 0;font-family:JetBrains Mono,monospace;font-size:1rem;color:var(--stamp-deep);font-weight:500;">—</p>
         <div class="cover-wrap" id="sheetCoverWrap" hidden>
           <img id="sheetCover" alt="" />
@@ -2539,6 +2782,7 @@
       const cats = DOC_CATALOG.categories;
       const titles = DOC_CATALOG.titles;
       const rotation = DOC_CATALOG.rotation;
+      const guidePaths = DOC_CATALOG.paths || [];
 
       const PROMPTS = {
         remember: "这集里我记得最清楚的是：",
@@ -2765,6 +3009,7 @@
           godReplies: [], // {titleId, title, episodeId, episodeTitle, q, a, npc, at}
           linkIssues: [], // {titleId, episodeId, title, episodeTitle, url, at, note}
           favorites: [], // titleId，还想再看
+          activePathId: null, // 当前推荐路线；空则用 paths 里 home:true
           week: weekIndex(),
           focus: rotation[weekIndex() % rotation.length],
           swapUsed: false,
@@ -3558,6 +3803,12 @@
         if (!Array.isArray(next.linkIssues)) next.linkIssues = [];
         if (!Array.isArray(next.favorites)) next.favorites = [];
         next.favorites = next.favorites.filter((id, i, arr) => arr.indexOf(id) === i);
+        if (
+          next.activePathId &&
+          !guidePaths.some((p) => p.id === next.activePathId)
+        ) {
+          next.activePathId = null;
+        }
         next.wishes = (next.wishes || []).map((w) =>
           Object.assign({ handledAt: null, handleNote: "" }, w)
         );
@@ -3640,6 +3891,200 @@
         return titles.find((t) => t.id === id);
       }
 
+      function homeGuidePath() {
+        if (state.activePathId) {
+          const picked = guidePaths.find((p) => p.id === state.activePathId);
+          if (picked) return picked;
+        }
+        return (
+          guidePaths.find((p) => p && p.home) ||
+          guidePaths[0] ||
+          null
+        );
+      }
+
+      function setActivePath(id) {
+        if (!id || !guidePaths.some((p) => p.id === id)) return;
+        state.activePathId = id;
+        save(state);
+        renderHomePath();
+        renderPathBoard();
+        renderHomeRecs();
+      }
+
+      function paintPathSwitch(el) {
+        if (!el) return;
+        el.innerHTML = "";
+        if (guidePaths.length < 2) return;
+        const cur = homeGuidePath();
+        guidePaths.forEach((p) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className =
+            "path-switch-btn" + (cur && cur.id === p.id ? " on" : "");
+          btn.textContent = p.short || p.name;
+          btn.title = p.name;
+          btn.addEventListener("click", () => setActivePath(p.id));
+          el.appendChild(btn);
+        });
+      }
+
+      function phaseLabel(phase) {
+        return (
+          {
+            now: "现在",
+            optional: "选看",
+            later: "稍后",
+            wish: "待入库",
+          }[phase] || "路线"
+        );
+      }
+
+      function kidUnderstandLabel(t) {
+        const u = t && t.kid && t.kid.understand;
+        return (
+          { easy: "好懂", think: "要想一想", hard: "偏难" }[u] || ""
+        );
+      }
+
+      function kidWatchLabel(t) {
+        const w = t && t.kid && t.kid.watch;
+        return (
+          {
+            solo: "可自己看",
+            together: "建议陪看",
+            parent: "必须陪看",
+          }[w] || ""
+        );
+      }
+
+      function sourceNeedsBackup(t) {
+        if (!t) return false;
+        if (t.play === "missing") return true;
+        if (t.play === "ok" && !(t.official && t.official.length)) return true;
+        return false;
+      }
+
+      function sourceGapLabel(t) {
+        if (!t) return "";
+        if (t.play === "missing") return "片源暂缺";
+        if (sourceNeedsBackup(t)) return "片源待补";
+        return "";
+      }
+
+      function appendKidTag(host, text, cls) {
+        if (!host || !text) return;
+        const span = document.createElement("span");
+        span.className = "kid-tag" + (cls ? " " + cls : "");
+        span.textContent = text;
+        host.appendChild(span);
+      }
+
+      function fillKidTags(host, t, opts) {
+        if (!host) return;
+        host.innerHTML = "";
+        if (!t) {
+          host.hidden = true;
+          return;
+        }
+        const showMuscle = !opts || opts.muscle !== false;
+        const u = kidUnderstandLabel(t);
+        const w = kidWatchLabel(t);
+        const src = sourceGapLabel(t);
+        if (u) appendKidTag(host, u, t.kid && t.kid.understand);
+        if (w) appendKidTag(host, w, t.kid && t.kid.watch);
+        if (showMuscle && t.muscle) appendKidTag(host, t.muscle, "muscle");
+        if (src) appendKidTag(host, src, "source");
+        host.hidden = !host.childNodes.length;
+      }
+
+      function pathFeaturedTitleIds(guide) {
+        const g = guide || homeGuidePath();
+        if (!g) return new Set();
+        const ids = new Set();
+        (g.steps || [])
+          .filter((s) => s.phase === "now" || s.phase === "optional")
+          .slice(0, 3)
+          .forEach((s) => {
+            if (s.titleId) ids.add(s.titleId);
+          });
+        return ids;
+      }
+
+      function wishFromPathStep(step, guide) {
+        const raw = (step && step.label) || "";
+        const topic = raw.replace(/^待入库\s*[·•・]?\s*/, "").trim().slice(0, 40);
+        const note = ((step && step.why) || "").slice(0, 120);
+        const cat =
+          (guide && guide.wishCategory) ||
+          (homeGuidePath() && homeGuidePath().wishCategory) ||
+          "other";
+        switchTab("wish");
+        if ($("wishCat")) $("wishCat").value = cat;
+        if ($("wishTopic")) $("wishTopic").value = topic;
+        if ($("wishNote")) $("wishNote").value = note;
+        toast("已填进点播台 · 确认后点提交");
+      }
+
+      function resolvePathStep(step) {
+        if (!step) return null;
+        if (step.phase === "wish" || !step.titleId) {
+          return {
+            step: step,
+            t: null,
+            ep: null,
+            done: false,
+            wish: true,
+          };
+        }
+        const t = titleById(step.titleId);
+        if (!t) {
+          return {
+            step: step,
+            t: null,
+            ep: null,
+            done: false,
+            wish: true,
+          };
+        }
+        const eps = episodesOf(t);
+        let candidates = eps;
+        if (step.episodeIds && step.episodeIds.length) {
+          candidates = step.episodeIds
+            .map((id) => eps.find((e) => e.id === id))
+            .filter(Boolean);
+        } else if (step.episodeId) {
+          const pinned = eps.find((e) => e.id === step.episodeId);
+          candidates = pinned ? [pinned] : eps;
+        }
+        if (!candidates.length) candidates = eps;
+        const open = candidates.find((e) => !episodeStamped(t.id, e.id));
+        const ep = open || candidates[0] || null;
+        const done = candidates.length
+          ? candidates.every((e) => episodeStamped(t.id, e.id))
+          : titleFullyDone(t);
+        return { step: step, t: t, ep: ep, done: done, wish: false };
+      }
+
+      function pathStepProgress(path) {
+        if (!path || !path.steps) return { done: 0, total: 0 };
+        const lib = path.steps.filter((s) => s.phase !== "wish" && s.titleId);
+        let done = 0;
+        lib.forEach((s) => {
+          if (resolvePathStep(s).done) done++;
+        });
+        return { done: done, total: lib.length };
+      }
+
+      function startPathStep(resolved) {
+        if (!resolved) return;
+        if (resolved.wish || !resolved.t || !resolved.ep) {
+          wishFromPathStep(resolved.step, homeGuidePath());
+          return;
+        }
+        beginWatch(resolved.t, resolved.ep, watchUrl(resolved.t, resolved.ep));
+      }
+
       function isShareable(t) {
         if (!t) return false;
         if (typeof t.shareable === "boolean") return t.shareable;
@@ -3649,6 +4094,8 @@
       /** 内容向家长陪同（不含「先确认能播」这类片源备注） */
       function needsParentWatch(t) {
         if (!t) return false;
+        if (t.kid && t.kid.watch === "parent") return true;
+        if (t.kid && t.kid.watch === "together") return true;
         const s = [t.parentNote, t.episodeHint, t.blurb]
           .filter(Boolean)
           .join("·");
@@ -3659,6 +4106,8 @@
 
       function parentWarnLabel(t) {
         if (!needsParentWatch(t)) return "";
+        if (t.kid && t.kid.watch === "parent") return "必须陪看";
+        if (t.kid && t.kid.watch === "together") return "建议陪看";
         if (t.parentNote && /必须家长|务必陪/.test(t.parentNote)) {
           return "必须家长陪同";
         }
@@ -3668,6 +4117,7 @@
       function playTierLabel(t) {
         if (!t) return "";
         if (t.play === "missing") return "片源暂缺";
+        if (sourceNeedsBackup(t)) return "片源待补";
         if (isShareable(t) || t.play === "stable") return "正版";
         if (t.play === "ok") return "仅自家备用，可能下架";
         return "失效 / 待修";
@@ -4050,7 +4500,9 @@
         if (locked) return "周末看";
         if (full) return "看完了";
         if (partial) return progress.n + "/" + progress.total;
+        if (t.kid && t.kid.watch === "parent") return "必须陪看";
         if (needsParentWatch(t)) return "陪看";
+        if (sourceNeedsBackup(t)) return "片源待补";
         return "";
       }
 
@@ -4072,7 +4524,8 @@
           (badge ? '<span class="poster-badge"></span>' : "") +
           '<button type="button" class="poster-fav" aria-label="收藏"></button>' +
           "</div>" +
-          '<div class="poster-title"></div>';
+          '<div class="poster-title"></div>' +
+          '<div class="poster-tags"></div>';
         const img = el.querySelector(".poster-img");
         const art = coverSrc(t);
         if (art) {
@@ -4081,6 +4534,7 @@
         }
         if (badge) el.querySelector(".poster-badge").textContent = badge;
         el.querySelector(".poster-title").textContent = t.title;
+        fillKidTags(el.querySelector(".poster-tags"), t, { muscle: true });
         const fav = el.querySelector(".poster-fav");
         const starred = isFavorite(t);
         fav.textContent = starred ? "★" : "☆";
@@ -4644,7 +5098,28 @@
           t.muscle,
           t.id,
           t.watchLabel,
+          kidUnderstandLabel(t),
+          kidWatchLabel(t),
+          sourceGapLabel(t),
+          "好懂",
+          "要想一想",
+          "偏难",
+          "陪看",
+          "必须陪看",
+          "可自己看",
+          "建议陪看",
         ];
+        if (t.kid) {
+          if (t.kid.understand === "easy") bits.push("好懂", "容易");
+          if (t.kid.understand === "think") bits.push("要想一想");
+          if (t.kid.understand === "hard") bits.push("偏难");
+          if (t.kid.watch === "parent") bits.push("必须陪看", "家长");
+          if (t.kid.watch === "together") bits.push("建议陪看");
+          if (t.kid.watch === "solo") bits.push("可自己看");
+        }
+        if (t.muscle === "商业") bits.push("商业", "经济", "理财");
+        if (t.muscle === "工程") bits.push("工程", "造物");
+        if (sourceNeedsBackup(t)) bits.push("片源待补", "待补");
         const cat = catById(t.category);
         if (cat) bits.push(cat.name, cat.short);
         episodesOf(t).forEach((ep) => {
@@ -4904,10 +5379,12 @@
         let hero = primary[0] || null;
         // 巴斯德续看：已盖 1–3 集时，英雄区固定到下一集（常为第4集）
         const pasteur = titleById("pasteur");
+        let pasteurHero = false;
         if (pasteur) {
           const done = titleProgress(pasteur).n;
           const next = nextOpenEpisode(pasteur);
           if (next && done >= 1 && done < episodesOf(pasteur).length) {
+            pasteurHero = true;
             hero = {
               kind: "continue",
               label: "继续探索",
@@ -4917,42 +5394,53 @@
             };
           }
         }
-        // 自家轮播：微生物 → 经济 → 英语 → 数学。不限可分享。
+        // 首页「再发现」轮播：只播这份固定片单（3 部一组）
         const focusPath = [
+          ["zicong", "汉字"],
+          ["letters", "书简"],
+          ["sevenup", "人生七年", "sevenup-7"],
+          ["money", "货币", "money-2"],
+          ["moneystory", "货币故事"],
+          ["kidmoney", "财商"],
+          ["tededecon", "TED-Ed"],
+          ["silkmoney", "丝路货币"],
+          ["howmade", "造物"],
+          ["econmachine", "世界秩序", "econmachine-10"],
+          ["capitalstory", "资本故事", "capitalstory-1"],
           ["germsquad", "微生物"],
-          ["pasteur", "微生物"],
-          ["bacteriasecret", "微生物"],
-          ["cellwar", "微生物"],
-          ["bodymicro", "微生物"],
-          ["howmade", "经济"],
-          ["ccecon", "经济"],
-          ["money", "经济", "money-2"],
-          ["mademenspend", "经济"],
-          ["clarksonfarm", "经济"],
-          ["econmachine", "经济", "econmachine-1"],
-          ["capitalstory", "经济", "capitalstory-1"],
-          ["englishadv", "英语"],
+          ["pasteur", "巴斯德"],
+          ["bacteriasecret", "细菌秘密"],
+          ["cellwar", "细胞暗战"],
+          ["bodymicro", "微观人体"],
+          ["englishadv", "英语史"],
           ["mathchosen", "数学"],
-          ["dimensions", "数学"],
-          ["thecode", "数学"],
-          ["logicjoy", "数学"],
-          ["mathstory", "数学"],
+          ["dimensions", "维度"],
+          ["thecode", "密码数学"],
+          ["logicjoy", "逻辑"],
+          ["mathstory", "数学故事"],
         ];
         const pool = [];
+        const seenKey = new Set();
+        const pathBusy = pathFeaturedTitleIds();
         focusPath.forEach((row) => {
           const t = titleById(row[0]);
           if (!t) return;
+          if (pathBusy.has(t.id)) return;
           const eps = episodesOf(t);
           const pinned = row[2] ? eps.find((e) => e.id === row[2]) : null;
           const ep = pinned
             ? pinned
             : eps.find((e) => !episodeStamped(t.id, e.id)) || eps[0] || null;
           if (!ep) return;
-          const done = pinned ? episodeStamped(t.id, pinned.id) : titleFullyDone(t);
-          const touched = pinned ? done : titleTouched(t);
+          // 已盖印的不进轮播（世界秩序等指定集也一样）
+          if (episodeStamped(t.id, ep.id)) return;
+          const key = t.id + "::" + ep.id;
+          if (seenKey.has(key)) return;
+          seenKey.add(key);
+          const touched = titleTouched(t);
           pool.push({
-            kind: done ? "replay" : touched ? "continue" : "focus",
-            label: done ? row[1] + " · 再看" : touched ? "接着看 · " + row[1] : row[1],
+            kind: touched ? "continue" : "focus",
+            label: touched ? "接着看 · " + row[1] : row[1],
             reason: "",
             t: t,
             ep: ep,
@@ -4963,15 +5451,148 @@
           batches.push(pool.slice(i, i + 3));
         }
         if (!batches.length && hero) {
-          // 至少给英雄之外留空提示
           batches.push([]);
         }
+        if (!pasteurHero) {
+          const guide = homeGuidePath();
+          if (guide) {
+            const next = (guide.steps || [])
+              .filter((s) => s.phase === "now" || s.phase === "optional")
+              .map(resolvePathStep)
+              .find((r) => r && !r.wish && !r.done && r.t && r.ep);
+            if (next) {
+              hero = {
+                kind: "path",
+                label: "经济入门",
+                reason: next.step.label,
+                t: next.t,
+                ep: next.ep,
+              };
+            }
+          }
+        }
         return { hero: hero, batches: batches };
+      }
+
+      function renderHomePath() {
+        const box = $("homePath");
+        const stepsEl = $("homePathSteps");
+        if (!box || !stepsEl) return;
+        const guide = homeGuidePath();
+        if (!guide) {
+          box.hidden = true;
+          return;
+        }
+        box.hidden = false;
+        paintPathSwitch($("homePathSwitch"));
+        if ($("homePathTitle")) $("homePathTitle").textContent = guide.name;
+        if ($("homePathBlurb")) $("homePathBlurb").textContent = guide.blurb || "";
+        const prog = pathStepProgress(guide);
+        if ($("homePathProgress")) {
+          $("homePathProgress").textContent = prog.total
+            ? prog.done + "/" + prog.total + " 步"
+            : "路线";
+        }
+        const featured = (guide.steps || [])
+          .filter((s) => s.phase === "now" || s.phase === "optional")
+          .map(resolvePathStep)
+          .filter(Boolean)
+          .slice(0, 3);
+        stepsEl.innerHTML = "";
+        featured.forEach((r) => {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className =
+            "home-path-card" +
+            (r.done ? " done" : "") +
+            (r.wish ? " wish" : "");
+          const meta = r.wish
+            ? "待入库 · 点我去点播"
+            : r.done
+              ? "已盖印 · 可再看"
+              : r.ep
+                ? "第" + r.ep.n + "集 · 约" + episodeMinutes(r.ep, r.t) + "分"
+                : "去看";
+          card.innerHTML =
+            '<div class="step-n"></div><div class="step-title"></div><div class="step-why"></div><div class="step-meta"></div>';
+          card.querySelector(".step-n").textContent =
+            phaseLabel(r.step.phase) +
+            (r.t && needsParentWatch(r.t) ? " · " + parentWarnLabel(r.t) : "");
+          card.querySelector(".step-title").textContent = r.step.label;
+          card.querySelector(".step-why").textContent = r.step.why || "";
+          card.querySelector(".step-meta").textContent = meta;
+          card.addEventListener("click", () => startPathStep(r));
+          stepsEl.appendChild(card);
+        });
+      }
+
+      function renderPathBoard() {
+        const board = $("pathBoard");
+        const list = $("pathBoardSteps");
+        if (!board || !list) return;
+        const guide = homeGuidePath();
+        if (!guide) {
+          board.hidden = true;
+          return;
+        }
+        board.hidden = false;
+        paintPathSwitch($("pathBoardSwitch"));
+        if ($("pathBoardTitle")) $("pathBoardTitle").textContent = guide.name;
+        if ($("pathBoardBlurb")) $("pathBoardBlurb").textContent = guide.blurb || "";
+        list.innerHTML = "";
+        (guide.steps || []).forEach((step) => {
+          const r = resolvePathStep(step);
+          const row = document.createElement("div");
+          row.className =
+            "path-step" +
+            (r.done ? " done" : "") +
+            (r.wish ? " wish" : "");
+          const discuss =
+            r.ep && Array.isArray(r.ep.discuss) && r.ep.discuss.length
+              ? '<ul class="discuss">' +
+                r.ep.discuss
+                  .map(
+                    (d) =>
+                      "<li>" +
+                      (d.at ? d.at + " · " : "") +
+                      (d.ask || "") +
+                      "</li>"
+                  )
+                  .join("") +
+                "</ul>"
+              : "";
+          row.innerHTML =
+            '<div class="phase"></div><div class="body"><div class="lab"></div><div class="why"></div>' +
+            discuss +
+            '</div><div class="go"></div>';
+          row.querySelector(".phase").textContent = phaseLabel(step.phase);
+          row.querySelector(".lab").textContent = step.label;
+          row.querySelector(".why").textContent = step.why || "";
+          const go = row.querySelector(".go");
+          if (r.wish || !r.t) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "btn ghost";
+            btn.textContent = "去点播";
+            btn.addEventListener("click", () => wishFromPathStep(step, guide));
+            go.appendChild(btn);
+          } else {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "btn ghost";
+            btn.textContent = r.done ? "再看" : "去看";
+            btn.addEventListener("click", () => startPathStep(r));
+            go.appendChild(btn);
+          }
+          list.appendChild(row);
+        });
       }
 
       function renderPassport() {
         renderContinueRow();
         renderHomeRecs();
+        renderHomePath();
+        renderPathBoard();
         renderHomeTask();
         renderYesterdaySaid();
         renderAlbum();
@@ -5070,6 +5691,11 @@
           fav: "我的收藏",
           short: "短片",
           open: "还没看完",
+          easy: "好懂",
+          parent: "必须陪看",
+          biz: "商业",
+          eng: "工程",
+          source: "片源待补",
         }[plateShelf] || "";
         const q = (plateQuery || "").trim();
         $("plateFilterLabel").textContent = [
@@ -5079,9 +5705,14 @@
         ]
           .filter(Boolean)
           .join(" · ");
-        document.querySelectorAll("#plateChips .find-chip").forEach((btn) => {
-          btn.classList.toggle("on", btn.getAttribute("data-shelf") === plateShelf);
-        });
+        document
+          .querySelectorAll("#plateChips .find-chip, #plateFitChips .find-chip")
+          .forEach((btn) => {
+            btn.classList.toggle(
+              "on",
+              btn.getAttribute("data-shelf") === plateShelf
+            );
+          });
         const searchEl = $("plateSearch");
         if (searchEl && searchEl.value !== plateQuery) searchEl.value = plateQuery;
         const list = $("plateList");
@@ -5098,6 +5729,16 @@
           );
         } else if (plateShelf === "open") {
           pool = pool.filter((t) => !titleFullyDone(t));
+        } else if (plateShelf === "easy") {
+          pool = pool.filter((t) => t.kid && t.kid.understand === "easy");
+        } else if (plateShelf === "parent") {
+          pool = pool.filter((t) => t.kid && t.kid.watch === "parent");
+        } else if (plateShelf === "biz") {
+          pool = pool.filter((t) => t.muscle === "商业");
+        } else if (plateShelf === "eng") {
+          pool = pool.filter((t) => t.muscle === "工程");
+        } else if (plateShelf === "source") {
+          pool = pool.filter((t) => sourceNeedsBackup(t));
         }
         if (q) {
           const needle = q.toLowerCase();
@@ -5111,6 +5752,11 @@
             fav: "还没有收藏。点封面上的星，下次从这里找。",
             short: "这一格里没有工作日能看的短片。",
             open: "这一格里的片子都看完了。",
+            easy: "这一格没有标成「好懂」的片子。",
+            parent: "这一格没有「必须陪看」的片子。",
+            biz: "没有标「商业」肌肉的片子。",
+            eng: "没有标「工程」肌肉的片子。",
+            source: "没有片源待补的条目（正版齐或尚未标记）。",
             all: "没有找到。换个词，或点「全部」。",
           };
           list.innerHTML =
@@ -5248,6 +5894,7 @@
             sheetParent.textContent = "";
           }
         }
+        fillKidTags($("sheetKidTags"), t, { muscle: true });
         $("sheetDuration").textContent = titleDurationLabel(t);
         const sheetArt = coverHeroSrc(t);
         if (sheetArt) {
@@ -5412,7 +6059,16 @@
         $("stampCat").textContent =
           (cat ? cat.name : "") + " · " + t.title;
         $("stampEpTitle").textContent = "第 " + ep.n + " 集 · " + ep.title;
-        $("stampEpBlurb").textContent = ep.blurb || t.blurb || "";
+        let blurbBits = [ep.blurb || t.blurb || ""];
+        if (Array.isArray(ep.discuss) && ep.discuss.length) {
+          blurbBits.push(
+            "陪看停顿：" +
+              ep.discuss
+                .map((d) => (d.at ? d.at + "—" : "") + (d.ask || ""))
+                .join("；")
+          );
+        }
+        $("stampEpBlurb").textContent = blurbBits.filter(Boolean).join(" · ");
         $("stampEpMeta").textContent =
           "约 " + episodeMinutes(ep, t) + " 分钟 · 看完打分盖印";
         const npc = npcForTitle(t);
@@ -6984,6 +7640,55 @@
             });
           }
         }
+
+        const gaps = titles.filter((t) => sourceNeedsBackup(t));
+        if ($("sourceGapCount")) {
+          $("sourceGapCount").textContent = gaps.length + " 部";
+        }
+        const gBox = $("parentSourceGaps");
+        if (gBox) {
+          gBox.innerHTML = "";
+          if (!gaps.length) {
+            gBox.innerHTML =
+              '<div class="empty">暂无「片源待补」：正版备份较齐，或尚未用 ok/missing 标记。</div>';
+          } else {
+            gaps
+              .slice()
+              .sort((a, b) => (a.title || "").localeCompare(b.title || "", "zh"))
+              .forEach((t, i) => {
+                const row = document.createElement("div");
+                row.className = "stamp-row";
+                row.style.animationDelay = i * 0.02 + "s";
+                row.innerHTML =
+                  '<div class="t"></div><div class="n"></div><div class="actions"></div>';
+                row.querySelector(".t").textContent =
+                  "《" + t.title + "》 · " + (sourceGapLabel(t) || "待补");
+                row.querySelector(".n").textContent =
+                  (catById(t.category)
+                    ? catById(t.category).name + " · "
+                    : "") +
+                  (t.muscle ? t.muscle + " · " : "") +
+                  (t.watchLabel || t.linkLabel || "无标签") +
+                  (t.official && t.official.length
+                    ? ""
+                    : " · official 空");
+                const openBtn = document.createElement("button");
+                openBtn.type = "button";
+                openBtn.className = "btn ghost";
+                openBtn.textContent = "打开片库";
+                openBtn.addEventListener("click", () => {
+                  state.filter = t.category || null;
+                  save(state);
+                  plateShelf = "source";
+                  switchTab("plate");
+                  renderPlate();
+                  openBrowse(t);
+                });
+                row.querySelector(".actions").appendChild(openBtn);
+                gBox.appendChild(row);
+              });
+          }
+        }
       }
 
       function renderAll() {
@@ -7205,6 +7910,16 @@
         renderPassport();
         toast("护照署名已更新");
       });
+      if ($("homePathOpenFull")) {
+        $("homePathOpenFull").addEventListener("click", () => {
+          const board = $("pathBoard");
+          if (!board) return;
+          switchTab("passport");
+          setTimeout(() => {
+            board.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 50);
+        });
+      }
       $("swapBtn").addEventListener("click", () => {
         if (state.swapUsed) {
           toast("本周换口味票已用完");
@@ -7435,12 +8150,14 @@
           renderPlate();
         });
       }
-      document.querySelectorAll("#plateChips .find-chip").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          plateShelf = btn.getAttribute("data-shelf") || "all";
-          renderPlate();
+      document
+        .querySelectorAll("#plateChips .find-chip, #plateFitChips .find-chip")
+        .forEach((btn) => {
+          btn.addEventListener("click", () => {
+            plateShelf = btn.getAttribute("data-shelf") || "all";
+            renderPlate();
+          });
         });
-      });
       document.querySelectorAll("#homeFind .home-find-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           openPlateFind(btn.getAttribute("data-shelf") || "all", {

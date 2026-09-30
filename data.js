@@ -3,13 +3,247 @@
  * watchLink: 自家现在点开的地址（可免费高清 / 投稿）
  * official: 最多 2 条正版页，供以后付费工具切换；不抓片、不下载
  * blurb: 卡片外可见的一句话简介
+ * kid: { understand: easy|think|hard, watch: solo|together|parent }
+ *   界面：好懂/要想一想/偏难 · 可自己看/建议陪看/必须陪看（不标年级）
+ * paths: 主题推荐路线；可用 activePathId 切换；home:true 为默认
+ *   wishCategory: 待入库步一键点播时的门类
+ *   step.phase: now|optional|later|wish（wish=待入库，无片可点）
  * 每部只归一个 category；盖印下沉到集（episodes[]）。
- * episode: { id, n, title, blurb, duration?, link?, hints?[] }
+ * episode: { id, n, title, blurb, duration?, link?, hints?[], discuss?[] }
  * 无 episodes 的片子，界面会自动当成「整部 / 1 集」打卡。
  * link / linkLabel 与 watchLink / watchLabel 同步，兼容旧代码。
  */
 window.DOC_CATALOG = {
   "title": "看世界护照",
+  "paths": [
+    {
+      "id": "econ-rules",
+      "name": "经济规律 · 世界规则",
+      "short": "经济入门",
+      "blurb": "先价钱，再原则动画，再经济机器。世界秩序往后放。短片入口已入库：TED-Ed、财商动画、丝路货币。",
+      "home": true,
+      "wishCategory": "finance",
+      "steps": [
+        {
+          "phase": "now",
+          "label": "① 钱和价钱",
+          "why": "物物交换为什么笨、价钱怎么定、为什么有的东西特别贵",
+          "titleId": "ccecon"
+        },
+        {
+          "phase": "now",
+          "label": "② 成功的原则（动画 8 集）",
+          "why": "每集 3–5 分钟：目标、现实、反思——可迁移的规则感",
+          "titleId": "econmachine",
+          "episodeIds": [
+            "econmachine-2",
+            "econmachine-3",
+            "econmachine-4",
+            "econmachine-5",
+            "econmachine-6",
+            "econmachine-7",
+            "econmachine-8",
+            "econmachine-9"
+          ]
+        },
+        {
+          "phase": "now",
+          "label": "③ 经济机器（陪看）",
+          "why": "交易、借贷、周期。约 31 分钟可拆 2–3 段，中间用买菜/压岁钱举例",
+          "titleId": "econmachine",
+          "episodeId": "econmachine-1"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 货币从哪来",
+          "why": "先看第 2 集；后面通胀先别追",
+          "titleId": "money",
+          "episodeId": "money-2"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 货币的故事",
+          "why": "四集短线：发明货币 → 交子 → 虚拟化；可与《货币》对照",
+          "titleId": "moneystory"
+        },
+        {
+          "phase": "later",
+          "label": "稍后 · 世界秩序",
+          "why": "国家兴衰大地图，偏成人；必须陪看",
+          "titleId": "econmachine",
+          "episodeId": "econmachine-10"
+        },
+        {
+          "phase": "later",
+          "label": "稍后 · 资本的故事",
+          "why": "原则和经济机器啃过一轮后再挑几集",
+          "titleId": "capitalstory"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · TED-Ed 经济短片",
+          "why": "丝路、纸币、供需：比 Crash Course 更短的动画课",
+          "titleId": "tededecon"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 小朋友的财商课",
+          "why": "交换、钱是什么、攒钱：更生活、更少抽象名词",
+          "titleId": "kidmoney"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 丝路·货币",
+          "why": "交子与丝路信用：东西怎么从 A 到 B",
+          "titleId": "silkmoney"
+        },
+        {
+          "phase": "later",
+          "label": "稍后 · 河西走廊（精选）",
+          "why": "使者与丝路：贸易通道的故事，建议陪看",
+          "titleId": "hexizoulang"
+        }
+      ]
+    },
+    {
+      "id": "microbe",
+      "name": "微生物小世界",
+      "short": "微生物",
+      "blurb": "从洗手小故事到巴斯德，再到细胞战场。短集优先，适合工作日。",
+      "home": false,
+      "wishCategory": "nature",
+      "steps": [
+        {
+          "phase": "now",
+          "label": "① 细菌病毒特工队",
+          "why": "流感、酵母、乳酸菌：孩子能懂的微生物故事",
+          "titleId": "germsquad"
+        },
+        {
+          "phase": "now",
+          "label": "② 超级巴斯德",
+          "why": "动画巴斯德：微生物、疫苗、进化",
+          "titleId": "pasteur"
+        },
+        {
+          "phase": "now",
+          "label": "③ 细胞的暗战",
+          "why": "身体怎样「打仗」保卫自己",
+          "titleId": "cellwar"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 破解细菌的秘密",
+          "why": "细菌怎样被看见、被理解",
+          "titleId": "bacteriasecret"
+        },
+        {
+          "phase": "later",
+          "label": "稍后 · 人体的微观世界",
+          "why": "显微摄影看细胞与免疫，信息更密",
+          "titleId": "bodymicro"
+        }
+      ]
+    },
+    {
+      "id": "nature-entry",
+      "name": "自然大片入门",
+      "short": "自然",
+      "blurb": "周末只追一集：先地球，再植物，再海洋。画面强，不赶进度。",
+      "home": false,
+      "wishCategory": "nature",
+      "steps": [
+        {
+          "phase": "now",
+          "label": "① 地球脉动",
+          "why": "从极地到深海的超级相册，先建立「地球长什么样」",
+          "titleId": "planet"
+        },
+        {
+          "phase": "now",
+          "label": "② 绿色星球",
+          "why": "植物也会打架、合作：延时摄影看见被忽略的世界",
+          "titleId": "greenplanet"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 蓝色星球",
+          "why": "潜入海洋：洋流、珊瑚、深潜生物",
+          "titleId": "blueplanet"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 蓝色星球 II",
+          "why": "同一片海洋、深海：更新画面的海洋大片",
+          "titleId": "blueplanet2"
+        },
+        {
+          "phase": "later",
+          "label": "稍后 · 与恐龙同行",
+          "why": "点播高频：恐龙怎样走路与捕猎",
+          "titleId": "dinowalk"
+        },
+        {
+          "phase": "later",
+          "label": "稍后 · 美丽中国",
+          "why": "从华南到高原：中国长什么样",
+          "titleId": "wildchina"
+        }
+      ]
+    },
+    {
+      "id": "china-story",
+      "name": "中国故事短线",
+      "short": "中国",
+      "blurb": "国宝五分钟、超级工程五分钟，再展开地理。短、好入口。",
+      "home": false,
+      "wishCategory": "human",
+      "steps": [
+        {
+          "phase": "now",
+          "label": "① 如果国宝会说话",
+          "why": "一件国宝讲一个小故事：养「看得懂物件」的眼睛",
+          "titleId": "guobao"
+        },
+        {
+          "phase": "now",
+          "label": "② 奇妙中国",
+          "why": "火箭、盾构、高铁：五分钟一个超级工程",
+          "titleId": "qimiao"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 造物小百科",
+          "why": "东西是被做出来的：工厂里的铝箔与牛仔裤",
+          "titleId": "howmade"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 字从遇见你",
+          "why": "一个字一个故事：天、中、鼎",
+          "titleId": "zicong"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 故宫100",
+          "why": "一座建筑讲一个故事：午门、角楼",
+          "titleId": "palace100"
+        },
+        {
+          "phase": "later",
+          "label": "稍后 · 我在故宫修文物",
+          "why": "匠人怎样把国宝一点点修好",
+          "titleId": "palacefix"
+        },
+        {
+          "phase": "later",
+          "label": "稍后 · 美丽中国",
+          "why": "地理风景片，接国宝与工程看「这片土地」",
+          "titleId": "wildchina"
+        }
+      ]
+    }
+  ],
   "categories": [
     {
       "id": "drive",
@@ -66,6 +300,7 @@ window.DOC_CATALOG = {
       "duration": "约 36 分钟 × 6 集",
       "episodeHint": "当晚只看 1 集",
       "muscle": "意志",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "六个同龄孩子各自痴迷一件事：练习、失败、再来。看别人怎么把热爱熬成习惯。",
       "link": "https://www.bilibili.com/bangumi/play/ep391685",
       "linkLabel": "B 站正版",
@@ -94,6 +329,7 @@ window.DOC_CATALOG = {
       "duration": "电影约 85–90 分钟",
       "episodeHint": "周末一部",
       "muscle": "意志",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "马拉松王者挑战「两小时内跑完」。不是鸡汤，是训练、团队和「人类没有极限」。",
       "link": "https://www.bilibili.com/video/BV1Ca411n74Z/",
       "linkLabel": "B 站直达",
@@ -117,6 +353,7 @@ window.DOC_CATALOG = {
       "duration": "约 47–60 分钟",
       "episodeHint": "家长先看再陪看",
       "muscle": "选择",
+      "kid": {"understand": "hard", "watch": "parent"},
       "blurb": "一对兄弟互换生活八天：钱、习惯、选择如何把人生推到两端。主归自驱；家长陪看讨论。",
       "link": "https://www.bilibili.com/video/BV1Ys4y1h7Ph/",
       "linkLabel": "B 站直达",
@@ -138,8 +375,9 @@ window.DOC_CATALOG = {
       "slot": "B",
       "role": "side",
       "duration": "约 60–140 分钟 / 部（可拆看）",
-      "episodeHint": "周末 · 家长陪看 · 先从「7岁」起",
+      "episodeHint": "优先《7岁》· 必须家长陪看 · 勿一口气追到中年",
       "muscle": "选择",
+      "kid": {"understand": "hard", "watch": "parent"},
       "blurb": "每隔七年回访同一批英国孩子：阶层、学校、梦想怎样一步步变成人生。适合和孩子聊「选择会留下痕迹」。",
       "link": "https://v.qq.com/x/cover/fh87amml4j6fivp.html",
       "linkLabel": "腾讯视频正版",
@@ -210,6 +448,7 @@ window.DOC_CATALOG = {
       "duration": "约 45–50 分钟",
       "episodeHint": "周末加餐 · 只挑 1 集",
       "muscle": "意志",
+      "kid": {"understand": "easy", "watch": "together"},
       "blurb": "世界各地孩子为上学翻山、过河、走冰面。看「想去学校」能有多认真。",
       "link": "https://www.bilibili.com/video/BV1x3411q7qb/",
       "linkLabel": "B 站直达",
@@ -232,6 +471,7 @@ window.DOC_CATALOG = {
       "duration": "约 10 分钟 × 20 集",
       "episodeHint": "一晚 1–2 集",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "跟着乌鸦学科学方法：观察、提出假设、做实验。短、好玩，适合工作日。",
       "link": "https://open.163.com/newview/movie/free?pid=MEHLI0563&mid=MEHLMNO8M",
       "linkLabel": "网易公开课",
@@ -260,6 +500,7 @@ window.DOC_CATALOG = {
       "duration": "约 10 分钟 × 多集",
       "episodeHint": "一晚 1 集",
       "muscle": "生物",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "准备—实验—验证：声音有多快、太阳能做饭。短实验片，和乌鸦同一条「动手想」的线。",
       "link": "https://www.bilibili.com/video/BV1AU4y1p7o5/?p=1",
       "linkLabel": "B 站直达",
@@ -362,6 +603,7 @@ window.DOC_CATALOG = {
       "duration": "约 20–25 分钟 / 集",
       "episodeHint": "工作日 1 集 · 先猜再验证",
       "muscle": "实验",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "千里之堤、曹冲称象……用实验拆典故：古人的说法今天还成立吗？",
       "link": "https://tv.cctv.com/2024/03/12/VIDEu931Kx6CD2qC5gFEZd9Z240312.shtml",
       "linkLabel": "央视网",
@@ -467,6 +709,7 @@ window.DOC_CATALOG = {
       "duration": "约 24 分钟 × 5 集",
       "episodeHint": "周末 1 集 · 先试懂不懂",
       "muscle": "实验",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "央视化学启蒙：门捷列夫怎样排周期表，氢氧碳氮、毒物与「改变世界」的元素。",
       "link": "https://tv.cctv.com/2020/06/30/VIDEW2RsCO2IJILmB7VB35Im200630.shtml",
       "linkLabel": "央视网",
@@ -567,6 +810,7 @@ window.DOC_CATALOG = {
       "duration": "约 10 分钟 / 集 × 52",
       "episodeHint": "一晚 1–2 集 · 先看前 6",
       "muscle": "数理",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "央视天文启蒙：从踏上旅途到月球、行星。短集连续看，不急于追完全部。",
       "link": "https://www.bilibili.com/video/BV1kg411X7zA/?p=1",
       "linkLabel": "B 站直达",
@@ -663,6 +907,7 @@ window.DOC_CATALOG = {
       "duration": "约 25 分钟 × 4 集",
       "episodeHint": "周末 1 集",
       "muscle": "数理",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "央视趣味数学：数学是什么、数学家做什么、数学教会了我们什么。",
       "link": "https://tv.cctv.com/2021/10/26/VIDEe5L9JZ1udFMUVQe3uM2I211026.shtml",
       "linkLabel": "央视网",
@@ -743,6 +988,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 3 集",
       "episodeHint": "周末 1 集",
       "muscle": "实验",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "从火花到电网：电怎样从实验室走进生活。BBC《Shock and Awe》中字。",
       "link": "https://www.bilibili.com/video/BV14b411t7Xv/?p=1",
       "linkLabel": "B 站直达",
@@ -803,6 +1049,7 @@ window.DOC_CATALOG = {
       "duration": "约 1–2 分钟 / 段 × 多段",
       "episodeHint": "微打卡 · 只看片不跟做",
       "muscle": "实验",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "延时摄影下的结晶、沉淀、火焰：化学也可以很美。务必只观赏，勿自行试剂实验。",
       "link": "https://www.bilibili.com/video/BV1KE411872v/?p=1",
       "linkLabel": "B 站直达",
@@ -899,6 +1146,7 @@ window.DOC_CATALOG = {
       "duration": "约 50–60 分钟 × 11 集",
       "episodeHint": "周末 1 集",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "从极地到深海的地球故事。画面震撼，像给地球办一场「超级相册」。",
       "link": "https://www.bilibili.com/bangumi/play/ep121262",
       "linkLabel": "B 站正版",
@@ -927,6 +1175,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 6 集",
       "episodeHint": "周末 1 集",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "植物也会「打架、合作、求偶」。大卫·爱登堡带你用延时摄影看见被忽略的森林与沙漠。",
       "link": "https://www.bilibili.com/bangumi/play/ep451881",
       "linkLabel": "B 站正版",
@@ -955,6 +1204,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 8 集",
       "episodeHint": "周末 1 集",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "together"},
       "blurb": "Netflix 与 BBC 联手：从冰原到深海，讲物种与家园，也点到气候与保护，画面接近《地球脉动》。",
       "link": "https://www.netflix.com/title/80049832",
       "linkLabel": "Netflix 正版",
@@ -983,6 +1233,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 8 集",
       "episodeHint": "周末 1 集",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "潜入海洋：洋流、珊瑚、深潜生物。经典自然大片，和《地球脉动》一样适合「周末只追一集」。",
       "link": "https://www.bilibili.com/bangumi/play/ep119264",
       "linkLabel": "B 站正版",
@@ -1011,6 +1262,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 6 集",
       "episodeHint": "周末 1 集",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "together"},
       "blurb": "极地一年四季：冰、企鹅、北极熊。画面强，也适合聊「冰为什么在变」。",
       "link": "https://www.bilibili.com/bangumi/media/md20034/",
       "linkLabel": "B 站正版",
@@ -1119,6 +1371,7 @@ window.DOC_CATALOG = {
       "duration": "约 50–60 分钟 × 7 集",
       "episodeHint": "周末 1 集",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "together"},
       "blurb": "按七大洲看地球：南极、非洲、澳洲……每片大陆怎样养出自己的生命。地球脉动同门周末大片。",
       "link": "https://v.qq.com/x/cover/5s6jjhvb15xrm59.html",
       "linkLabel": "腾讯视频正版",
@@ -1243,6 +1496,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 6 集",
       "episodeHint": "周末 1 集",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "BBC×央视：从华南到高原、塞外到海滨。地理风景片，也是「中国长什么样」。",
       "link": "https://jishi.cctv.com/special/wildchina/",
       "linkLabel": "央视网",
@@ -1358,6 +1612,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 4–6 集",
       "episodeHint": "第 1、含临终/胚胎类集家长陪看",
       "muscle": "人体",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "钻进身体内部看心跳、细胞与成长。现用同题材《人体大惊奇》合集，挑一集即可。",
       "link": "https://www.bilibili.com/video/BV1Sg411371W/",
       "linkLabel": "B 站直达",
@@ -1381,6 +1636,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 10 集",
       "episodeHint": "先看植物、鸟、鱼",
       "muscle": "生物",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "动物植物怎么活下来：伪装、迁徙、育儿。比「好看」更进一步，讲生存策略。",
       "link": "https://www.bilibili.com/bangumi/play/ep118932",
       "linkLabel": "B 站正版",
@@ -1409,6 +1665,7 @@ window.DOC_CATALOG = {
       "duration": "约 5–8 分钟 / 集",
       "episodeHint": "一晚 1–2 集",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "流感、酵母、乳酸菌……用孩子能懂的故事走进细菌和病毒，顺带养成洗手习惯。",
       "link": "https://www.bilibili.com/video/BV12h411V7Gv/",
       "linkLabel": "B 站直达",
@@ -1569,6 +1826,7 @@ window.DOC_CATALOG = {
       "duration": "约 25–35 分钟 × 6 集",
       "episodeHint": "周末 1 集 · 家长可陪",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "动画巴斯德带你逛生物学：微生物、疫苗、进化与「未来的我们」。",
       "link": "https://tv.cctv.com/2023/08/19/VIDEZZcWkscEtP5PC41jXfZi230819.shtml",
       "linkLabel": "央视网",
@@ -1671,6 +1929,7 @@ window.DOC_CATALOG = {
       "duration": "约 40 分钟 × 8 集",
       "episodeHint": "周末 1 集 · 可先看信号分子 / 肠道",
       "muscle": "人体",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "镜头钻进细胞、免疫与器官：显微摄影 + 动画，像科幻片一样看身体内部。",
       "link": "https://www.bilibili.com/video/BV1R22nBeEpE/",
       "linkLabel": "B 站直达",
@@ -1693,6 +1952,7 @@ window.DOC_CATALOG = {
       "duration": "约 50–60 分钟（可拆两晚）",
       "episodeHint": "工作日可先看上集 · 周末看完",
       "muscle": "人体",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "细胞怎样「打仗」保卫身体。聚焦微观战场，补足对细胞机制的好奇心。",
       "link": "https://www.bilibili.com/video/BV1L44y1B789/",
       "linkLabel": "B 站直达",
@@ -1743,6 +2003,7 @@ window.DOC_CATALOG = {
       "duration": "约 30 分钟",
       "episodeHint": "周末 1 集",
       "muscle": "生物",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "《解码科技史》微观篇：细菌怎样被看见、被理解。",
       "link": "https://tv.cctv.com/2022/11/13/VIDEysn1jha46UFtJZVVmNhy221113.shtml",
       "linkLabel": "央视网",
@@ -1771,6 +2032,7 @@ window.DOC_CATALOG = {
       "duration": "约 25 分钟 × 5 集",
       "episodeHint": "周末 1 集",
       "muscle": "生物",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "草叶下的昆虫「王国」：放大到能看见触角上的水珠。微观尺度的自然大片。",
       "link": "https://www.bilibili.com/video/BV1E5411M7uT/",
       "linkLabel": "B 站直达",
@@ -1793,6 +2055,7 @@ window.DOC_CATALOG = {
       "duration": "约 48–60 分钟 × 5 集",
       "episodeHint": "周末 1 集",
       "muscle": "生物",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "物理学家追问：生命到底是什么？把生物和能量、宇宙规律连在一起想。",
       "link": "https://www.bilibili.com/video/BV1Uw411d7xw/",
       "linkLabel": "B 站直达",
@@ -1815,6 +2078,7 @@ window.DOC_CATALOG = {
       "duration": "5 分钟，一晚 2–3 集",
       "episodeHint": "打包 2–3 集",
       "muscle": "审美",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "一件国宝讲一个小故事：形状、纹样、工艺。短片累加，养「看得懂物件」的眼睛。",
       "link": "https://www.bilibili.com/bangumi/play/ep165008",
       "linkLabel": "B 站正版",
@@ -1850,6 +2114,7 @@ window.DOC_CATALOG = {
       "duration": "约 5 分钟 × 10 集",
       "episodeHint": "一晚 1–2 集",
       "muscle": "叙事",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "每集五分钟看中国超级工程：火箭发动机、盾构、特高压、高铁……短、好入口。",
       "link": "https://tv.cctv.com/2023/01/11/VIDEu5pzyZ6XjzPFSCYTqFbV230111.shtml",
       "linkLabel": "央视网",
@@ -1952,6 +2217,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 6 集",
       "episodeHint": "周末 1 集 · 可先看第1集家书",
       "muscle": "叙事",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "一封信一个故事：家书、友情、家风。用古人的字，看见他们怎么爱、怎么选、怎么活。",
       "link": "https://tv.cctv.com/2021/02/12/VIDE6castX10rFlwYX7KPvLb210212.shtml",
       "linkLabel": "央视网",
@@ -2074,6 +2340,7 @@ window.DOC_CATALOG = {
       "duration": "约 5 分钟 / 集",
       "episodeHint": "一晚 2–3 个字",
       "muscle": "审美",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "一集一个汉字：中、鼎、友……字形从哪来、古人怎么用。短，很适合工作日。",
       "link": "https://tv.cctv.com/2022/04/03/VIDE7qRtbkEOj7Q0M7FwKNDS220403.shtml",
       "linkLabel": "央视网",
@@ -2176,6 +2443,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 8 集",
       "episodeHint": "周末 1 集 · 可先看《秦汉》",
       "muscle": "叙事",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "用考古回答「中国从哪来」：秦汉一统，再往回走到摇篮与古国。家长可陪看。",
       "link": "https://www.iqiyi.com/a_25yb25rmy3t.html",
       "linkLabel": "爱奇艺正版",
@@ -2309,6 +2577,7 @@ window.DOC_CATALOG = {
       "duration": "约 25–30 分钟 / 集",
       "episodeHint": "工作日或周末 1 集",
       "muscle": "叙事",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "苏轼爱吃、乾隆爱批奏折……正史里的趣事，轻松入口，不像通史那么沉。",
       "link": "https://www.bilibili.com/bangumi/play/ss25810",
       "linkLabel": "B 站正版",
@@ -2377,6 +2646,7 @@ window.DOC_CATALOG = {
       "duration": "约 5 分钟 / 集",
       "episodeHint": "饭后 1 集",
       "muscle": "审美",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "名画变情景剧：捣练图、步辇图……短、好笑，历史与审美一起进。",
       "link": "https://v.qq.com/x/cover/mzc00200r8ravfe.html",
       "linkLabel": "腾讯视频正版",
@@ -2479,6 +2749,7 @@ window.DOC_CATALOG = {
       "duration": "约 2 分钟 / 集",
       "episodeHint": "微打卡 · 一晚 1–2 集",
       "muscle": "审美",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "法国喜剧演名画：每集两分钟，等车也能看完再盖印。",
       "link": "https://www.bilibili.com/bangumi/play/ep272748",
       "linkLabel": "B 站正版",
@@ -2579,6 +2850,7 @@ window.DOC_CATALOG = {
       "duration": "约 25–45 分钟 × 10 集",
       "episodeHint": "家长陪同 · 周末最多 1 集",
       "muscle": "叙事",
+      "kid": {"understand": "hard", "watch": "parent"},
       "blurb": "基层法院真实庭审：天理、国法、人情。建议家长陪同，一起讨论法律与人性。",
       "link": "https://v.qq.com/x/cover/mzc002009s5aawf.html",
       "linkLabel": "腾讯视频",
@@ -2682,6 +2954,7 @@ window.DOC_CATALOG = {
       "duration": "约 10 分钟 × 60 集",
       "episodeHint": "一晚 1 集",
       "muscle": "审美",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "拆雨伞、铅笔、书包：日常物件原来是这样设计的。练观察力。",
       "link": "https://www.bilibili.com/video/BV1hwKfzmEr4/",
       "linkLabel": "B 站直达",
@@ -3426,6 +3699,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 6 集",
       "episodeHint": "周末 1 集",
       "muscle": "叙事",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "从天上俯瞰中国山川城市。构图漂亮，也适合聊「地方长什么样、人怎么住」。",
       "link": "https://tv.cctv.com/2016/12/28/VIDALOmjxOZe51NjntPvOI00161228.shtml",
       "linkLabel": "央视网",
@@ -3454,6 +3728,7 @@ window.DOC_CATALOG = {
       "duration": "约 40–50 分钟 / 集",
       "episodeHint": "周末 1 集 · 优先大桥 / 大厦 / 地铁",
       "muscle": "工程",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "不利条件下怎么把活干完：港珠澳沉管、上海中心、地铁网络。看工程师怎么解题。",
       "link": "https://tv.cctv.com/2013/03/07/VIDE1362620723304281.shtml",
       "linkLabel": "央视网",
@@ -3547,6 +3822,7 @@ window.DOC_CATALOG = {
       "duration": "约 5–8 分钟 / 段",
       "episodeHint": "一晚 1 个工厂片段",
       "muscle": "工程",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "铝箔、蜂蜜、牛仔裤怎么从工厂里出来。接材料片：看见「东西是被做出来的」。",
       "link": "https://www.bilibili.com/video/BV11z4y1e7MM/",
       "linkLabel": "B 站直达",
@@ -3643,6 +3919,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 3 集",
       "episodeHint": "周末 1 集（已看过第1可续第2）",
       "muscle": "工程",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "金属、塑料、陶瓷……日常材料从哪来、改变了什么。故事感强，比纯工业片更好入口。",
       "link": "https://www.bilibili.com/bangumi/play/ep257923",
       "linkLabel": "B 站正版",
@@ -3719,6 +3996,7 @@ window.DOC_CATALOG = {
       "duration": "约 40 分钟 × 6 集",
       "episodeHint": "周末 1 集 · 建议冻土 / 高海拔集",
       "muscle": "工程",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "世界屋脊上修铁路：缺氧、冻土、塌方。极端环境里怎么把问题解决掉。",
       "link": "https://www.bilibili.com/video/BV1fs411o7Yn/",
       "linkLabel": "B 站直达",
@@ -3741,6 +4019,7 @@ window.DOC_CATALOG = {
       "duration": "约 25–30 分钟 × 5 集",
       "episodeHint": "周末 1 集",
       "muscle": "工程",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "从智利到长城站：中国南极科考站怎样站住、物资怎么运到、人怎么过冬。",
       "link": "https://www.bilibili.com/video/BV1FagJ6JEq5/?p=1",
       "linkLabel": "B 站直达",
@@ -3825,6 +4104,7 @@ window.DOC_CATALOG = {
       "duration": "约 45–50 分钟",
       "episodeHint": "周末一部",
       "muscle": "工程",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "又高又要抗震：钢材怎么接、工地怎么组织。一座塔如何在地震带「站住」。",
       "link": "https://www.bilibili.com/video/BV15s411Z7Qz/",
       "linkLabel": "B 站直达",
@@ -3847,6 +4127,7 @@ window.DOC_CATALOG = {
       "duration": "约 45 分钟 × 5 集",
       "episodeHint": "周末 1 集",
       "muscle": "工程",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "桥为什么不会塌？梁桥、拱桥、斜拉桥怎么把力传到地面。材料与力学入门。",
       "link": "https://www.bilibili.com/video/BV1Rt411t7qv/",
       "linkLabel": "B 站直达",
@@ -3869,6 +4150,7 @@ window.DOC_CATALOG = {
       "duration": "约 14 分钟 / 章",
       "episodeHint": "只看二维、三维",
       "muscle": "数理",
+      "kid": {"understand": "hard", "watch": "together"},
       "blurb": "用动画走进二维、三维空间。法国《数学漫步》同系，启发空间与形状直觉。",
       "link": "https://www.dimensions-math.org/Dim_ZH_si.htm",
       "linkLabel": "官网免费正片",
@@ -3897,6 +4179,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 3 集",
       "episodeHint": "周末 1 集 · 可先看「形状」",
       "muscle": "数理",
+      "kid": {"understand": "hard", "watch": "together"},
       "blurb": "数字、形状、预测：自然和建筑里藏着的「密码」。数学兴趣的入口。",
       "link": "https://www.bilibili.com/video/BV1Mx411R7oQ/?p=1",
       "linkLabel": "B 站直达",
@@ -3960,6 +4243,7 @@ window.DOC_CATALOG = {
         "duration": "约 8 分钟 × 17 集",
         "episodeHint": "工作日很合适 · 一集一个故事",
         "muscle": "商业",
+      "kid": {"understand": "think", "watch": "together"},
         "blurb": "央视财经微纪录：股票从哪来、泡沫怎么破、公司怎样靠资本长大。每集约 8 分钟。",
         "link": "https://jingji.cctv.com/2013/01/08/VIDE1357612213762880.shtml",
         "linkLabel": "央视网",
@@ -4227,8 +4511,9 @@ window.DOC_CATALOG = {
       "slot": "A",
       "role": "main",
       "duration": "约 3–43 分钟 · 10 集",
-      "episodeHint": "先看经济机器 · 原则 8 集很短 · 世界秩序周末看",
+      "episodeHint": "路线：原则 8 集 → 经济机器（可拆段陪看）→ 世界秩序往后放",
       "muscle": "商业",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "达利欧三块：钱怎么流动、《成功的原则》动画 8 集、国家兴衰大周期。原则每集约 3–5 分钟。",
       "link": "https://www.bilibili.com/video/BV1jsoMBtEWA/",
       "linkLabel": "B 站直达",
@@ -4259,7 +4544,7 @@ window.DOC_CATALOG = {
           "id": "econmachine-1",
           "n": 1,
           "title": "经济机器是怎样运行的",
-          "blurb": "交易、借贷、短周期与长周期。先建立「钱怎么流动」的骨架。",
+          "blurb": "交易、借贷、短周期与长周期。约 31 分钟，建议拆 2–3 段陪看。",
           "duration": "约 31 分钟",
           "link": "https://www.bilibili.com/video/BV1jsoMBtEWA/",
           "hints": [
@@ -4267,7 +4552,22 @@ window.DOC_CATALOG = {
             "信贷",
             "周期",
             "达利欧",
-            "桥水"
+            "桥水",
+            "陪看拆段"
+          ],
+          "discuss": [
+            {
+              "at": "交易讲完",
+              "ask": "最近一次「你给我东西、我给你东西」是什么？"
+            },
+            {
+              "at": "借贷讲完",
+              "ask": "借钱和赚钱有什么不一样？"
+            },
+            {
+              "at": "周期讲完",
+              "ask": "为什么有时大家花钱大胆、有时又都捂紧口袋？"
+            }
           ]
         },
         {
@@ -4421,6 +4721,7 @@ window.DOC_CATALOG = {
       "duration": "约 5 分钟 × 3 集",
       "episodeHint": "工作日 1 集 · 英语原声，网易有中字",
       "muscle": "商业",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "只收三集：为什么不能拿东西换东西、价钱为什么不只看成本、为什么梵高比海报贵。",
       "link": "https://www.163.com/opencourse/detail/video-FHJP2BSM7-WHJP2C14F",
       "linkLabel": "网易公开课",
@@ -4490,6 +4791,7 @@ window.DOC_CATALOG = {
       "duration": "约 45 分钟 × 10 集",
       "episodeHint": "周末先看第2集《从哪里来》",
       "muscle": "商业",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "央视十集：钱从贸易工具变成大家认的凭证。先看第2集，后面几集再决定。",
       "link": "https://www.docuchina.cn/2013/08/19/VIDA1376894286831456.shtml",
       "linkLabel": "中国纪录片网",
@@ -4633,6 +4935,7 @@ window.DOC_CATALOG = {
       "duration": "约 40–50 分钟 × 8 集",
       "episodeHint": "家长陪同 · 周末 1 集",
       "muscle": "商业",
+      "kid": {"understand": "think", "watch": "parent"},
       "blurb": "主持人真去养羊种地：成本、天气、失败与利润。笑点多，可聊「风险和账」。",
       "link": "https://www.bilibili.com/video/BV1rvj66bEwh/?p=1",
       "linkLabel": "B 站直达",
@@ -4730,6 +5033,7 @@ window.DOC_CATALOG = {
       "duration": "约 90 分钟",
       "episodeHint": "家长陪看 · 可拆两晚",
       "muscle": "选择",
+      "kid": {"understand": "hard", "watch": "parent"},
       "blurb": "为什么总想刷手机？平台怎样用注意力赚钱。须家长在场，一起讨论「谁在用我的时间」。",
       "link": "https://www.bilibili.com/video/BV1jG411D7U5/",
       "linkLabel": "B 站直达",
@@ -4753,6 +5057,7 @@ window.DOC_CATALOG = {
       "duration": "约 60 分钟",
       "episodeHint": "可拆两晚",
       "muscle": "数理",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "逻辑从哪里来、电脑为什么懂「是/否」。趣味讲解，帮孩子建立清晰思考。",
       "link": "https://www.bilibili.com/video/BV18y4y197xY/",
       "linkLabel": "B 站直达",
@@ -4775,6 +5080,7 @@ window.DOC_CATALOG = {
       "duration": "约 25 分钟 × 6 集",
       "episodeHint": "工作日或周末 1 集",
       "muscle": "数理",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "动画讲物理直觉：空气、速度、旋转与力。运动物理的入口。",
       "link": "https://tv.cctv.com/2018/06/26/VIDECsJMIfpvWVBBkY90G5gC180626.shtml",
       "linkLabel": "央视网",
@@ -4879,6 +5185,7 @@ window.DOC_CATALOG = {
       "duration": "约 60 分钟 × 4（先看前 2）",
       "episodeHint": "宇宙的语言 · 东方奇才",
       "muscle": "数理",
+      "kid": {"understand": "think", "watch": "solo"},
       "blurb": "数学从埃及、巴比伦走到东方：数字与几何怎么变成今天的工具。先看前两集。",
       "link": "https://www.bilibili.com/video/BV1DZ421H7it/",
       "linkLabel": "B 站直达",
@@ -4903,6 +5210,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 8 集",
       "episodeHint": "周末 1 集 · 可先听第1集",
       "muscle": "叙事",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "英语从日耳曼方言走到全球：词从哪来、为什么今天长这样。可当故事听，不必一次听懂所有词。",
       "link": "https://www.bilibili.com/video/BV1vs41117JH/?p=1",
       "linkLabel": "B 站直达",
@@ -5030,6 +5338,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 3 集",
       "episodeHint": "家长陪看 · 周末 1 集",
       "muscle": "商业",
+      "kid": {"understand": "hard", "watch": "parent"},
       "blurb": "东西为什么越来越不耐用？广告怎样用恐惧和「给孩子」让人掏钱。看清消费机器怎么转。",
       "link": "https://v.qq.com/x/cover/n4fu3ishf0tpnq1.html",
       "linkLabel": "腾讯视频正版",
@@ -5100,6 +5409,7 @@ window.DOC_CATALOG = {
       "duration": "约 50 分钟 × 8 集",
       "episodeHint": "周末 1 集",
       "muscle": "审美",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "山海之间的味道：小麦、香料、江湖夜雨。地理与人情都藏在一口热菜里。",
       "link": "https://v.qq.com/x/cover/jx7g4sm320sqm7i.html",
       "linkLabel": "腾讯视频正版",
@@ -5226,6 +5536,7 @@ window.DOC_CATALOG = {
       "duration": "约 30 分钟 × 6 集",
       "episodeHint": "周末 1–2 集",
       "muscle": "叙事",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "从苏轼到苏东坡：黄州四年，诗文书画与一碗东坡肉。看一个人怎样把苦日子过成风流。",
       "link": "https://www.iqiyi.com/a_1pa4vhct4vt.html",
       "linkLabel": "爱奇艺正版",
@@ -5329,6 +5640,7 @@ window.DOC_CATALOG = {
       "duration": "约 45–50 分钟 × 6 集",
       "episodeHint": "周末 1 集 · 家长陪看",
       "muscle": "意志",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "从交大少年到航天：求学、回国、两弹一星。志向怎样变成国家工程里的解题。",
       "link": "https://tv.cctv.com/2010/10/26/VIDE1355596422060989.shtml",
       "linkLabel": "央视网",
@@ -5439,6 +5751,7 @@ window.DOC_CATALOG = {
       "duration": "约 50–60 分钟 × 1",
       "episodeHint": "可拆两晚 · 自家先看",
       "muscle": "生物",
+      "kid": {"understand": "easy", "watch": "together"},
       "blurb": "为什么睡不着？热水澡、光线、咖啡、打鼾……十个实验讲清睡好觉的科学。",
       "link": "http://www.163.com/opencourse/detail/video-JHKF1S4IB-YHKF1S4QL",
       "linkLabel": "网易公开课",
@@ -5475,6 +5788,7 @@ window.DOC_CATALOG = {
       "duration": "约 18 分钟 × 5 集",
       "episodeHint": "周末 1–2 集",
       "muscle": "实验",
+      "kid": {"understand": "easy", "watch": "solo"},
       "blurb": "AI 怎样帮人：探索火星、修壁画、护东北虎。短集科技人文，看机器怎样当助手。",
       "link": "https://www.bilibili.com/bangumi/media/md28222042",
       "linkLabel": "B 站正版",
@@ -5566,6 +5880,7 @@ window.DOC_CATALOG = {
       "duration": "约 45 分钟 × 23 集",
       "episodeHint": "周末 1 集 · 看红标再开",
       "muscle": "实验",
+      "kid": {"understand": "easy", "watch": "together"},
       "blurb": "探索频道杂志片：一集一个问题。这里只收科学向；性、毒品、洗脑等未收录。",
       "link": "https://search.bilibili.com/all?keyword=%E7%BB%9D%E5%AF%B9%E5%A5%BD%E5%A5%87%20Curiosity",
       "linkLabel": "B 站搜索",
@@ -5868,6 +6183,7 @@ window.DOC_CATALOG = {
       "duration": "约 25–35 分钟 × 12 集",
       "episodeHint": "优先「入学」「长大」· 家长选片",
       "muscle": "选择",
+      "kid": {"understand": "think", "watch": "together"},
       "blurb": "出生、入学、长大、当兵、上班……中国人一生里那些「第一次」。看普通人怎样做选择题。",
       "link": "https://www.bilibili.com/bangumi/media/md28227065",
       "linkLabel": "B 站正版",
@@ -5978,6 +6294,7 @@ window.DOC_CATALOG = {
       "duration": "约 5 分钟 × 16 集",
       "episodeHint": "一晚 2–3 集 · 自家先看",
       "muscle": "叙事",
+      "kid": {"understand": "easy", "watch": "together"},
       "blurb": "世界各地小朋友的一天：打水、搭蒙古包、采山药。短、暖，打开「别人的生活」。",
       "link": "https://www.bilibili.com/video/BV169K8zJEd2/",
       "linkLabel": "B 站直达",
@@ -6184,6 +6501,684 @@ window.DOC_CATALOG = {
       "watchLabel": "B 站直达",
       "watchNote": "自用：仅自家先看：暂无央视/番剧/腾讯·爱奇艺正版页；当前为投稿合集，可能下架。工具上线前须补 official，否则标「片源暂缺」。",
       "official": []
+    },
+    {
+      "id": "tededecon",
+      "heroArt": "./covers/hero/tededecon.jpg",
+      "title": "TED-Ed 经济短片（精选）",
+      "category": "finance",
+      "slot": "A",
+      "role": "side",
+      "duration": "约 4–6 分钟 × 3 集",
+      "episodeHint": "工作日 1 集 · 建议先丝路再货币",
+      "muscle": "商业",
+      "kid": {
+        "understand": "think",
+        "watch": "together"
+      },
+      "blurb": "三集动画短片：丝路怎样连通世界、钱从哪来、供需怎样定价钱。比 Crash Course 更短。",
+      "link": "https://ed.ted.com/lessons/what-gave-the-silk-road-its-name-shannon-harris-castelo",
+      "linkLabel": "TED-Ed 官网",
+      "play": "ok",
+      "shareable": false,
+      "playNote": "正版页走 TED-Ed；中字可走 B 站投稿，可能下架",
+      "mapPin": "丝路 · 货币 · 供需",
+      "parentNote": "英文原声+字幕；建议家长陪看第一集确认孩子跟得上",
+      "watchLink": "https://www.bilibili.com/video/BV1CE411Y7us/",
+      "watchLabel": "B 站 · TED-Ed 中字（备）",
+      "watchNote": "自用：官网英文字幕最稳；B 站中字为投稿合集入口，优先换丝路/货币相关分P。工具上线前须核 official。",
+      "official": [
+        {
+          "kind": "teded",
+          "url": "https://ed.ted.com/lessons/what-gave-the-silk-road-its-name-shannon-harris-castelo",
+          "label": "TED-Ed · 丝路"
+        },
+        {
+          "kind": "teded",
+          "url": "https://ed.ted.com/lessons/the-history-of-paper-money-tally-sticks-to-bitcoins-or-how-we-got-here",
+          "label": "TED-Ed · 纸币史"
+        }
+      ],
+      "episodes": [
+        {
+          "id": "tededecon-1",
+          "n": 1,
+          "title": "丝绸之路：史上第一个「互联网」",
+          "blurb": "东西、想法怎样沿着丝路从 A 走到 B。",
+          "duration": "约 5 分钟",
+          "link": "https://ed.ted.com/lessons/what-gave-the-silk-road-its-name-shannon-harris-castelo",
+          "hints": [
+            "丝路",
+            "贸易",
+            "交换"
+          ]
+        },
+        {
+          "id": "tededecon-2",
+          "n": 2,
+          "title": "纸币从哪来",
+          "blurb": "从记账棍到纸币：信用怎样变成大家认的「钱」。",
+          "duration": "约 5 分钟",
+          "link": "https://ed.ted.com/lessons/the-history-of-paper-money-tally-sticks-to-bitcoins-or-how-we-got-here",
+          "hints": [
+            "纸币",
+            "信用",
+            "货币"
+          ]
+        },
+        {
+          "id": "tededecon-3",
+          "n": 3,
+          "title": "想买的人 vs 能卖的量",
+          "blurb": "价钱为什么会变：想买的人多、能卖的东西少时会怎样。",
+          "duration": "约 5 分钟",
+          "link": "https://ed.ted.com/lessons/what-gave-the-silk-road-its-name-shannon-harris-castelo",
+          "hints": [
+            "供需",
+            "价钱",
+            "稀缺"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kidmoney",
+      "heroArt": "./covers/hero/kidmoney.jpg",
+      "title": "小朋友的财商课（精选）",
+      "category": "finance",
+      "slot": "A",
+      "role": "side",
+      "duration": "约 6–10 分钟 × 5 集",
+      "episodeHint": "工作日 1 集 · 从交换到攒钱",
+      "muscle": "商业",
+      "kid": {
+        "understand": "easy",
+        "watch": "solo"
+      },
+      "blurb": "交换、钱是什么、第一次买东西、钱从哪来、学会攒钱。生活化财商入门，少抽象名词。",
+      "link": "https://www.bilibili.com/video/BV1ce411F73P/",
+      "linkLabel": "B 站直达",
+      "play": "ok",
+      "shareable": false,
+      "playNote": "尚无正版备份 · 自用 watchLink；投稿合集可能下架",
+      "mapPin": "交换 · 储蓄 · 钱是什么",
+      "watchLink": "https://www.bilibili.com/video/BV1ce411F73P/?p=1",
+      "watchLabel": "B 站直达",
+      "watchNote": "自用：10 集合集里先收前 5 集；工具上线前须补 official。",
+      "official": [],
+      "episodes": [
+        {
+          "id": "kidmoney-1",
+          "n": 1,
+          "title": "神奇的交换",
+          "blurb": "没有钱时，人们怎样交换东西。",
+          "duration": "约 8 分钟",
+          "link": "https://www.bilibili.com/video/BV1ce411F73P/?p=1",
+          "hints": [
+            "交换",
+            "物物"
+          ]
+        },
+        {
+          "id": "kidmoney-2",
+          "n": 2,
+          "title": "什么是钱",
+          "blurb": "钱到底是什么：大家为什么认它。",
+          "duration": "约 8 分钟",
+          "link": "https://www.bilibili.com/video/BV1ce411F73P/?p=2",
+          "hints": [
+            "钱",
+            "认识"
+          ]
+        },
+        {
+          "id": "kidmoney-3",
+          "n": 3,
+          "title": "第一次买东西",
+          "blurb": "付钱买东西：选择与代价。",
+          "duration": "约 8 分钟",
+          "link": "https://www.bilibili.com/video/BV1ce411F73P/?p=3",
+          "hints": [
+            "购买",
+            "选择"
+          ]
+        },
+        {
+          "id": "kidmoney-4",
+          "n": 4,
+          "title": "钱是从哪儿来的",
+          "blurb": "家里的钱从劳动与交换里来。",
+          "duration": "约 8 分钟",
+          "link": "https://www.bilibili.com/video/BV1ce411F73P/?p=4",
+          "hints": [
+            "来源",
+            "劳动"
+          ]
+        },
+        {
+          "id": "kidmoney-5",
+          "n": 5,
+          "title": "学会攒钱",
+          "blurb": "想要大东西，可以一点点攒。",
+          "duration": "约 8 分钟",
+          "link": "https://www.bilibili.com/video/BV1ce411F73P/?p=5",
+          "hints": [
+            "储蓄",
+            "等待"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "silkmoney",
+      "heroArt": "./covers/hero/silkmoney.jpg",
+      "title": "丝路·货币",
+      "category": "finance",
+      "slot": "A",
+      "role": "side",
+      "duration": "约 45 分钟",
+      "episodeHint": "周末陪看 · 可拆两段",
+      "muscle": "商业",
+      "kid": {
+        "understand": "think",
+        "watch": "together"
+      },
+      "blurb": "央视《丝绸之路经济带》第四集：从桑树到交子，丝路上的信用怎样变成货币。",
+      "link": "https://tv.cctv.com/2017/05/10/VIDEz6is7edaEamVIMcN0Zd6170510.shtml",
+      "linkLabel": "央视网",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份 1 条 · 自用走 watchLink",
+      "mapPin": "交子 · 丝路信用",
+      "parentNote": "偏财经叙事，建议陪看；可先看前半讲交子的段落",
+      "watchLink": "https://tv.cctv.com/2017/05/10/VIDEz6is7edaEamVIMcN0Zd6170510.shtml",
+      "watchLabel": "央视网",
+      "watchNote": "自用现开此链（央视网正片）。工具模式改走 official。",
+      "official": [
+        {
+          "kind": "cctv",
+          "url": "https://tv.cctv.com/2017/05/10/VIDEz6is7edaEamVIMcN0Zd6170510.shtml",
+          "label": "央视网 · 丝路货币"
+        }
+      ]
+    },
+    {
+      "id": "hexizoulang",
+      "heroArt": "./covers/hero/hexizoulang.jpg",
+      "title": "河西走廊（精选）",
+      "category": "human",
+      "slot": "B",
+      "role": "side",
+      "duration": "约 48 分钟 × 3 集",
+      "episodeHint": "家长陪看 · 周末 1 集 · 先使者与丝路",
+      "muscle": "叙事",
+      "kid": {
+        "understand": "think",
+        "watch": "together"
+      },
+      "blurb": "张骞凿空、丝路贸易、敦煌：东西怎样从 A 走到 B。只收三集，不追完全部。",
+      "link": "https://www.bilibili.com/bangumi/media/md20790",
+      "linkLabel": "B 站正版",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份 1 条 · 自用走 watchLink",
+      "mapPin": "使者 · 丝路 · 敦煌",
+      "parentNote": "含战争与边疆叙事，务必陪看；四年级先看《使者》《丝路》即可",
+      "watchLink": "https://www.bilibili.com/bangumi/media/md20790",
+      "watchLabel": "B 站正版",
+      "watchNote": "自用：B 站正版番剧页选集；优先第1、6、7 集。工具模式改走 official。",
+      "official": [
+        {
+          "kind": "bilibili",
+          "url": "https://www.bilibili.com/bangumi/media/md20790",
+          "label": "B 站正版 · 河西走廊"
+        }
+      ],
+      "episodes": [
+        {
+          "id": "hexizoulang-1",
+          "n": 1,
+          "title": "使者",
+          "blurb": "张骞西行：一条通道怎样被「凿空」。",
+          "duration": "约 48 分钟",
+          "link": "https://www.bilibili.com/bangumi/media/md20790",
+          "hints": [
+            "张骞",
+            "通道",
+            "开拓"
+          ]
+        },
+        {
+          "id": "hexizoulang-6",
+          "n": 2,
+          "title": "丝路",
+          "blurb": "商队与货物：贸易怎样把两边连起来。",
+          "duration": "约 48 分钟",
+          "link": "https://www.bilibili.com/bangumi/media/md20790",
+          "hints": [
+            "贸易",
+            "商队",
+            "丝路"
+          ]
+        },
+        {
+          "id": "hexizoulang-7",
+          "n": 3,
+          "title": "敦煌",
+          "blurb": "洞窟与壁画：交流留下了什么痕迹。",
+          "duration": "约 48 分钟",
+          "link": "https://www.bilibili.com/bangumi/media/md20790",
+          "hints": [
+            "敦煌",
+            "壁画",
+            "交流"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "palacefix",
+      "heroArt": "./covers/hero/palacefix.jpg",
+      "title": "我在故宫修文物",
+      "category": "human",
+      "slot": "B",
+      "role": "side",
+      "duration": "约 50 分钟 × 3 集",
+      "episodeHint": "周末 1 集",
+      "muscle": "审美",
+      "kid": {
+        "understand": "easy",
+        "watch": "solo"
+      },
+      "blurb": "故宫里的「文物医生」：青铜、木器、书画怎样被一点点修好。匠人与耐心。",
+      "link": "https://www.bilibili.com/bangumi/play/ep120576",
+      "linkLabel": "B 站正版",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份 1 条 · 自用走 watchLink",
+      "mapPin": "修复 · 匠人",
+      "watchLink": "https://www.bilibili.com/bangumi/play/ep120576",
+      "watchLabel": "B 站正版",
+      "watchNote": "自用现开此链（正版番剧 3 集）。工具模式改走 official。",
+      "official": [
+        {
+          "kind": "bilibili",
+          "url": "https://www.bilibili.com/bangumi/play/ep120576",
+          "label": "B 站正版"
+        }
+      ],
+      "episodes": [
+        {
+          "id": "palacefix-1",
+          "n": 1,
+          "title": "第一集",
+          "blurb": "走进修复室：师徒与手艺怎样接上。",
+          "duration": "约 50 分钟",
+          "link": "https://www.bilibili.com/bangumi/play/ep120576",
+          "hints": [
+            "修复",
+            "师徒"
+          ]
+        },
+        {
+          "id": "palacefix-2",
+          "n": 2,
+          "title": "第二集",
+          "blurb": "继续修：时间与耐心怎样让物件「活」回来。",
+          "duration": "约 50 分钟",
+          "link": "https://www.bilibili.com/bangumi/media/md20792",
+          "hints": [
+            "耐心",
+            "手艺"
+          ]
+        },
+        {
+          "id": "palacefix-3",
+          "n": 3,
+          "title": "第三集",
+          "blurb": "收束：为什么有人愿意把一生交给修复。",
+          "duration": "约 50 分钟",
+          "link": "https://www.bilibili.com/bangumi/media/md20792",
+          "hints": [
+            "匠人",
+            "志向"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "palace100",
+      "heroArt": "./covers/hero/palace100.jpg",
+      "title": "故宫100（精选）",
+      "category": "human",
+      "slot": "A",
+      "role": "side",
+      "duration": "约 6 分钟 × 5 集",
+      "episodeHint": "一晚 1–2 集",
+      "muscle": "审美",
+      "kid": {
+        "understand": "easy",
+        "watch": "solo"
+      },
+      "blurb": "一座建筑讲一个故事：午门、角楼、金水桥……短片看见紫禁城的形与意。",
+      "link": "https://search.bilibili.com/all?keyword=%E6%95%85%E5%AE%AB100%20%E7%BA%AA%E5%BD%95%E7%89%87",
+      "linkLabel": "B 站搜索 · 故宫100",
+      "play": "ok",
+      "shareable": false,
+      "playNote": "片源入口以 B 站「故宫100」正版/合集为准；工具前须坐实 official",
+      "mapPin": "建筑 · 形意",
+      "watchLink": "https://search.bilibili.com/all?keyword=%E6%95%85%E5%AE%AB100",
+      "watchLabel": "B 站搜索",
+      "watchNote": "自用：搜「故宫100」进正版或高清合集；优先天地之间、午门、角楼。工具上线前须补 official。",
+      "official": [],
+      "episodes": [
+        {
+          "id": "palace100-1",
+          "n": 1,
+          "title": "天地之间",
+          "blurb": "紫禁城怎样落在「天地」之间。",
+          "duration": "约 6 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E6%95%85%E5%AE%AB100%20%E5%A4%A9%E5%9C%B0%E4%B9%8B%E9%97%B4",
+          "hints": [
+            "紫禁城",
+            "格局"
+          ]
+        },
+        {
+          "id": "palace100-3",
+          "n": 2,
+          "title": "有容乃大（午门）",
+          "blurb": "午门：进出皇城的大门怎样说话。",
+          "duration": "约 6 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E6%95%85%E5%AE%AB100%20%E5%8D%88%E9%97%A8",
+          "hints": [
+            "午门",
+            "大门"
+          ]
+        },
+        {
+          "id": "palace100-5",
+          "n": 3,
+          "title": "四面玲珑（角楼）",
+          "blurb": "角楼为什么难画又好看。",
+          "duration": "约 6 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E6%95%85%E5%AE%AB100%20%E8%A7%92%E6%A5%BC",
+          "hints": [
+            "角楼",
+            "结构"
+          ]
+        },
+        {
+          "id": "palace100-6",
+          "n": 4,
+          "title": "玉带天河（金水桥）",
+          "blurb": "桥与水：皇城里的一条「玉带」。",
+          "duration": "约 6 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E6%95%85%E5%AE%AB100%20%E9%87%91%E6%B0%B4%E6%A1%A5",
+          "hints": [
+            "金水桥",
+            "水"
+          ]
+        },
+        {
+          "id": "palace100-20",
+          "n": 5,
+          "title": "金光灿烂（琉璃瓦）",
+          "blurb": "屋顶的黄：琉璃瓦怎样发光。",
+          "duration": "约 6 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E6%95%85%E5%AE%AB100%20%E7%90%89%E7%92%83%E7%93%A6",
+          "hints": [
+            "琉璃",
+            "屋顶"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blueplanet2",
+      "heroArt": "./covers/hero/blueplanet2.jpg",
+      "title": "蓝色星球 第二季（精选）",
+      "category": "nature",
+      "slot": "B",
+      "role": "side",
+      "duration": "约 50 分钟 × 2 集",
+      "episodeHint": "周末 1 集",
+      "muscle": "生物",
+      "kid": {
+        "understand": "easy",
+        "watch": "together"
+      },
+      "blurb": "同一片海洋、深海：比第一季更新的画面。先收两集，建立「海有多深」的感觉。",
+      "link": "https://v.qq.com/x/cover/5njremixqn1nwki/e0025oknrqk.html",
+      "linkLabel": "腾讯视频正版",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份 1 条 · 普通话版；部分集需 VIP",
+      "mapPin": "海洋 · 深海",
+      "parentNote": "含捕猎镜头，建议陪看前十分钟再决定",
+      "watchLink": "https://v.qq.com/x/cover/5njremixqn1nwki/e0025oknrqk.html",
+      "watchLabel": "腾讯视频正版",
+      "watchNote": "自用：腾讯《蓝色星球第2季》普通话版。工具模式改走 official。",
+      "official": [
+        {
+          "kind": "tencent",
+          "url": "https://v.qq.com/x/cover/5njremixqn1nwki/e0025oknrqk.html",
+          "label": "腾讯视频正版"
+        }
+      ],
+      "episodes": [
+        {
+          "id": "blueplanet2-1",
+          "n": 1,
+          "title": "同一片海洋",
+          "blurb": "海洋怎样连成一整个系统。",
+          "duration": "约 50 分钟",
+          "link": "https://v.qq.com/x/cover/5njremixqn1nwki/e0025oknrqk.html",
+          "hints": [
+            "海洋",
+            "系统"
+          ]
+        },
+        {
+          "id": "blueplanet2-2",
+          "n": 2,
+          "title": "深海",
+          "blurb": "阳光照不到的地方，谁在生活。",
+          "duration": "约 50 分钟",
+          "link": "https://v.qq.com/x/cover/5njremixqn1nwki.html",
+          "hints": [
+            "深海",
+            "黑暗"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "freesolo",
+      "heroArt": "./covers/hero/freesolo.jpg",
+      "title": "徒手攀岩",
+      "category": "drive",
+      "slot": "B",
+      "role": "side",
+      "duration": "约 100 分钟",
+      "episodeHint": "家长陪看 · 可拆两晚",
+      "muscle": "意志",
+      "kid": {
+        "understand": "think",
+        "watch": "parent"
+      },
+      "blurb": "霍诺德徒手登顶酋长岩：训练、恐惧与专注。不是鸡汤，是极限下的准备。",
+      "link": "https://www.bilibili.com/bangumi/play/ep831099",
+      "linkLabel": "B 站正版",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份 1 条 · 自用走 watchLink",
+      "mapPin": "极限 · 准备 · 专注",
+      "parentNote": "高空与生死风险画面；必须家长陪看，可先讲「为什么要训练这么久」再播",
+      "watchLink": "https://www.bilibili.com/bangumi/play/ep831099",
+      "watchLabel": "B 站正版",
+      "watchNote": "自用现开此链（正版番剧）。工具模式改走 official。",
+      "official": [
+        {
+          "kind": "bilibili",
+          "url": "https://www.bilibili.com/bangumi/play/ep831099",
+          "label": "B 站正版"
+        }
+      ]
+    },
+    {
+      "id": "dinowalk",
+      "heroArt": "./covers/hero/dinowalk.jpg",
+      "title": "与恐龙同行（精选）",
+      "category": "nature",
+      "slot": "B",
+      "role": "side",
+      "duration": "约 30 分钟 × 3 集",
+      "episodeHint": "周末 1 集",
+      "muscle": "生物",
+      "kid": {
+        "understand": "easy",
+        "watch": "together"
+      },
+      "blurb": "BBC×央视经典：恐龙怎样走路、捕猎、养孩子。点播高频主题，先收三集。",
+      "link": "http://tv.cctv.com/2012/12/15/VIDA1355562050362949.shtml",
+      "linkLabel": "央视网（相关）",
+      "play": "ok",
+      "shareable": false,
+      "playNote": "入口为央视恐龙专题相关页；完整《与恐龙同行》请家长核可播源",
+      "mapPin": "恐龙 · 史前",
+      "parentNote": "含捕猎画面；正版页若跳转不稳，可改搜「与恐龙同行 央视」",
+      "watchLink": "http://tv.cctv.com/2012/12/15/VIDA1355562050362949.shtml",
+      "watchLabel": "央视网",
+      "watchNote": "自用：恐龙主题入口；若打不开请搜「与恐龙同行」正版。工具上线前须补 official。",
+      "official": [],
+      "episodes": [
+        {
+          "id": "dinowalk-1",
+          "n": 1,
+          "title": "新生代之前",
+          "blurb": "恐龙时代的地球长什么样。",
+          "duration": "约 30 分钟",
+          "link": "http://tv.cctv.com/2012/12/15/VIDA1355562050362949.shtml",
+          "hints": [
+            "恐龙",
+            "时代"
+          ]
+        },
+        {
+          "id": "dinowalk-2",
+          "n": 2,
+          "title": "巨人的脚步",
+          "blurb": "大个子恐龙怎样走路、吃什么。",
+          "duration": "约 30 分钟",
+          "link": "http://tv.cctv.com/2012/12/15/VIDA1355562050362949.shtml",
+          "hints": [
+            "植食",
+            "足迹"
+          ]
+        },
+        {
+          "id": "dinowalk-3",
+          "n": 3,
+          "title": "猎手与猎物",
+          "blurb": "捕猎策略：谁追、谁逃。",
+          "duration": "约 30 分钟",
+          "link": "http://tv.cctv.com/2012/12/15/VIDA1355562050362949.shtml",
+          "hints": [
+            "捕猎",
+            "生存"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "moneystory",
+      "heroArt": "./covers/hero/moneystory.jpg",
+      "title": "货币的故事",
+      "category": "finance",
+      "slot": "B",
+      "role": "side",
+      "duration": "约 45–50 分钟 × 4 集",
+      "episodeHint": "周末 1 集 · 建议先第1集；第4集偏虚拟货币，陪看",
+      "muscle": "商业",
+      "kid": {
+        "understand": "think",
+        "watch": "together"
+      },
+      "blurb": "央视四集：从以物易物到交子，再到数字货币。钱的形态在变，信任没变。",
+      "link": "https://tv.cctv.com/2026/03/27/VIDEqzu5uIItIpesj950lAx6260327.shtml",
+      "linkLabel": "央视网",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份 1 条 · 自用走 watchLink；节目页可选集",
+      "mapPin": "以物易物 · 交子 · 信任",
+      "parentNote": "第4集讲虚拟货币与价值信任，建议陪看；前三集四年级可陪看讨论",
+      "altLink": "https://tv.cctv.com/2026/03/27/VIDAyWpegNTrwqIcb3KjtEY6260327.shtml",
+      "altLabel": "央视节目页",
+      "watchLink": "https://tv.cctv.com/2026/03/27/VIDEqzu5uIItIpesj950lAx6260327.shtml",
+      "watchLabel": "央视网",
+      "watchNote": "自用现开第1集；节目总页可切第2–4集。手机建议央视影音 App。",
+      "official": [
+        {
+          "kind": "cctv",
+          "url": "https://tv.cctv.com/2026/03/27/VIDAyWpegNTrwqIcb3KjtEY6260327.shtml",
+          "label": "央视网 · 货币的故事"
+        }
+      ],
+      "episodes": [
+        {
+          "id": "moneystory-1",
+          "n": 1,
+          "title": "人类发明了货币",
+          "blurb": "以物易物为什么不够用：钱是怎样被发明出来的。",
+          "duration": "约 45 分钟",
+          "link": "https://tv.cctv.com/2026/03/27/VIDEqzu5uIItIpesj950lAx6260327.shtml",
+          "hints": [
+            "交换",
+            "发明",
+            "物物"
+          ]
+        },
+        {
+          "id": "moneystory-2",
+          "n": 2,
+          "title": "帝国时代",
+          "blurb": "帝国怎样用货币管贸易、战争与统治。",
+          "duration": "约 45 分钟",
+          "link": "https://tv.cctv.com/2026/03/28/VIDEfPcpUNwRaHTskyocj97W260328.shtml",
+          "hints": [
+            "帝国",
+            "贸易",
+            "统治"
+          ]
+        },
+        {
+          "id": "moneystory-3",
+          "n": 3,
+          "title": "中国之路",
+          "blurb": "交子诞生：世界上第一张纸币怎样改写规则。",
+          "duration": "约 45 分钟",
+          "link": "https://tv.cctv.com/2026/03/28/VIDEV9MckihwIW4cfmApEDkr260328.shtml",
+          "hints": [
+            "交子",
+            "纸币",
+            "宋朝"
+          ]
+        },
+        {
+          "id": "moneystory-4",
+          "n": 4,
+          "title": "货币的虚拟化",
+          "blurb": "从金属到纸再到数字：钱的价值来自信任。",
+          "duration": "约 45 分钟",
+          "link": "https://tv.cctv.com/2026/03/29/VIDEiS6cx2NGc0A7h0AMw3vl260329.shtml",
+          "hints": [
+            "虚拟",
+            "信任",
+            "价值"
+          ]
+        }
+      ]
     }
   ]
 };
