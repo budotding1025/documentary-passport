@@ -1557,19 +1557,83 @@
     }
     .star-row {
       display: flex;
-      gap: 6px;
+      gap: 4px;
       margin-top: 8px;
+      justify-content: space-between;
+    }
+    .star-cell {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
     }
     .star-btn {
       border: 0;
       background: transparent;
       color: #c5c5c0;
-      font-size: 1.6rem;
+      font-size: 1.55rem;
       line-height: 1;
       cursor: pointer;
       padding: 0 2px;
     }
     .star-btn.on { color: var(--stamp); }
+    .star-label {
+      font-size: 0.62rem;
+      line-height: 1.2;
+      color: var(--muted);
+      text-align: center;
+      max-width: 4.5em;
+    }
+    .star-cell.on .star-label {
+      color: var(--stamp-deep);
+      font-weight: 600;
+    }
+    .stamp-core {
+      margin-top: 14px;
+      padding-top: 4px;
+    }
+    .stamp-optional {
+      margin-top: 14px;
+      border: 1px dashed rgba(26, 26, 26, 0.22);
+      padding: 8px 10px;
+      background: rgba(255, 253, 248, 0.65);
+    }
+    .stamp-optional > summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--stamp-deep);
+      list-style: none;
+      font-size: 0.92rem;
+    }
+    .stamp-optional > summary::-webkit-details-marker { display: none; }
+    .stamp-optional > summary::before { content: "▸ "; }
+    .stamp-optional[open] > summary::before { content: "▾ "; }
+    .stamp-optional .ask-box { margin-top: 10px; }
+    .stamp-discuss {
+      margin: 10px 0 0;
+      padding: 10px 12px;
+      border-left: 3px solid var(--stamp);
+      background: var(--stamp-soft);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: var(--stamp-deep);
+    }
+    .stamp-discuss[hidden] { display: none !important; }
+    .stamp-discuss .mono {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .kid-tag.stable {
+      border-color: rgba(42, 90, 66, 0.45);
+      color: #2a5a42;
+      font-weight: 700;
+      background: rgba(74, 103, 65, 0.08);
+    }
     .wish-form {
       border: 1px solid var(--ink);
       padding: 14px;
@@ -2713,69 +2777,89 @@
           <button type="button" class="btn ghost" id="stampLinkBroken">链接打不开</button>
         </div>
 
-        <div class="ask-box" id="askBox">
-          <div class="ask-title">跟角色聊两句</div>
-          <div class="npc-head">
-            <img class="npc-avatar" id="npcAvatar" alt="" width="52" height="52" hidden />
-            <div>
-              <div class="npc-chip" id="npcChip">NPC · 探索向导</div>
-              <p class="hint" id="npcHint" style="margin:6px 0 0">问「为什么 / 如果…」更容易拿到稀有章。</p>
+        <div class="stamp-discuss" id="stampDiscuss" hidden>
+          <span class="mono">陪看一问 · 口头聊就行</span>
+          <div id="stampDiscussText">—</div>
+        </div>
+
+        <div class="stamp-core">
+          <div class="stamp-quiz" id="stampQuiz">
+            <h3>想一想再盖印</h3>
+            <p class="hint" id="stampQuizHint">选一个就行，没有标准答案。</p>
+            <p id="stampQuizQ" style="margin:8px 0 0;font-weight:700"></p>
+            <div class="quiz-choices" id="stampQuizChoices"></div>
+          </div>
+
+          <div class="title-row" style="margin-top:18px">
+            <h2>五星评分</h2>
+            <span class="mono">必选</span>
+          </div>
+          <div class="star-row" id="starRow" role="radiogroup" aria-label="评分">
+            <div class="star-cell">
+              <button type="button" class="star-btn" data-star="1" aria-label="1星 太无聊">★</button>
+              <span class="star-label">太无聊</span>
+            </div>
+            <div class="star-cell">
+              <button type="button" class="star-btn" data-star="2" aria-label="2星 还行">★</button>
+              <span class="star-label">还行</span>
+            </div>
+            <div class="star-cell">
+              <button type="button" class="star-btn" data-star="3" aria-label="3星 好看">★</button>
+              <span class="star-label">好看</span>
+            </div>
+            <div class="star-cell">
+              <button type="button" class="star-btn" data-star="4" aria-label="4星 超想再看">★</button>
+              <span class="star-label">超想再看</span>
+            </div>
+            <div class="star-cell">
+              <button type="button" class="star-btn" data-star="5" aria-label="5星 要安利给同学">★</button>
+              <span class="star-label">要安利给同学</span>
             </div>
           </div>
-          <div class="chat-log" id="chatLog"></div>
-          <div class="ask-rotate" id="askRotate" title="点这里选用，或直接点「问角色」发送">
-            <div class="ask-rotate-label">推荐问题 · 约 3 秒换一条 · 可点选</div>
-            <p class="ask-rotate-text" id="askRotateText">为什么…？</p>
-            <div class="ask-rotate-dots" id="askRotateDots" aria-hidden="false"></div>
+          <p class="hint" id="starHint">先点一题、再点星星，就能盖印。</p>
+
+          <div class="actions" style="margin-top:14px">
+            <button type="button" class="btn" id="stampBtn">盖印</button>
+            <button type="button" class="btn ghost" id="stampQuickBtn">快速盖印（本周有限次）</button>
+            <button type="button" class="btn ghost" id="sheetCloseStamp">关闭</button>
           </div>
-          <div class="ask-row">
-            <input type="text" id="askInput" maxlength="120" placeholder="也可自己打字或按住说话" autocomplete="off" />
-            <button type="button" class="hold-talk" id="askHoldTalk" title="按住说话（需麦克风权限）">按住说话</button>
-            <button type="button" class="btn" id="askSend">问角色</button>
+        </div>
+
+        <details class="stamp-optional" id="stampNoteDetails">
+          <summary>选写 · 我的发现（一句就够）</summary>
+          <div class="prompt-row" id="promptRow" style="margin-top:10px">
+            <button type="button" class="prompt-chip" data-prompt="remember">记得最清楚的</button>
+            <button type="button" class="prompt-chip" data-prompt="aha">原来是这样</button>
+            <button type="button" class="prompt-chip" data-prompt="wonder">还想弄懂</button>
           </div>
-          <p class="mic-hint" id="micHint">Windows 麦克风开着还不够：首次按住说话时，请在地址栏锁图标里允许「本网站」使用麦克风。选允许后就能语音；说完可改字再发送。也支持直接打字。</p>
-        </div>
+          <textarea id="noteInput" maxlength="160" placeholder="点上面一句开头，再补几个字。写 8 个字也算过关。"></textarea>
+          <p class="hint">这句会留在护照里，首页「昨天你说」也会翻出来。</p>
+        </details>
 
-        <div class="stamp-quiz" id="stampQuiz">
-          <h3>想一想再盖印</h3>
-          <p class="hint" id="stampQuizHint">选一个就行，没有标准答案。</p>
-          <p id="stampQuizQ" style="margin:8px 0 0;font-weight:700"></p>
-          <div class="quiz-choices" id="stampQuizChoices"></div>
-        </div>
-
-        <div class="title-row" style="margin-top:18px">
-          <h2>五星评分</h2>
-          <span class="mono">必选</span>
-        </div>
-        <div class="star-row" id="starRow" role="radiogroup" aria-label="评分">
-          <button type="button" class="star-btn" data-star="1" aria-label="1星">★</button>
-          <button type="button" class="star-btn" data-star="2" aria-label="2星">★</button>
-          <button type="button" class="star-btn" data-star="3" aria-label="3星">★</button>
-          <button type="button" class="star-btn" data-star="4" aria-label="4星">★</button>
-          <button type="button" class="star-btn" data-star="5" aria-label="5星">★</button>
-        </div>
-        <p class="hint" id="starHint">先答题、再点星星。本周快速盖印有次数。</p>
-
-        <div class="actions" style="margin-top:12px">
-          <button type="button" class="btn ghost" id="stampQuickBtn">快速盖印（本周有限次）</button>
-        </div>
-
-        <div class="title-row" style="margin-top:18px">
-          <h2>我的发现</h2>
-          <span class="mono">写一句更好玩</span>
-        </div>
-        <div class="prompt-row" id="promptRow">
-          <button type="button" class="prompt-chip" data-prompt="remember">记得最清楚的</button>
-          <button type="button" class="prompt-chip" data-prompt="aha">原来是这样</button>
-          <button type="button" class="prompt-chip" data-prompt="wonder">还想弄懂</button>
-        </div>
-        <textarea id="noteInput" maxlength="160" placeholder="点上面一句开头，再补几个字。写 8 个字也算过关。"></textarea>
-        <p class="hint">这句会留在护照里，首页「昨天你说」也会翻出来。</p>
-
-        <div class="actions" style="margin-top:14px">
-          <button type="button" class="btn" id="stampBtn">盖印</button>
-          <button type="button" class="btn ghost" id="sheetCloseStamp">关闭</button>
-        </div>
+        <details class="stamp-optional" id="askBoxDetails">
+          <summary>选聊 · 跟角色问一句</summary>
+          <div class="ask-box" id="askBox">
+            <div class="npc-head">
+              <img class="npc-avatar" id="npcAvatar" alt="" width="52" height="52" hidden />
+              <div>
+                <div class="npc-chip" id="npcChip">NPC · 探索向导</div>
+                <p class="hint" id="npcHint" style="margin:6px 0 0">问「为什么 / 如果…」更容易拿到稀有章。</p>
+              </div>
+            </div>
+            <div class="chat-log" id="chatLog"></div>
+            <div class="ask-rotate" id="askRotate" title="点这里选用，或直接点「问角色」发送">
+              <div class="ask-rotate-label">推荐问题 · 约 3 秒换一条 · 可点选</div>
+              <p class="ask-rotate-text" id="askRotateText">为什么…？</p>
+              <div class="ask-rotate-dots" id="askRotateDots" aria-hidden="false"></div>
+            </div>
+            <div class="ask-row">
+              <input type="text" id="askInput" maxlength="120" placeholder="也可自己打字或按住说话" autocomplete="off" />
+              <button type="button" class="hold-talk" id="askHoldTalk" title="按住说话（需麦克风权限）">按住说话</button>
+              <button type="button" class="btn" id="askSend">问角色</button>
+            </div>
+            <p class="mic-hint" id="micHint">Windows 麦克风开着还不够：首次按住说话时，请在地址栏锁图标里允许「本网站」使用麦克风。选允许后就能语音；说完可改字再发送。也支持直接打字。</p>
+          </div>
+        </details>
       </div>
     </div>
   </div>
@@ -2856,7 +2940,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261008-flow"></script>
+  <script src="./data.js?v=20261008-stamp"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -2892,7 +2976,35 @@
         }).length;
       }
 
+      const STAR_FEEL = {
+        1: "太无聊",
+        2: "还行",
+        3: "好看",
+        4: "超想再看",
+        5: "要安利给同学",
+      };
+
+      function companionAsk(ep) {
+        if (!ep || !Array.isArray(ep.discuss) || !ep.discuss.length) return null;
+        const d = ep.discuss[0];
+        if (!d || !d.ask) return null;
+        return { at: d.at || "", ask: d.ask };
+      }
+
       function buildStampQuiz(t, ep) {
+        const discuss = companionAsk(ep);
+        // 有陪看题时：用同一句做盖印选择题，避免再塞第二套题
+        if (discuss) {
+          return {
+            q: discuss.ask,
+            choices: [
+              { id: "yes", text: "我想出例子了" },
+              { id: "kinda", text: "有点懂，还要想想" },
+              { id: "ask", text: "想先问问家长 / 角色", prompt: "wonder" },
+              { id: "unsure", text: "这集还没想好" },
+            ],
+          };
+        }
         const hints = ((ep && ep.hints) || []).filter(Boolean);
         const id = (t && t.id) || "";
         const microbe = [
@@ -2907,6 +3019,12 @@
           "howmade",
           "ccecon",
           "money",
+          "moneystory",
+          "materialsecret",
+          "capitalstory",
+          "silkmoney",
+          "kidmoney",
+          "tededecon",
           "mademenspend",
           "clarksonfarm",
           "econmachine",
@@ -2926,17 +3044,17 @@
               { id: "bact", text: "细菌 / 微生物" },
               { id: "virus", text: "病毒" },
               { id: "fungi", text: "真菌 / 霉菌" },
-              { id: "unsure", text: "还分不太清，下次再看" },
+              { id: "unsure", text: "还分不太清" },
             ],
           };
         }
         if (econ.indexOf(id) >= 0) {
           return {
-            q: "价钱贵，更像因为什么？",
+            q: "这集里，钱或材料最让你惊讶的一点是？",
             choices: [
-              { id: "cost", text: "做出来花的成本高" },
-              { id: "want", text: "想买的人多，或东西少" },
-              { id: "ad", text: "广告 / 样子让人更想要" },
+              { id: "change", text: "形态一直在变" },
+              { id: "trust", text: "大家得互相信任" },
+              { id: "make", text: "东西是被「造」出来的" },
               { id: "unsure", text: "我还没想清楚" },
             ],
           };
@@ -2969,11 +3087,11 @@
             q: "这集里哪个词最贴？",
             choices: picks
               .map((h, i) => ({ id: "h" + i, text: h }))
-              .concat([{ id: "unsure", text: "说不准，还要想想" }]),
+              .concat([{ id: "unsure", text: "说不准" }]),
           };
         }
         return {
-          q: "看完这集，你现在更想说哪一句？",
+          q: "看完这集，你更想说哪一句？",
           choices: [
             { id: "remember", text: "我记得最清楚的一件事", prompt: "remember" },
             { id: "aha", text: "有个「原来是这样」", prompt: "aha" },
@@ -3012,8 +3130,16 @@
               const isBare = !cur || Object.values(PROMPTS).indexOf(cur) >= 0;
               if (isBare) $("noteInput").value = PROMPTS[activePrompt];
             }
+            if (c.id === "ask") {
+              const askDetails = $("askBoxDetails");
+              if (askDetails) askDetails.open = true;
+            }
             renderStampQuiz();
-            toast("选好了 · 下面打星就能盖印");
+            toast(
+              c.id === "ask"
+                ? "可以展开下面「跟角色问一句」"
+                : "选好了 · 下面打星就能盖印"
+            );
           });
           list.appendChild(btn);
         });
@@ -3229,11 +3355,27 @@
         return false;
       }
 
+      function nextCalendarHint(d) {
+        const t = d || new Date();
+        for (let i = 1; i <= 21; i++) {
+          const n = new Date(t.getFullYear(), t.getMonth(), t.getDate() + i);
+          const key = dayKey(n);
+          if (CN_REST_DAYS[key]) {
+            return "下个假日 " + key.slice(5).replace("-", "/") + " " + CN_REST_DAYS[key];
+          }
+          if (CN_WORK_DAYS[key]) {
+            return "下个调休上班 " + key.slice(5).replace("-", "/");
+          }
+        }
+        return "";
+      }
+
       function dayGateLabel() {
         const t = new Date();
         const holiday = CN_REST_DAYS[dayKey(t)];
         const makeup = !!CN_WORK_DAYS[dayKey(t)];
         const eveName = CN_REST_DAYS[dayKey(nextDay(t))];
+        const soon = nextCalendarHint(t);
         if (!isWeekend()) {
           const m = todayWatchMinutes();
           const prefix = makeup ? "调休上班" : "工作日";
@@ -3246,13 +3388,20 @@
             );
           }
           if (m >= WEEKDAY_DAILY_CAP) {
-            return prefix + " · 今日已看约 " + m + " 分钟 · 建议早点睡（不强制）";
+            return (
+              prefix +
+              " · 今日已看约 " +
+              m +
+              " 分钟 · 建议早点睡" +
+              (soon ? " · " + soon : "")
+            );
           }
           return (
             prefix +
             " · 单集≤30 分钟 · 今日已看约 " +
             m +
-            " 分钟（建议合计≤30）"
+            " 分钟" +
+            (soon ? " · " + soon : "")
           );
         }
         if (holiday) return holiday + " · 放假 · 长短片都可看";
@@ -3260,7 +3409,7 @@
           return "节前夜 · 明日" + eveName + " · 长短片都可看";
         }
         if (t.getDay() === 5) return "周五晚 · 已算周末 · 长短片都可看";
-        return "周末 · 长短片都可看";
+        return "周末 · 长短片都可看" + (soon ? " · " + soon : "");
       }
 
       const WEEKDAY_DAILY_CAP = 30;
@@ -4108,13 +4257,19 @@
           return;
         }
         const showMuscle = !opts || opts.muscle !== false;
+        const showSource = !opts || opts.source !== false;
         const u = kidUnderstandLabel(t);
         const w = kidWatchLabel(t);
         const src = sourceGapLabel(t);
+        const tier = playTierLabel(t);
         if (u) appendKidTag(host, u, t.kid && t.kid.understand);
         if (w) appendKidTag(host, w, t.kid && t.kid.watch);
         if (showMuscle && t.muscle) appendKidTag(host, t.muscle, "muscle");
-        if (src) appendKidTag(host, src, "source");
+        if (showSource) {
+          if (tier === "正版") appendKidTag(host, "正版", "stable");
+          else if (src) appendKidTag(host, src, "source");
+          else if (tier) appendKidTag(host, tier, "source");
+        }
         host.hidden = !host.childNodes.length;
       }
 
@@ -5842,20 +5997,13 @@
             "path-step" +
             (r.done ? " done" : "") +
             (r.wish ? " wish" : "");
-          const discuss =
-            r.ep && Array.isArray(r.ep.discuss) && r.ep.discuss.length
-              ? '<ul class="discuss">' +
-                r.ep.discuss
-                  .map(
-                    (d) =>
-                      "<li>" +
-                      (d.at ? d.at + " · " : "") +
-                      (d.ask || "") +
-                      "</li>"
-                  )
-                  .join("") +
-                "</ul>"
-              : "";
+          const oneAsk = companionAsk(r.ep);
+          const discuss = oneAsk
+            ? '<ul class="discuss"><li>' +
+              (oneAsk.at ? oneAsk.at + " · " : "") +
+              oneAsk.ask +
+              "</li></ul>"
+            : "";
           row.innerHTML =
             '<div class="phase"></div><div class="body"><div class="lab"></div><div class="why"></div>' +
             discuss +
@@ -6150,11 +6298,15 @@
       function syncStars() {
         document.querySelectorAll(".star-btn").forEach((b) => {
           const n = Number(b.dataset.star);
-          b.classList.toggle("on", n <= activeRating);
+          const on = n <= activeRating;
+          b.classList.toggle("on", on);
+          const cell = b.closest(".star-cell");
+          if (cell) cell.classList.toggle("on", n === activeRating);
         });
+        const feel = STAR_FEEL[activeRating];
         $("starHint").textContent = activeRating
-          ? "你打了 " + activeRating + " 星"
-          : "点星星：这集好不好看？";
+          ? "你选了 " + activeRating + " 星 · " + (feel || "")
+          : "点星星：太无聊 → 要安利给同学";
       }
 
       function showSheetView(mode) {
@@ -6171,10 +6323,11 @@
         activeEpisode = null;
         const cat = catById(t.category);
         const playLabel = {
-          stable: "片源：正版页（较稳）",
-          ok: "片源：可用公开源",
-          search: "片源：B 站搜索投稿（需自检）",
-          risk: "片源：孩子端可能打不开",
+          stable: "片源：正版",
+          ok: "片源：待补正版备份",
+          missing: "片源：暂缺",
+          search: "片源：待核（搜索投稿）",
+          risk: "片源：可能打不开",
         };
         const eps = episodesOf(t);
         const p = titleProgress(t);
@@ -6357,18 +6510,25 @@
         $("stampCat").textContent =
           (cat ? cat.name : "") + " · " + t.title;
         $("stampEpTitle").textContent = "第 " + ep.n + " 集 · " + ep.title;
-        let blurbBits = [ep.blurb || t.blurb || ""];
-        if (Array.isArray(ep.discuss) && ep.discuss.length) {
-          blurbBits.push(
-            "陪看停顿：" +
-              ep.discuss
-                .map((d) => (d.at ? d.at + "—" : "") + (d.ask || ""))
-                .join("；")
-          );
-        }
-        $("stampEpBlurb").textContent = blurbBits.filter(Boolean).join(" · ");
+        $("stampEpBlurb").textContent = ep.blurb || t.blurb || "";
         $("stampEpMeta").textContent =
-          "约 " + episodeMinutes(ep, t) + " 分钟 · 看完打分盖印";
+          "约 " +
+          episodeMinutes(ep, t) +
+          " 分钟 · " +
+          (playTierLabel(t) || "片源") +
+          " · 一题 + 星星即可盖印";
+        const discuss = companionAsk(ep);
+        const discussBox = $("stampDiscuss");
+        if (discussBox) {
+          if (discuss) {
+            discussBox.hidden = false;
+            $("stampDiscussText").textContent =
+              (discuss.at ? discuss.at + " · " : "") + discuss.ask;
+          } else {
+            discussBox.hidden = true;
+            if ($("stampDiscussText")) $("stampDiscussText").textContent = "";
+          }
+        }
         const npc = npcForTitle(t);
         syncNpcPanel(npc);
         const stampArt = coverHeroSrc(t, ep);
@@ -6402,6 +6562,8 @@
               ? prev.comment
               : "";
         $("noteInput").value = prevNote;
+        const noteDetails = $("stampNoteDetails");
+        if (noteDetails) noteDetails.open = !!(prevNote && prevNote.length >= 4);
         activeRating = prev && prev.rating ? Number(prev.rating) : 0;
         syncStars();
         stampQuiz = buildStampQuiz(t, ep);
@@ -6410,26 +6572,29 @@
         clearAskInput();
         startAskPromptRotate(t, ep);
         renderChatLog();
+        const askDetails = $("askBoxDetails");
+        if (askDetails) {
+          askDetails.open = !!(
+            focusAsk ||
+            (prev && prev.agentChat && prev.agentChat.length)
+          );
+        }
         showSheetView("stamp");
         $("sheet").classList.add("open");
         $("sheet").setAttribute("aria-hidden", "false");
         hideReturnNudge();
-        const greet =
-          (npc.tips && npc.tips[0]) ||
-          "来问我一个「为什么…」吧，我准备了冷知识。";
-        if (focusAsk || !(prev && prev.agentChat && prev.agentChat.length)) {
+        if (focusAsk) {
+          const greet =
+            (npc.tips && npc.tips[0]) ||
+            "来问我一个「为什么…」吧，我准备了冷知识。";
           setTimeout(() => {
             speakNpc(greet, npc);
             showNpcBuddy(t, greet, { sticky: false });
-          }, 280);
-        }
-        if (focusAsk) {
-          setTimeout(() => {
             const box = $("askBox");
             if (box && box.scrollIntoView) {
               box.scrollIntoView({ behavior: "smooth", block: "center" });
             }
-            toast("跟「" + npc.name + "」聊两句吧 · 可直接点「问角色」");
+            toast("跟「" + npc.name + "」聊一句也行 · 或先点星星盖印");
           }, 120);
         } else {
           setTimeout(() => {
@@ -6437,7 +6602,7 @@
             if (quiz && quiz.scrollIntoView) {
               quiz.scrollIntoView({ behavior: "smooth", block: "nearest" });
             }
-          }, 200);
+          }, 160);
         }
       }
 
@@ -8037,27 +8202,44 @@
         }
 
         const gaps = titles.filter((t) => sourceNeedsBackup(t));
+        const stableN = titles.filter(
+          (t) => isShareable(t) || t.play === "stable"
+        ).length;
         if ($("sourceGapCount")) {
-          $("sourceGapCount").textContent = gaps.length + " 部";
+          $("sourceGapCount").textContent =
+            gaps.length + " 待补 · " + stableN + " 正版";
         }
         const gBox = $("parentSourceGaps");
         if (gBox) {
           gBox.innerHTML = "";
           if (!gaps.length) {
             gBox.innerHTML =
-              '<div class="empty">暂无「片源待补」：正版备份较齐，或尚未用 ok/missing 标记。</div>';
+              '<div class="empty">暂无「片源待补」：库内约 ' +
+              stableN +
+              " 部已标正版。餐盘点「片源待补」可复查。</div>";
           } else {
             gaps
               .slice()
-              .sort((a, b) => (a.title || "").localeCompare(b.title || "", "zh"))
+              .sort((a, b) => {
+                const rank = (t) =>
+                  t.play === "missing" ? 0 : t.play === "ok" ? 1 : 2;
+                return (
+                  rank(a) - rank(b) ||
+                  (a.title || "").localeCompare(b.title || "", "zh")
+                );
+              })
               .forEach((t, i) => {
                 const row = document.createElement("div");
                 row.className = "stamp-row";
                 row.style.animationDelay = i * 0.02 + "s";
                 row.innerHTML =
                   '<div class="t"></div><div class="n"></div><div class="actions"></div>';
+                const mark =
+                  t.play === "missing"
+                    ? "暂缺"
+                    : sourceGapLabel(t) || playTierLabel(t) || "待补";
                 row.querySelector(".t").textContent =
-                  "《" + t.title + "》 · " + (sourceGapLabel(t) || "待补");
+                  "《" + t.title + "》 · " + mark;
                 row.querySelector(".n").textContent =
                   (catById(t.category)
                     ? catById(t.category).name + " · "
@@ -8065,8 +8247,8 @@
                   (t.muscle ? t.muscle + " · " : "") +
                   (t.watchLabel || t.linkLabel || "无标签") +
                   (t.official && t.official.length
-                    ? ""
-                    : " · official 空");
+                    ? " · 已有 " + t.official.length + " 条正版备注"
+                    : " · official 空，需补正版页");
                 const openBtn = document.createElement("button");
                 openBtn.type = "button";
                 openBtn.className = "btn ghost";
