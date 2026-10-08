@@ -1860,7 +1860,74 @@
       font-weight: 500;
     }
 
-    /* return-nudge 已移除 */
+    .return-stamp {
+      position: fixed;
+      inset: 0;
+      z-index: 140;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(12, 28, 22, 0.55);
+      backdrop-filter: blur(4px);
+    }
+    .return-stamp.show { display: flex; }
+    .return-stamp-inner {
+      width: min(440px, 100%);
+      background: #fffdf8;
+      border: 2px solid var(--stamp-deep);
+      padding: 20px 16px 14px;
+      box-shadow: 0 18px 44px rgba(8, 40, 28, 0.32);
+      animation: rise 0.35s var(--ease) both;
+    }
+    .return-stamp-inner .mono {
+      color: var(--stamp-deep);
+      margin-bottom: 8px;
+    }
+    .return-stamp-inner h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+      line-height: 1.35;
+      color: var(--stamp-deep);
+    }
+    .return-stamp-inner p {
+      margin: 0 0 14px;
+      line-height: 1.5;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .return-stamp-inner .actions {
+      margin-top: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .journey-strip {
+      margin: 12px 4vw 0;
+      padding: 10px 12px;
+      border: 1.5px dashed var(--stamp-mid);
+      background: linear-gradient(180deg, #f7fbf8, #eef6f1);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: var(--stamp-deep);
+      font-weight: 600;
+    }
+    .journey-strip[hidden] { display: none !important; }
+    .journey-strip .journey-label {
+      display: block;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .home-continue-card.pin-pending {
+      outline: 2px solid var(--stamp);
+      outline-offset: 2px;
+    }
+    .home-continue-card .tag.pending {
+      color: #9a3412;
+    }
 
     .day-gate-chip {
       display: inline-block;
@@ -2364,8 +2431,13 @@
       <section class="home-continue" id="homeContinue" hidden>
         <div class="home-discover-head">
           <h2>接着看</h2>
+          <span class="mono" id="homeContinueHint">未盖印置顶</span>
         </div>
         <div class="home-continue-row" id="homeContinueRow"></div>
+      </section>
+      <section class="journey-strip rise" id="journeyStrip" hidden>
+        <span class="journey-label">护照进度</span>
+        <div id="journeyStripText">—</div>
       </section>
       <section class="home-path rise" id="homePath">
         <div class="home-discover-head">
@@ -2485,14 +2557,15 @@
         </select>
         <label class="mono" for="wishTopic">我想看关于……</label>
         <div class="ask-row" style="margin-bottom:10px">
-          <input id="wishTopic" maxlength="40" placeholder="例如：恐龙、深海、手机为什么上瘾" />
-          <button type="button" class="hold-talk" id="wishHoldTalk" title="按住说话">按住说话</button>
+          <input id="wishTopic" maxlength="40" placeholder="例如：货币的基因、恐龙、深海" />
+          <button type="button" class="hold-talk" id="wishHoldTalk" title="按住说话，松手后可一键记进护照">按住说话</button>
         </div>
         <textarea id="wishNote" maxlength="120" placeholder="也可以多写一句为什么想看（选填）"></textarea>
         <div class="actions" style="margin-top:12px">
+          <button type="button" class="btn" id="wishVoiceSubmit" hidden>一键记进护照</button>
           <button type="button" class="btn" id="wishSubmit">今天留这一条</button>
         </div>
-        <p class="hint" id="wishHint">每天只能正式提交一条。</p>
+        <p class="hint" id="wishHint">按住说话说想看什么，松手后点「一键记进护照」；家长台立刻能看见。</p>
       </div>
       <div class="title-row">
         <h2>我最近的点播</h2>
@@ -2723,7 +2796,18 @@
     </div>
   </div>
 
-  <!-- return-nudge 绿条已移除：待盖印只用首页卡片 -->
+  <div class="return-stamp" id="returnStamp" aria-hidden="true">
+    <div class="return-stamp-inner" role="dialog" aria-labelledby="returnStampTitle">
+      <div class="mono">看完啦？</div>
+      <h3 id="returnStampTitle">回护照盖印</h3>
+      <p id="returnStampText">看完这一集，先盖个印再选下一集。</p>
+      <div class="actions">
+        <button type="button" class="btn" id="returnStampGo">去盖印</button>
+        <button type="button" class="btn ghost" id="returnStampAsk">先问角色</button>
+        <button type="button" class="btn ghost" id="returnStampLater">先放一放</button>
+      </div>
+    </div>
+  </div>
 
   <div class="soft-budget" id="softBudget" aria-hidden="true">
     <div class="soft-budget-inner" role="dialog" aria-labelledby="softBudgetTitle">
@@ -2772,7 +2856,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20260930-calendar"></script>
+  <script src="./data.js?v=20261008-flow"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -4640,23 +4724,40 @@
 
       function continueWatching(limit) {
         const cap = limit || 6;
+        const items = [];
+        const seen = new Set();
+        pendingUnstampedList().forEach((item) => {
+          if (!item.t || seen.has(item.t.id)) return;
+          seen.add(item.t.id);
+          items.push({
+            t: item.t,
+            ep: item.ep,
+            at: item.at || 0,
+            pending: true,
+          });
+        });
         const recentByTitle = {};
         (state.stamps || []).forEach((s) => {
           if (!s.titleId) return;
           const prev = recentByTitle[s.titleId];
           if (!prev || (s.at || 0) > (prev.at || 0)) recentByTitle[s.titleId] = s;
         });
-        return Object.keys(recentByTitle)
+        Object.keys(recentByTitle)
           .map((id) => {
             const t = titleById(id);
-            if (!t || titleFullyDone(t)) return null;
+            if (!t || titleFullyDone(t) || seen.has(id)) return null;
             const ep = episodesOf(t).find((e) => !episodeStamped(t.id, e.id));
             if (!ep) return null;
-            return { t: t, ep: ep, at: recentByTitle[id].at || 0 };
+            return { t: t, ep: ep, at: recentByTitle[id].at || 0, pending: false };
           })
           .filter(Boolean)
           .sort((a, b) => b.at - a.at)
-          .slice(0, cap);
+          .forEach((item) => {
+            if (seen.has(item.t.id)) return;
+            seen.add(item.t.id);
+            items.push(item);
+          });
+        return items.slice(0, cap);
       }
 
       function renderContinueRow() {
@@ -4674,20 +4775,167 @@
           const t = item.t;
           const ep = item.ep;
           const locked = !episodeAllowed(ep, t);
+          const needsStamp = !episodeStamped(t.id, ep.id) && item.pending;
           const card = document.createElement("article");
-          card.className = "home-trio-card home-continue-card" + (locked ? " locked" : "");
+          card.className =
+            "home-trio-card home-continue-card" +
+            (locked ? " locked" : "") +
+            (needsStamp ? " pin-pending" : "");
           card.innerHTML =
             '<img class="bg" alt="" decoding="async"><div class="veil"></div><div class="body">' +
             '<div class="tag"></div><div class="name"></div></div>';
           revealImg(card.querySelector(".bg"), coverSrc(t));
-          card.querySelector(".tag").textContent =
-            (locked ? "周末 · " : "下一集 · ") + "第" + ep.n + "集";
+          const tag = card.querySelector(".tag");
+          if (needsStamp) {
+            tag.classList.add("pending");
+            tag.textContent =
+              (locked ? "周末 · " : "") + "待盖印 · 第" + ep.n + "集";
+          } else {
+            tag.textContent =
+              (locked ? "周末 · " : "下一集 · ") + "第" + ep.n + "集";
+          }
           card.querySelector(".name").textContent = t.title;
           card.addEventListener("click", () => {
+            if (needsStamp && !locked) {
+              openStamp(t, ep);
+              return;
+            }
             beginWatch(t, ep, watchUrl(t, ep));
           });
           row.appendChild(card);
         });
+      }
+
+      function seriesShortName(t) {
+        if (!t) return "";
+        const map = {
+          pasteur: "巴斯德",
+          materialsecret: "材料",
+          moneystory: "货币故事",
+          money: "货币",
+          germsquad: "细菌特工队",
+          cellwar: "细胞暗战",
+          howmade: "造物",
+          kidmoney: "财商",
+          silkmoney: "丝路货币",
+          tededecon: "TED经济",
+          ccecon: "价钱",
+          econmachine: "经济机器",
+        };
+        if (map[t.id]) return map[t.id];
+        const name = (t.title || "").replace(/[（(].*$/, "").trim();
+        return name.length > 6 ? name.slice(0, 6) : name;
+      }
+
+      function journeyTrackIds() {
+        const ids = ["pasteur", "materialsecret", "moneystory"];
+        (state.stamps || [])
+          .slice()
+          .sort((a, b) => (b.at || 0) - (a.at || 0))
+          .forEach((s) => {
+            if (s.titleId && ids.indexOf(s.titleId) < 0) ids.push(s.titleId);
+          });
+        pendingUnstampedList().forEach((item) => {
+          if (item.t && ids.indexOf(item.t.id) < 0) ids.unshift(item.t.id);
+        });
+        return ids;
+      }
+
+      function nextJourneyItem() {
+        const wish = primaryWishForToday();
+        const wishText =
+          ((wish && wish.topic) || "") + " " + ((wish && wish.note) || "");
+        if (/货币|钱|财商|交子|基因/.test(wishText)) {
+          const ms = titleById("moneystory");
+          if (ms && !titleFullyDone(ms)) {
+            const ep =
+              episodesOf(ms).find((e) => !episodeStamped(ms.id, e.id)) ||
+              episodesOf(ms)[0];
+            if (ep) {
+              return {
+                short: seriesShortName(ms) + epCircle(ep.n),
+                t: ms,
+                ep: ep,
+              };
+            }
+          }
+        }
+        const guide = homeGuidePath();
+        if (guide) {
+          const next = (guide.steps || [])
+            .filter((s) => s.phase === "now" || s.phase === "optional")
+            .map(resolvePathStep)
+            .find((r) => r && !r.wish && !r.done && r.t && r.ep);
+          if (next) {
+            return {
+              short: seriesShortName(next.t) + epCircle(next.ep.n),
+              t: next.t,
+              ep: next.ep,
+            };
+          }
+        }
+        for (let i = 0; i < journeyTrackIds().length; i++) {
+          const t = titleById(journeyTrackIds()[i]);
+          if (!t || titleFullyDone(t)) continue;
+          const ep = episodesOf(t).find((e) => !episodeStamped(t.id, e.id));
+          if (ep) {
+            return {
+              short: seriesShortName(t) + epCircle(ep.n),
+              t: t,
+              ep: ep,
+            };
+          }
+        }
+        return null;
+      }
+
+      function epCircle(n) {
+        const map = {
+          1: "①",
+          2: "②",
+          3: "③",
+          4: "④",
+          5: "⑤",
+          6: "⑥",
+          7: "⑦",
+          8: "⑧",
+          9: "⑨",
+          10: "⑩",
+        };
+        return map[n] || "第" + n + "集";
+      }
+
+      function renderJourneyStrip() {
+        const box = $("journeyStrip");
+        const text = $("journeyStripText");
+        if (!box || !text) return;
+        const bits = [];
+        const seen = new Set();
+        ["pasteur", "materialsecret"].forEach((id) => {
+          const t = titleById(id);
+          if (!t) return;
+          const p = titleProgress(t);
+          if (p.n <= 0) return;
+          seen.add(id);
+          bits.push(seriesShortName(t) + " " + p.n + "/" + p.total);
+        });
+        journeyTrackIds().forEach((id) => {
+          if (seen.has(id) || bits.length >= 3) return;
+          const t = titleById(id);
+          if (!t) return;
+          const p = titleProgress(t);
+          if (p.n <= 0) return;
+          seen.add(id);
+          bits.push(seriesShortName(t) + " " + p.n + "/" + p.total);
+        });
+        const next = nextJourneyItem();
+        if (next) bits.push("下一项：" + next.short);
+        if (!bits.length) {
+          box.hidden = true;
+          return;
+        }
+        box.hidden = false;
+        text.textContent = bits.join(" · ");
       }
 
       function buildDailyRecs() {
@@ -5010,7 +5258,7 @@
           t.title +
           "》第" +
           ep.n +
-          "集 · 也可先跟 NPC 聊两句";
+          "集 · 点「去盖印」收进护照";
         placeBuddyArrow();
       }
 
@@ -5525,9 +5773,20 @@
         if ($("homePathBlurb")) $("homePathBlurb").textContent = guide.blurb || "";
         const prog = pathStepProgress(guide);
         if ($("homePathProgress")) {
-          $("homePathProgress").textContent = prog.total
-            ? prog.done + "/" + prog.total + " 步"
-            : "路线";
+          const pasteur = titleById("pasteur");
+          const material = titleById("materialsecret");
+          const pp = pasteur ? titleProgress(pasteur) : null;
+          const mp = material ? titleProgress(material) : null;
+          const extras = [];
+          if (pp && pp.n > 0) extras.push("巴斯德 " + pp.n + "/" + pp.total);
+          if (mp && mp.n > 0) extras.push("材料 " + mp.n + "/" + mp.total);
+          const next = nextJourneyItem();
+          if (next) extras.push("下一项：" + next.short);
+          $("homePathProgress").textContent = extras.length
+            ? extras.join(" · ")
+            : prog.total
+              ? prog.done + "/" + prog.total + " 步"
+              : "路线";
         }
         const featured = (guide.steps || [])
           .filter((s) => s.phase === "now" || s.phase === "optional")
@@ -5626,6 +5885,7 @@
 
       function renderPassport() {
         renderContinueRow();
+        renderJourneyStrip();
         renderHomeRecs();
         renderHomePath();
         renderPathBoard();
@@ -6427,22 +6687,36 @@
       }
 
       function hideReturnNudge() {
-        /* 绿条已删除 */
+        const el = $("returnStamp");
+        if (el) {
+          el.classList.remove("show");
+          el.setAttribute("aria-hidden", "true");
+        }
       }
 
       function showReturnNudge(pending) {
         renderHomeTask();
-        if (pending) {
-          const t = titleById(pending.titleId);
-          if (t) {
-            const npc = npcForTitle(t);
-            if (typeof showNpcBuddy === "function") {
-              showNpcBuddy(
-                t,
-                pickNpcLine(npc) + " 看完了吗？点我聊聊再盖印。",
-                { sticky: true, force: true }
-              );
-            }
+        renderContinueRow();
+        switchTab("passport");
+        const t = pending ? titleById(pending.titleId) : null;
+        const ep = t ? episodeById(t, pending.episodeId) : null;
+        const modal = $("returnStamp");
+        if (modal && t && ep) {
+          $("returnStampTitle").textContent =
+            "《" + t.title + "》第" + ep.n + "集";
+          $("returnStampText").textContent =
+            "看完先盖印打分，这一集才会记进护照；不盖印的话会一直顶在「接着看」。";
+          modal.classList.add("show");
+          modal.setAttribute("aria-hidden", "false");
+        }
+        if (t) {
+          const npc = npcForTitle(t);
+          if (typeof showNpcBuddy === "function") {
+            showNpcBuddy(
+              t,
+              pickNpcLine(npc) + " 看完了吗？先盖个印再选下一集。",
+              { sticky: true, force: true }
+            );
           }
         }
       }
@@ -7101,7 +7375,7 @@
       }
 
       let micReady = false;
-      function bindHoldTalk(btnId, inputId) {
+      function bindHoldTalk(btnId, inputId, opts) {
         const btn = $(btnId);
         const input = $(inputId);
         if (!btn || !input) return;
@@ -7118,8 +7392,10 @@
         let rec = null;
         let base = "";
         let holding = false;
+        let lastFinal = "";
 
         function stop() {
+          const wasHolding = holding;
           holding = false;
           btn.classList.remove("is-listening");
           if (rec) {
@@ -7129,6 +7405,13 @@
             rec = null;
           }
           resumeBgAfterNpc();
+          if (wasHolding && opts && typeof opts.onFinal === "function") {
+            const text = (input.value || "").trim();
+            if (text && text !== lastFinal) {
+              lastFinal = text;
+              setTimeout(() => opts.onFinal(text), 80);
+            }
+          }
         }
 
         function beginListen() {
@@ -7155,7 +7438,15 @@
           };
           rec.onerror = (ev) => {
             const err = ev && ev.error;
-            stop();
+            holding = false;
+            btn.classList.remove("is-listening");
+            if (rec) {
+              try {
+                rec.stop();
+              } catch (e) {}
+              rec = null;
+            }
+            resumeBgAfterNpc();
             const hint = $("micHint");
             if (err === "not-allowed" || err === "service-not-allowed") {
               toast("浏览器禁止了本站麦克风：点地址栏锁图标 → 麦克风 → 允许");
@@ -7171,7 +7462,15 @@
               toast("语音暂时不可用，请直接打字提问");
             }
           };
-          rec.onend = () => stop();
+          rec.onend = () => {
+            if (holding) {
+              /* continuous 中途 end：保持 listening 由 pointerup 收尾 */
+              return;
+            }
+            btn.classList.remove("is-listening");
+            rec = null;
+            resumeBgAfterNpc();
+          };
           try {
             rec.start();
             micReady = true;
@@ -7187,7 +7486,6 @@
             ev.stopPropagation();
           }
           holding = true;
-          // 不先 getUserMedia 再 stop，避免和识别抢麦报「禁止」
           beginListen();
         }
 
@@ -7199,6 +7497,44 @@
         input.addEventListener("input", () => {
           if (input.value === "null" || input.value === "undefined") input.value = "";
         });
+      }
+
+      function guessWishCategory(topic) {
+        const s = String(topic || "");
+        if (/货币|钱|理财|经济|金融|交子|通胀|财商|资本/.test(s)) return "finance";
+        if (/细菌|病毒|细胞|微生物|基因|疫苗|巴斯德|免疫/.test(s)) return "nature";
+        if (/恐龙|深海|地球|海洋|动物|植物|自然|宇宙/.test(s)) return "nature";
+        if (/国宝|故宫|历史|长城|汉字|中国|工程|高铁/.test(s)) return "human";
+        if (/坚持|习惯|目标|专注|自律|原则/.test(s)) return "drive";
+        return "other";
+      }
+
+      function enrichWishNote(topic, note) {
+        const n = (note || "").trim();
+        if (n) return n;
+        const s = String(topic || "");
+        if (/货币.*基因|基因.*货币|货币基因/.test(s)) {
+          return "孩子口述：货币的基因。库内可先试《货币的故事》；若有指定片名请家长补源。";
+        }
+        if (/货币|钱|交子/.test(s)) {
+          return "库内相近：《货币的故事》《货币》第2集《丝路·货币》";
+        }
+        return "";
+      }
+
+      function prepareWishFromVoice(text) {
+        const topic = String(text || "").trim();
+        if (topic.length < 2) return;
+        if ($("wishCat")) $("wishCat").value = guessWishCategory(topic);
+        if ($("wishTopic")) $("wishTopic").value = topic.slice(0, 40);
+        const note = enrichWishNote(topic, ($("wishNote") && $("wishNote").value) || "");
+        if ($("wishNote") && note) $("wishNote").value = note;
+        const one = $("wishVoiceSubmit");
+        if (one) {
+          one.hidden = false;
+          one.focus();
+        }
+        toast("听到了 · 点「一键记进护照」，家长台立刻可见");
       }
 
       function openPendingAsk() {
@@ -7388,36 +7724,55 @@
           const cat = catById(w.category);
           row.innerHTML = '<div class="t"></div><div class="n"></div>';
           row.querySelector(".t").textContent =
-            w.dayKey + " · " + (cat ? cat.name : w.category || "其他");
+            w.dayKey +
+            " · " +
+            (cat ? cat.name : w.category || "其他") +
+            (w.source === "voice" ? " · 语音" : "");
           row.querySelector(".n").textContent =
             "想看：" + (w.topic || "（未写主题）") + (w.note ? " — " + w.note : "");
           box.appendChild(row);
         });
       }
 
-      function submitWish() {
-        const topic = ($("wishTopic").value || "").trim();
+      function submitWish(opts) {
+        const fromVoice = !!(opts && opts.voice);
+        let topic = ($("wishTopic").value || "").trim();
         if (topic.length < 2) {
-          toast("先写想看的主题（至少两个字）");
+          toast("先说或写想看的主题（至少两个字）");
           return;
         }
+        if (!$("wishCat").value || $("wishCat").value === "other") {
+          $("wishCat").value = guessWishCategory(topic);
+        }
+        let note = ($("wishNote").value || "").trim();
+        if (fromVoice) note = enrichWishNote(topic, note);
+        if ($("wishNote") && note) $("wishNote").value = note;
         const today = dayKey();
         const entry = {
           dayKey: today,
           category: $("wishCat").value || "other",
           topic,
-          note: ($("wishNote").value || "").trim(),
+          note,
           at: Date.now(),
           handledAt: null,
           handleNote: "",
+          source: fromVoice ? "voice" : "typed",
         };
         state.wishes = (state.wishes || []).filter((w) => w.dayKey !== today);
         state.wishes.push(entry);
         save(state);
+        const one = $("wishVoiceSubmit");
+        if (one) one.hidden = true;
         renderWish();
+        renderJourneyStrip();
         if (parentOpen) renderParent();
         syncParentBadge();
-        toast("点播已记下 · 家长台会出现「今日片源任务」");
+        toast(
+          fromVoice
+            ? "已语音记进护照 · 家长台可见「" + topic + "」"
+            : "点播已记下 · 家长台会出现「今日片源任务」"
+        );
+        switchTab("passport");
       }
 
       function renderParent() {
@@ -7443,6 +7798,7 @@
             (wish.note ? "（" + wish.note + "）" : "") +
             " · 门类：" +
             (cat ? cat.name : wish.category || "其他") +
+            (wish.source === "voice" ? " · 语音点播" : "") +
             " · 留言日 " +
             wish.dayKey +
             "。请优先找正版（stable）源；找不到先记在待办，不要用投稿直链顶上。";
@@ -7580,6 +7936,7 @@
               w.dayKey +
               " · " +
               (cat ? cat.name : w.category || "其他") +
+              (w.source === "voice" ? " · 语音" : "") +
               (w.handledAt ? " · 已处理" : " · 待更新");
             row.querySelector(".n").textContent =
               "想看：" +
@@ -7788,7 +8145,40 @@
           syncStars();
         });
       });
-      $("wishSubmit").addEventListener("click", submitWish);
+      $("wishSubmit").addEventListener("click", () => submitWish());
+      if ($("wishVoiceSubmit")) {
+        $("wishVoiceSubmit").addEventListener("click", () =>
+          submitWish({ voice: true })
+        );
+      }
+      if ($("returnStampGo")) {
+        $("returnStampGo").addEventListener("click", () => {
+          hideReturnNudge();
+          openPendingStamp();
+        });
+      }
+      if ($("returnStampAsk")) {
+        $("returnStampAsk").addEventListener("click", () => {
+          hideReturnNudge();
+          openPendingAsk();
+        });
+      }
+      if ($("returnStampLater")) {
+        $("returnStampLater").addEventListener("click", () => {
+          hideReturnNudge();
+          renderContinueRow();
+          toast("先放一放 · 未盖印仍在「接着看」置顶");
+        });
+      }
+      const returnStampEl = $("returnStamp");
+      if (returnStampEl) {
+        returnStampEl.addEventListener("click", (e) => {
+          if (e.target === returnStampEl) {
+            hideReturnNudge();
+            renderContinueRow();
+          }
+        });
+      }
       $("parentUnlock").addEventListener("click", () => {
         const pin = ($("parentPin").value || "").trim();
         if (pin !== PARENT_PIN) {
@@ -7872,7 +8262,9 @@
         }
       });
       bindHoldTalk("askHoldTalk", "askInput");
-      bindHoldTalk("wishHoldTalk", "wishTopic");
+      bindHoldTalk("wishHoldTalk", "wishTopic", {
+        onFinal: prepareWishFromVoice,
+      });
       if ($("homeHeroWatch")) {
         $("homeHeroWatch").addEventListener("click", () => {
           if (!homeHeroRec) {
@@ -8148,7 +8540,8 @@
       });
       $("homeTaskDismiss").addEventListener("click", () => {
         hideReturnNudge();
-        toast("任务还在，随时可盖印");
+        renderContinueRow();
+        toast("先放一放 · 未盖印仍在「接着看」置顶");
       });
       window.addEventListener("resize", placeBuddyArrow);
       document.querySelectorAll("[data-go-tab]").forEach((btn) => {
