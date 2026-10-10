@@ -2940,7 +2940,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261008-stamp"></script>
+  <script src="./data.js?v=20261010-lifecode"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -4231,6 +4231,15 @@
         if (!t) return false;
         if (t.play === "missing") return true;
         if (t.play === "ok" && !(t.official && t.official.length)) return true;
+        // official 仅有 B 站搜索页时，仍算正版未齐
+        if (
+          t.play === "ok" &&
+          Array.isArray(t.official) &&
+          t.official.length &&
+          t.official.every((o) => /search\.bilibili\.com/i.test((o && o.url) || ""))
+        ) {
+          return true;
+        }
         return false;
       }
 
@@ -4970,6 +4979,7 @@
           money: "货币",
           germsquad: "细菌特工队",
           cellwar: "细胞暗战",
+          lifecode: "生命密码",
           howmade: "造物",
           kidmoney: "财商",
           silkmoney: "丝路货币",

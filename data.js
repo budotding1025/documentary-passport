@@ -109,7 +109,7 @@ window.DOC_CATALOG = {
       "id": "microbe",
       "name": "微生物小世界",
       "short": "微生物",
-      "blurb": "从洗手小故事到巴斯德，再到细胞战场。短集优先，适合工作日。",
+      "blurb": "从洗手小故事到巴斯德，再进基因密码与细胞战场。短集优先，适合工作日。",
       "home": false,
       "wishCategory": "nature",
       "steps": [
@@ -124,6 +124,12 @@ window.DOC_CATALOG = {
           "label": "② 超级巴斯德",
           "why": "动画巴斯德：微生物、疫苗、进化",
           "titleId": "pasteur"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 了不起的生命密码",
+          "why": "基因入门：豌豆→DNA→突变；第8–10集陪看或跳过",
+          "titleId": "lifecode"
         },
         {
           "phase": "now",
@@ -7457,6 +7463,224 @@ window.DOC_CATALOG = {
             {
               "at": "数字货币前",
               "ask": "钱从硬币变成数字，变的是样子还是信任？"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lifecode",
+      "heroArt": "./covers/hero/lifecode.jpg",
+      "title": "了不起的生命密码",
+      "category": "nature",
+      "slot": "A",
+      "role": "side",
+      "duration": "约 15–25 分钟 × 10 集",
+      "episodeHint": "工作日 1 集 · 先第1–4集；第8–10集必须陪看",
+      "muscle": "生物",
+      "kid": {
+        "understand": "think",
+        "watch": "together"
+      },
+      "blurb": "少儿向基因入门：豌豆遗传、DNA、突变，再到克隆与编辑边界。巴斯德看完后的下一条生命线。",
+      "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81",
+      "linkLabel": "B站搜索",
+      "play": "ok",
+      "shareable": false,
+      "playNote": "自用走 B 站搜索投稿；尚未核到央视/爱奇艺/腾讯稳定正版页，official 里放 B 站搜索入口作备份标记，家长台仍见「片源待补」直至补上正版。",
+      "mapPin": "基因 · DNA · 遗传",
+      "parentNote": "第1–6集四年级可陪看；第7集谈检测信息；第8–10集涉及基因编辑、克隆、永生，必须陪看、可跳过。",
+      "watchLink": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81",
+      "watchLabel": "B站搜索",
+      "watchNote": "自用：搜「了不起的生命密码」核投稿合集再开；优先选清晰、无夸张标题的完整期。手机建议 B 站 App。",
+      "official": [
+        {
+          "kind": "bilibili",
+          "url": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81",
+          "label": "B站搜索 · 了不起的生命密码（待核）"
+        }
+      ],
+      "episodes": [
+        {
+          "id": "lifecode-1",
+          "n": 1,
+          "title": "一颗豌豆能做什么？",
+          "blurb": "孟德尔与豌豆：遗传规律怎样被发现。",
+          "duration": "约 15–25 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E4%B8%80%E9%A2%97%E8%B1%8C%E8%B1%86%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88",
+          "hints": [
+            "豌豆",
+            "遗传",
+            "孟德尔"
+          ],
+          "discuss": [
+            {
+              "at": "片头后",
+              "ask": "父母的「特征」会怎样传到孩子身上？"
+            }
+          ]
+        },
+        {
+          "id": "lifecode-2",
+          "n": 2,
+          "title": "基因的前世今生",
+          "blurb": "基因一词从哪来，为什么成了生命说明书。",
+          "duration": "约 15–25 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E5%9F%BA%E5%9B%A0%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F",
+          "hints": [
+            "基因",
+            "历史"
+          ],
+          "discuss": [
+            {
+              "at": "讲完后",
+              "ask": "基因更像说明书，还是更像开关？"
+            }
+          ]
+        },
+        {
+          "id": "lifecode-3",
+          "n": 3,
+          "title": "细菌和病毒告诉你：基因是什么？",
+          "blurb": "用微生物看清：基因怎样指挥生命。",
+          "duration": "约 15–25 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E7%BB%86%E8%8F%8C%E5%92%8C%E7%97%85%E6%AF%92%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%9A%E5%9F%BA%E5%9B%A0%E6%98%AF%E4%BB%80%E4%B9%88",
+          "hints": [
+            "细菌",
+            "病毒",
+            "基因"
+          ],
+          "discuss": [
+            {
+              "at": "讲完后",
+              "ask": "细菌和人，基因「说明书」哪里一样？"
+            }
+          ]
+        },
+        {
+          "id": "lifecode-4",
+          "n": 4,
+          "title": "破解DNA结构的“国际竞赛”",
+          "blurb": "双螺旋怎样被拼出来：一场科学竞赛。",
+          "duration": "约 15–25 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E7%A0%B4%E8%A7%A3DNA%E7%BB%93%E6%9E%84%E7%9A%84%E2%80%9C%E5%9B%BD%E9%99%85%E7%AB%9E%E8%B5%9B%E2%80%9D",
+          "hints": [
+            "DNA",
+            "双螺旋"
+          ],
+          "discuss": [
+            {
+              "at": "竞赛段落后",
+              "ask": "为什么结构被解开，比「谁先抢到」更重要？"
+            }
+          ]
+        },
+        {
+          "id": "lifecode-5",
+          "n": 5,
+          "title": "玉米中的跳跃基因",
+          "blurb": "基因也会搬家：跳跃基因改变性状。",
+          "duration": "约 15–25 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E7%8E%89%E7%B1%B3%E4%B8%AD%E7%9A%84%E8%B7%B3%E8%B7%83%E5%9F%BA%E5%9B%A0",
+          "hints": [
+            "玉米",
+            "跳跃基因"
+          ],
+          "discuss": [
+            {
+              "at": "讲完后",
+              "ask": "基因「跳来跳去」会带来惊喜还是麻烦？"
+            }
+          ]
+        },
+        {
+          "id": "lifecode-6",
+          "n": 6,
+          "title": "基因也会有bug",
+          "blurb": "突变像程序出错：有的有害，有的带来新可能。",
+          "duration": "约 15–25 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E5%9F%BA%E5%9B%A0%E4%B9%9F%E4%BC%9A%E6%9C%89bug",
+          "hints": [
+            "突变",
+            "bug"
+          ],
+          "discuss": [
+            {
+              "at": "讲完后",
+              "ask": "身体里的「小错误」一定都是坏事吗？"
+            }
+          ]
+        },
+        {
+          "id": "lifecode-7",
+          "n": 7,
+          "title": "基因检测能告诉你的秘密",
+          "blurb": "检测能说什么、不能说什么。",
+          "duration": "约 15–25 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E5%9F%BA%E5%9B%A0%E6%A3%80%E6%B5%8B%E8%83%BD%E5%91%8A%E8%AF%89%E4%BD%A0%E7%9A%84%E7%A7%98%E5%AF%86",
+          "hints": [
+            "检测",
+            "信息"
+          ],
+          "discuss": [
+            {
+              "at": "讲完后",
+              "ask": "如果检测说你会怎样，你还想知道吗？"
+            }
+          ]
+        },
+        {
+          "id": "lifecode-8",
+          "n": 8,
+          "title": "人们可以扮演上帝吗？",
+          "blurb": "基因编辑与「改写生命」：能力与边界。",
+          "duration": "约 15–25 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E4%BA%BA%E4%BB%AC%E5%8F%AF%E4%BB%A5%E6%89%AE%E6%BC%94%E4%B8%8A%E5%B8%9D%E5%90%97",
+          "hints": [
+            "编辑",
+            "伦理",
+            "陪看"
+          ],
+          "discuss": [
+            {
+              "at": "伦理段落后",
+              "ask": "能改基因，就应该改吗？"
+            }
+          ]
+        },
+        {
+          "id": "lifecode-9",
+          "n": 9,
+          "title": "为什么不复制一万个爱因斯坦",
+          "blurb": "克隆与「复制天才」：为什么行不通。",
+          "duration": "约 15–25 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%A4%8D%E5%88%B6%E4%B8%80%E4%B8%87%E4%B8%AA%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6",
+          "hints": [
+            "克隆",
+            "陪看"
+          ],
+          "discuss": [
+            {
+              "at": "讲完后",
+              "ask": "复制一个人的身体，等于复制他的想法吗？"
+            }
+          ]
+        },
+        {
+          "id": "lifecode-10",
+          "n": 10,
+          "title": "人是否可以永生？",
+          "blurb": "延寿与永生幻想：科学走到哪一步。",
+          "duration": "约 15–25 分钟",
+          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E4%BA%BA%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E6%B0%B8%E7%94%9F",
+          "hints": [
+            "永生",
+            "陪看"
+          ],
+          "discuss": [
+            {
+              "at": "片尾前",
+              "ask": "活得更久，和活得更好，你更在意哪个？"
             }
           ]
         }
