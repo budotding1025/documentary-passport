@@ -201,7 +201,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center center;
       opacity: 0;
       transition: opacity 0.55s ease;
@@ -362,7 +362,7 @@
       overflow: visible;
       padding: 0;
     }
-    /* 接着看：全宽主视觉（乐高横幅） */
+    /* 接着看：全宽主视觉；封面铺满横幅，题字在下方信息条 */
     .home-continue-card.home-trio-card {
       display: block;
       width: 100% !important;
@@ -380,8 +380,9 @@
     .home-continue-card .media {
       position: relative;
       width: 100%;
-      aspect-ratio: 16 / 9;
-      max-height: min(62vh, 640px);
+      height: min(48vh, 520px);
+      aspect-ratio: auto;
+      max-height: none;
       background: #ebe4d6;
       overflow: hidden;
     }
@@ -390,7 +391,7 @@
       inset: 0 !important;
       width: 100% !important;
       height: 100% !important;
-      object-fit: contain !important;
+      object-fit: cover !important;
       object-position: center center !important;
       background: #ebe4d6;
       opacity: 0;
@@ -1056,7 +1057,8 @@
       margin: 0 auto;
       padding: 20px 16px 32px;
     }
-    /* 今日推荐全宽，去掉左右空边 */
+    /* 今日推荐全宽：不依赖 body class，避免初始化漏加 class 仍变窄栏 */
+    main:has(#panel-passport.active),
     body.tab-passport main {
       max-width: none;
       width: 100%;
@@ -2658,7 +2660,7 @@
     }
   </style>
 </head>
-<body>
+<body class="tab-passport">
   <header class="app-bar rise">
     <div class="brand">看世界护照 <span>为你选的纪录片</span></div>
     <div class="app-bar-right">
@@ -3178,7 +3180,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261015-home3b"></script>
+  <script src="./data.js?v=20261015-home4"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5167,7 +5169,21 @@
         const more = $("homeContinueMore");
         const stage = document.querySelector(".home-stage");
         if (!box || !row) return;
-        const items = continueWatching(6);
+        let items = continueWatching(6);
+        // 无续看时，用今日主推顶上，保证第一屏仍是「接着看」大横幅
+        if (!items.length) {
+          const packs = buildHomePacks();
+          if (packs.hero && packs.hero.t && packs.hero.ep) {
+            items = [
+              {
+                t: packs.hero.t,
+                ep: packs.hero.ep,
+                pending: !episodeStamped(packs.hero.t.id, packs.hero.ep.id),
+                at: Date.now(),
+              },
+            ];
+          }
+        }
         row.innerHTML = "";
         if (more) more.innerHTML = "";
         if (!items.length) {
@@ -5834,12 +5850,12 @@
       function heroArtUrl(t) {
         if (!t) return "";
         const base = t.heroArt || "./covers/hero/" + t.id + ".jpg";
-        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=17";
+        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=19";
       }
 
       function thumbArtUrl(t) {
         if (!t || !t.id) return "";
-        return "./covers/thumb/" + t.id + ".jpg?v=18";
+        return "./covers/thumb/" + t.id + ".jpg?v=20";
       }
 
       /** List / plate cards: always prefer small thumbs so covers paint fast. */
@@ -6238,22 +6254,38 @@
             }
           }
         }
-        // 同主题：续看延伸；优选：焦点片单第一组
+        // 同主题：续看延伸；优选：焦点片单补满 3 部（排除接着看与同主题）
         const daily = buildDailyRecs();
         const theme = daily
           .filter((r) => r.kind === "similar" || r.kind === "gap")
           .slice(0, 3);
         const heroId = hero && hero.t ? hero.t.id : "";
-        const pick = (batches[0] || [])
-          .filter((r) => r.t && r.t.id !== heroId)
-          .slice(0, 3);
-        // 同主题不足时，用焦点片单第二组补
-        if (theme.length < 2 && batches[1]) {
-          batches[1].forEach((r) => {
+        const used = new Set(heroId ? [heroId] : []);
+        theme.forEach((r) => {
+          if (r.t) used.add(r.t.id);
+        });
+        const pick = [];
+        const takePick = (list) => {
+          (list || []).forEach((r) => {
+            if (pick.length >= 3) return;
+            if (!r || !r.t || used.has(r.t.id)) return;
+            used.add(r.t.id);
+            pick.push(
+              Object.assign({}, r, {
+                label: r.label || "优选",
+                kind: r.kind || "focus",
+              })
+            );
+          });
+        };
+        batches.forEach((batch) => takePick(batch));
+        takePick(daily);
+        // 同主题不足时，用焦点片单补
+        if (theme.length < 2) {
+          pool.forEach((r) => {
             if (theme.length >= 3) return;
-            if (!r.t || r.t.id === heroId) return;
-            if (theme.some((x) => x.t.id === r.t.id)) return;
-            if (pick.some((x) => x.t.id === r.t.id)) return;
+            if (!r.t || used.has(r.t.id)) return;
+            used.add(r.t.id);
             theme.push(
               Object.assign({}, r, { label: r.label || "同主题", kind: "similar" })
             );
