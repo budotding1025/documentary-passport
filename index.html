@@ -161,9 +161,10 @@
     .home-today {
       padding: 0 !important;
       max-width: none !important;
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      margin-right: calc(50% - 50vw);
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      overflow-x: hidden;
     }
     /* LEGO-like: scroll sections, one clear hero, no cramped viewport lock */
     .home-stage {
@@ -338,46 +339,49 @@
     }
     .home-continue {
       flex: none;
-      padding: 20px 4vw 28px;
-      background: #fff;
+      padding: 0 0 8px;
+      background: #f3efe6;
       border-top: 0;
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 0;
+    }
+    .home-continue .home-discover-head {
+      padding: 18px 4vw 10px;
+      margin-bottom: 0;
+      max-width: none;
     }
     .home-continue .home-discover-head h2 {
-      font-size: clamp(1.35rem, 2.4vw, 1.85rem);
-      letter-spacing: 0.02em;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      letter-spacing: 0.01em;
     }
     .home-continue-row {
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scroll-snap-type: x mandatory;
-      align-items: stretch;
+      display: block;
+      width: 100%;
+      overflow: visible;
+      padding: 0;
     }
-    /* 接着看 = 乐高式主横幅：整宽、大气、封面不裁切 */
+    /* 接着看：全宽主视觉（乐高横幅） */
     .home-continue-card.home-trio-card {
-      flex: 0 0 auto;
-      width: min(100%, 1120px);
-      max-width: 100%;
+      display: block;
+      width: 100% !important;
+      max-width: none !important;
+      flex: none;
       aspect-ratio: auto;
       min-height: 0;
       max-height: none;
       height: auto;
-      scroll-snap-align: start;
-      display: grid;
-      grid-template-rows: auto auto;
       border: 0;
-      background: #f3efe6;
-      overflow: visible;
+      background: #ebe4d6;
+      overflow: hidden;
+      outline: none;
     }
     .home-continue-card .media {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
+      max-height: min(62vh, 640px);
       background: #ebe4d6;
       overflow: hidden;
     }
@@ -395,46 +399,77 @@
     .home-continue-card .veil { display: none; }
     .home-continue-card .body {
       position: static;
-      inset: auto;
-      color: var(--ink);
-      padding: 16px 4px 0;
+      display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      gap: 10px 16px;
+      padding: 18px 4vw 22px;
+      background: #fff;
+      color: var(--ink);
     }
     .home-continue-card .tag {
       color: var(--muted);
-      font-size: 0.8rem;
-      letter-spacing: 0.04em;
+      font-size: 0.88rem;
+      letter-spacing: 0.02em;
       margin: 0;
       opacity: 1;
+      flex: 1 1 auto;
     }
     .home-continue-card .name {
-      font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+      font-size: clamp(1.35rem, 2.8vw, 2rem);
       color: var(--ink);
       width: 100%;
       order: -1;
+      margin: 0;
     }
     .home-continue-card .cta {
       appearance: none;
       border: 0;
       background: #111;
       color: #f3efe6;
-      padding: 12px 22px;
+      padding: 14px 28px;
       font: inherit;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 1rem;
       cursor: pointer;
       margin-left: auto;
+      flex: 0 0 auto;
     }
     .home-continue-card .cta:hover { background: #333; }
-    .home-continue-card.locked {
-      opacity: 0.72;
-      filter: none;
-    }
+    .home-continue-card.locked { opacity: 1; filter: none; }
     .home-continue-card.locked .cta { background: #666; }
+    .home-continue-more {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 0 4vw 18px;
+      background: #fff;
+    }
+    .home-continue-more:empty { display: none; }
+    .home-continue-chip {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(17,17,17,0.12);
+      background: #f7f3ea;
+      padding: 8px 12px 8px 8px;
+      cursor: pointer;
+      max-width: 260px;
+    }
+    .home-continue-chip img {
+      width: 72px;
+      height: 40px;
+      object-fit: contain;
+      background: #ebe4d6;
+      flex-shrink: 0;
+    }
+    .home-continue-chip span {
+      font-size: 0.82rem;
+      font-weight: 600;
+      line-height: 1.25;
+    }
     .home-path {
       flex: none;
       padding: 28px 4vw 24px;
@@ -448,11 +483,20 @@
       color: rgba(17,17,17,0.72);
       line-height: 1.45;
     }
+    .home-path-blurb,
+    .home-path .home-discover-head,
+    .home-path .path-switch,
+    .home-path-more {
+      max-width: 1080px;
+      margin-left: auto;
+      margin-right: auto;
+    }
     .home-path-steps {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
-      max-width: 1120px;
+      max-width: 1080px;
+      margin: 0 auto;
     }
     .home-path-card {
       border: 0;
@@ -588,50 +632,54 @@
     }
     .home-discover {
       flex: none;
-      padding: 28px 4vw 32px;
+      padding: 24px 4vw 36px;
       background: #fff;
       border-top: 1px solid rgba(0,0,0,0.06);
       width: 100%;
       max-width: 100%;
       overflow: hidden;
+      box-sizing: border-box;
     }
     .home-discover-head {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 14px;
+      margin: 0 auto 14px;
       padding: 0;
-      max-width: 1120px;
+      max-width: 1080px;
     }
     .home-discover-head h2 {
       margin: 0;
-      font-size: clamp(1.15rem, 2vw, 1.45rem);
+      font-size: clamp(1.1rem, 1.8vw, 1.35rem);
       font-weight: 700;
     }
     .home-trio {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+      gap: 14px;
       width: 100%;
-      max-width: 1120px;
+      max-width: 1080px;
+      margin: 0 auto;
+      box-sizing: border-box;
     }
     .home-trio:has(> :nth-child(2):last-child) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: 760px;
+      max-width: 720px;
     }
     .home-trio:has(> :only-child) {
       grid-template-columns: minmax(0, 1fr);
-      max-width: 480px;
+      max-width: 420px;
     }
     .home-trio-card {
       position: relative;
       width: 100%;
+      min-width: 0;
       aspect-ratio: auto;
       min-height: 0;
       max-height: none;
       border: 0;
       background: transparent;
-      overflow: visible;
+      overflow: hidden;
       cursor: pointer;
       transition: transform 0.35s var(--ease);
       box-sizing: border-box;
@@ -639,13 +687,14 @@
       grid-template-rows: auto auto;
     }
     .home-trio-card:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
       box-shadow: none;
     }
     .home-trio-card .media {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
+      max-height: 160px;
       background: #ebe4d6;
       overflow: hidden;
     }
@@ -2094,6 +2143,18 @@
       flex-wrap: wrap;
       gap: 8px;
     }
+    .home-stage.has-continue .journey-strip {
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      background: #111;
+      color: #f3efe6;
+      padding: 12px 4vw;
+      font-weight: 500;
+    }
+    .home-stage.has-continue .journey-strip .journey-label {
+      color: rgba(243,239,230,0.65);
+    }
     .journey-strip {
       margin: 12px 4vw 0;
       padding: 10px 12px;
@@ -2623,9 +2684,10 @@
       <section class="home-continue" id="homeContinue" hidden>
         <div class="home-discover-head">
           <h2>接着看</h2>
-          <span class="mono" id="homeContinueHint">未盖印置顶</span>
+          <span class="mono" id="homeContinueHint">今天这一部</span>
         </div>
         <div class="home-continue-row" id="homeContinueRow"></div>
+        <div class="home-continue-more" id="homeContinueMore"></div>
       </section>
       <section class="journey-strip rise" id="journeyStrip" hidden>
         <span class="journey-label">护照进度</span>
@@ -3068,7 +3130,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261015-lego-home"></script>
+  <script src="./data.js?v=20261015-lego-home2"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5054,10 +5116,12 @@
       function renderContinueRow() {
         const box = $("homeContinue");
         const row = $("homeContinueRow");
+        const more = $("homeContinueMore");
         const stage = document.querySelector(".home-stage");
         if (!box || !row) return;
         const items = continueWatching(6);
         row.innerHTML = "";
+        if (more) more.innerHTML = "";
         if (!items.length) {
           box.hidden = true;
           if (stage) stage.classList.remove("has-continue");
@@ -5065,46 +5129,65 @@
         }
         box.hidden = false;
         if (stage) stage.classList.add("has-continue");
-        items.forEach((item, idx) => {
-          const t = item.t;
-          const ep = item.ep;
-          const locked = !episodeAllowed(ep, t);
-          const needsStamp = !episodeStamped(t.id, ep.id) && item.pending;
-          const card = document.createElement("article");
-          card.className =
-            "home-trio-card home-continue-card" +
-            (locked ? " locked" : "") +
-            (needsStamp ? " pin-pending" : "");
-          const ctaLabel = needsStamp && !locked ? "去盖印" : locked ? "周末再看" : "继续看";
-          card.innerHTML =
-            '<div class="media"><img class="bg" alt="" decoding="async"></div>' +
-            '<div class="body"><div class="name"></div><div class="tag"></div>' +
-            '<button type="button" class="cta"></button></div>';
-          revealImg(card.querySelector(".bg"), idx === 0 ? heroArtUrl(t) : coverSrc(t));
-          const tag = card.querySelector(".tag");
-          if (needsStamp) {
-            tag.classList.add("pending");
-            tag.textContent =
-              (locked ? "周末 · " : "") + "待盖印 · 第" + ep.n + "集";
-          } else {
-            tag.textContent =
-              (locked ? "周末 · " : "下一集 · ") +
-              "第" +
-              ep.n +
-              "集 · " +
-              (ep.title || "");
+
+        const primary = items[0];
+        const t = primary.t;
+        const ep = primary.ep;
+        const locked = !episodeAllowed(ep, t);
+        const needsStamp = !episodeStamped(t.id, ep.id) && primary.pending;
+        const card = document.createElement("article");
+        card.className =
+          "home-trio-card home-continue-card" +
+          (locked ? " locked" : "") +
+          (needsStamp ? " pin-pending" : "");
+        const ctaLabel = needsStamp && !locked ? "去盖印" : locked ? "周末再看" : "继续看";
+        card.innerHTML =
+          '<div class="media"><img class="bg" alt="" decoding="async"></div>' +
+          '<div class="body"><div class="name"></div><div class="tag"></div>' +
+          '<button type="button" class="cta"></button></div>';
+        revealImg(card.querySelector(".bg"), heroArtUrl(t));
+        const tag = card.querySelector(".tag");
+        if (needsStamp) {
+          tag.classList.add("pending");
+          tag.textContent =
+            (locked ? "周末 · " : "") + "待盖印 · 第" + ep.n + "集 · " + (ep.title || "");
+        } else {
+          tag.textContent =
+            (locked ? "周末 · " : "下一集 · ") +
+            "第" +
+            ep.n +
+            "集 · " +
+            (ep.title || "");
+        }
+        card.querySelector(".name").textContent = t.title;
+        card.querySelector(".cta").textContent = ctaLabel;
+        const goPrimary = () => {
+          if (needsStamp && !locked) {
+            openStamp(t, ep);
+            return;
           }
-          card.querySelector(".name").textContent = t.title;
-          card.querySelector(".cta").textContent = ctaLabel;
-          const go = () => {
-            if (needsStamp && !locked) {
-              openStamp(t, ep);
-              return;
-            }
-            beginWatch(t, ep, watchUrl(t, ep));
-          };
-          card.addEventListener("click", go);
-          row.appendChild(card);
+          beginWatch(t, ep, watchUrl(t, ep));
+        };
+        card.querySelector(".cta").addEventListener("click", (e) => {
+          e.stopPropagation();
+          goPrimary();
+        });
+        card.addEventListener("click", goPrimary);
+        row.appendChild(card);
+
+        items.slice(1).forEach((item) => {
+          if (!more) return;
+          const chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = "home-continue-chip";
+          chip.innerHTML = '<img alt=""><span></span>';
+          chip.querySelector("img").src = thumbArtUrl(item.t);
+          chip.querySelector("span").textContent =
+            item.t.title + " · 第" + item.ep.n + "集";
+          chip.addEventListener("click", () => {
+            beginWatch(item.t, item.ep, watchUrl(item.t, item.ep));
+          });
+          more.appendChild(chip);
         });
       }
 
@@ -5651,12 +5734,12 @@
       function heroArtUrl(t) {
         if (!t) return "";
         const base = t.heroArt || "./covers/hero/" + t.id + ".jpg";
-        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=13";
+        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=15";
       }
 
       function thumbArtUrl(t) {
         if (!t || !t.id) return "";
-        return "./covers/thumb/" + t.id + ".jpg?v=14";
+        return "./covers/thumb/" + t.id + ".jpg?v=16";
       }
 
       /** List / plate cards: always prefer small thumbs so covers paint fast. */
