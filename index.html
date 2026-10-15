@@ -633,19 +633,24 @@
     .home-shelves {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 0;
       background: #fff;
       border-top: 1px solid rgba(0,0,0,0.06);
       width: 100%;
       box-sizing: border-box;
     }
+    .home-shelves[hidden] { display: none !important; }
     .home-shelf {
-      padding: 22px 4vw 8px;
+      padding: 28px 4vw 10px;
       width: 100%;
       box-sizing: border-box;
     }
+    .home-shelf + .home-shelf {
+      border-top: 1px solid rgba(0,0,0,0.05);
+      padding-top: 26px;
+    }
     .home-shelf:last-child {
-      padding-bottom: 28px;
+      padding-bottom: 32px;
     }
     .home-shelf[hidden] { display: none !important; }
     .home-discover {
@@ -3173,7 +3178,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261015-home3"></script>
+  <script src="./data.js?v=20261015-home3b"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5763,6 +5768,8 @@
           paintShelfCards(pickEl, [], "");
           if (shelfTheme) shelfTheme.hidden = false;
           if (shelfPick) shelfPick.hidden = true;
+          const shelvesDone = $("homeShelves");
+          if (shelvesDone) shelvesDone.hidden = false;
           return;
         }
 
@@ -5806,6 +5813,8 @@
         paintShelfCards(pickEl, pickList, "今天暂无更多优选。");
         if (shelfTheme) shelfTheme.hidden = !themeList.length;
         if (shelfPick) shelfPick.hidden = !pickList.length;
+        const shelves = $("homeShelves");
+        if (shelves) shelves.hidden = !themeList.length && !pickList.length;
         // 旧轮播停用：货架静态展示，进线更干净
         if ($("homeTrioDots")) $("homeTrioDots").innerHTML = "";
       }
