@@ -362,7 +362,7 @@
       overflow: visible;
       padding: 0;
     }
-    /* 接着看：全宽主视觉；封面铺满横幅，题字在下方信息条 */
+    /* 接着看：整张封面完整可见（含题字），禁止裁切 */
     .home-continue-card.home-trio-card {
       display: block;
       width: 100% !important;
@@ -379,22 +379,30 @@
     }
     .home-continue-card .media {
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
-      height: min(48vh, 520px);
+      height: auto;
       aspect-ratio: auto;
       max-height: none;
       background: #ebe4d6;
       overflow: hidden;
+      line-height: 0;
     }
     .home-continue-card .bg {
-      position: absolute !important;
-      inset: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
+      position: relative !important;
+      inset: auto !important;
+      display: block !important;
+      width: auto !important;
+      height: auto !important;
+      max-width: 100%;
+      max-height: min(56vh, 640px);
+      object-fit: contain !important;
       object-position: center center !important;
       background: #ebe4d6;
       opacity: 0;
+      margin: 0 auto;
     }
     .home-continue-card .bg.is-in { opacity: 1; }
     .home-continue-card .veil { display: none; }
@@ -3180,7 +3188,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261015-home4"></script>
+  <script src="./data.js?v=20261015-home5"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5850,12 +5858,12 @@
       function heroArtUrl(t) {
         if (!t) return "";
         const base = t.heroArt || "./covers/hero/" + t.id + ".jpg";
-        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=19";
+        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=21";
       }
 
       function thumbArtUrl(t) {
         if (!t || !t.id) return "";
-        return "./covers/thumb/" + t.id + ".jpg?v=20";
+        return "./covers/thumb/" + t.id + ".jpg?v=22";
       }
 
       /** List / plate cards: always prefer small thumbs so covers paint fast. */
