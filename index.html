@@ -630,6 +630,24 @@
         justify-self: start;
       }
     }
+    .home-shelves {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #fff;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .home-shelf {
+      padding: 22px 4vw 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .home-shelf:last-child {
+      padding-bottom: 28px;
+    }
+    .home-shelf[hidden] { display: none !important; }
     .home-discover {
       flex: none;
       padding: 24px 4vw 36px;
@@ -1032,6 +1050,13 @@
       max-width: 720px;
       margin: 0 auto;
       padding: 20px 16px 32px;
+    }
+    /* 今日推荐全宽，去掉左右空边 */
+    body.tab-passport main {
+      max-width: none;
+      width: 100%;
+      margin: 0;
+      padding: 0 0 32px;
     }
     .panel { display: none; }
     .panel.active { display: block; }
@@ -2681,6 +2706,7 @@
         </div>
       </div>
 
+      <!-- ① 接着看 -->
       <section class="home-continue" id="homeContinue" hidden>
         <div class="home-discover-head">
           <h2>接着看</h2>
@@ -2693,6 +2719,31 @@
         <span class="journey-label">护照进度</span>
         <div id="journeyStripText">—</div>
       </section>
+
+      <!-- ② 同主题 + 优选 -->
+      <section class="home-shelves" id="homeShelves">
+        <div class="home-shelf" id="homeShelfTheme">
+          <div class="home-discover-head">
+            <h2>同主题推荐</h2>
+            <span class="mono">顺着刚看的</span>
+          </div>
+          <div class="home-trio" id="homeTrioTheme"></div>
+        </div>
+        <div class="home-shelf" id="homeShelfPick">
+          <div class="home-discover-head">
+            <h2>优选推荐</h2>
+            <span class="mono">今天值得试</span>
+          </div>
+          <div class="home-trio" id="homeTrioPick"></div>
+        </div>
+      </section>
+      <!-- 兼容旧脚本锚点 -->
+      <section class="home-discover" id="homeDiscover" hidden>
+        <div class="home-trio" id="homeTrio"></div>
+        <div class="home-trio-dots" id="homeTrioDots" hidden></div>
+      </section>
+
+      <!-- ③ 路线分类 -->
       <section class="home-path rise" id="homePath">
         <div class="home-discover-head">
           <h2 id="homePathTitle">经济规律 · 世界规则</h2>
@@ -2704,14 +2755,6 @@
         <p class="home-path-more">
           <button type="button" id="homePathOpenFull">看完整推荐路线</button>
         </p>
-      </section>
-      <section class="home-discover" id="homeDiscover">
-        <div class="home-discover-head">
-          <h2>同主题再发现</h2>
-          <span class="mono">精选轮播</span>
-        </div>
-        <div class="home-trio" id="homeTrio"></div>
-        <div class="home-trio-dots" id="homeTrioDots" aria-hidden="true"></div>
       </section>
       <div class="home-find rise" id="homeFind">
         <button type="button" class="home-find-btn" data-shelf="seen">我看过的</button>
@@ -3130,7 +3173,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261015-lego-home2"></script>
+  <script src="./data.js?v=20261015-home3"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5645,21 +5688,67 @@
         placeBuddyArrow();
       }
 
+      function paintShelfCards(el, list, emptyText) {
+        if (!el) return;
+        el.innerHTML = "";
+        if (!list || !list.length) {
+          el.innerHTML =
+            '<div class="empty" style="grid-column:1/-1">' +
+            (emptyText || "今天暂无更多。") +
+            "</div>";
+          return;
+        }
+        list.forEach((rec) => {
+          const card = document.createElement("article");
+          card.className = "home-trio-card";
+          const art = thumbArtUrl(rec.t);
+          const weekendOnly = !episodeAllowed(rec.ep, rec.t);
+          const parent = needsParentWatch(rec.t)
+            ? '<div class="home-trio-parent"></div>'
+            : "";
+          card.innerHTML =
+            '<div class="media"><img class="bg" alt="" decoding="async"></div>' +
+            '<div class="body">' +
+            parent +
+            '<div class="tag"></div><div class="name"></div></div>';
+          revealImg(card.querySelector(".bg"), art);
+          if (parent) {
+            card.querySelector(".home-trio-parent").textContent =
+              parentWarnLabel(rec.t);
+          }
+          card.querySelector(".tag").textContent =
+            (rec.label || "推荐") +
+            " · 第" +
+            rec.ep.n +
+            "集 · " +
+            (weekendOnly
+              ? "假日再看"
+              : "约" + episodeMinutes(rec.ep, rec.t) + "分");
+          card.querySelector(".name").textContent = rec.t.title;
+          card.addEventListener("click", () => {
+            beginWatch(rec.t, rec.ep, watchUrl(rec.t, rec.ep));
+          });
+          el.appendChild(card);
+        });
+      }
+
       function renderHomeRecs() {
         const heroTitle = $("homeHeroTitle");
         const heroEp = $("homeHeroEp");
         const heroKicker = $("homeHeroKicker");
         const heroParent = $("homeHeroParent");
         const dayChip = $("homeDayChip");
-        const trio = $("homeTrio");
-        const dots = $("homeTrioDots");
-        if (!heroTitle || !trio) return;
+        const themeEl = $("homeTrioTheme");
+        const pickEl = $("homeTrioPick");
+        const shelfTheme = $("homeShelfTheme");
+        const shelfPick = $("homeShelfPick");
+        if (!heroTitle) return;
 
         dayChip.textContent = dayGateLabel();
         dayChip.classList.toggle("warn", weekdayBudgetDone());
+        stopHomeTrioRotate();
 
         if (weekdayBudgetDone()) {
-          stopHomeTrioRotate();
           heroKicker.textContent = "今日收工";
           heroTitle.textContent = "今天差不多了";
           if (heroParent) {
@@ -5670,9 +5759,10 @@
             "大约已看过 " + todayWatchMinutes() + " 分钟 · 工作日早点睡";
           setHeroArt("");
           homeHeroRec = null;
-          trio.innerHTML =
-            '<div class="empty" style="grid-column:1/-1;padding:24px;border:1px dashed rgba(0,0,0,0.2)">菜单里仍可打开片子（会软提醒，不强制）。往下还能翻护照和图鉴。</div>';
-          dots.innerHTML = "";
+          paintShelfCards(themeEl, [], "菜单里仍可打开片子。");
+          paintShelfCards(pickEl, [], "");
+          if (shelfTheme) shelfTheme.hidden = false;
+          if (shelfPick) shelfPick.hidden = true;
           return;
         }
 
@@ -5710,13 +5800,14 @@
           setHeroArt("");
         }
 
-        bindTrioHover();
-        preloadTrioAhead(0);
-        presentTrioBatch(0);
-        waitBatchArt(0).then(() => {
-          if (homeTrioBatches !== packs.batches) return;
-          startHomeTrioRotate();
-        });
+        const themeList = packs.theme || [];
+        const pickList = packs.pick || (packs.batches[0] || []);
+        paintShelfCards(themeEl, themeList, "顺着兴趣的片子稍后再补。");
+        paintShelfCards(pickEl, pickList, "今天暂无更多优选。");
+        if (shelfTheme) shelfTheme.hidden = !themeList.length;
+        if (shelfPick) shelfPick.hidden = !pickList.length;
+        // 旧轮播停用：货架静态展示，进线更干净
+        if ($("homeTrioDots")) $("homeTrioDots").innerHTML = "";
       }
 
       let homeHeroRec = null;
@@ -5734,12 +5825,12 @@
       function heroArtUrl(t) {
         if (!t) return "";
         const base = t.heroArt || "./covers/hero/" + t.id + ".jpg";
-        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=15";
+        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=17";
       }
 
       function thumbArtUrl(t) {
         if (!t || !t.id) return "";
-        return "./covers/thumb/" + t.id + ".jpg?v=16";
+        return "./covers/thumb/" + t.id + ".jpg?v=18";
       }
 
       /** List / plate cards: always prefer small thumbs so covers paint fast. */
@@ -6138,7 +6229,28 @@
             }
           }
         }
-        return { hero: hero, batches: batches };
+        // 同主题：续看延伸；优选：焦点片单第一组
+        const daily = buildDailyRecs();
+        const theme = daily
+          .filter((r) => r.kind === "similar" || r.kind === "gap")
+          .slice(0, 3);
+        const heroId = hero && hero.t ? hero.t.id : "";
+        const pick = (batches[0] || [])
+          .filter((r) => r.t && r.t.id !== heroId)
+          .slice(0, 3);
+        // 同主题不足时，用焦点片单第二组补
+        if (theme.length < 2 && batches[1]) {
+          batches[1].forEach((r) => {
+            if (theme.length >= 3) return;
+            if (!r.t || r.t.id === heroId) return;
+            if (theme.some((x) => x.t.id === r.t.id)) return;
+            if (pick.some((x) => x.t.id === r.t.id)) return;
+            theme.push(
+              Object.assign({}, r, { label: r.label || "同主题", kind: "similar" })
+            );
+          });
+        }
+        return { hero: hero, batches: batches, theme: theme, pick: pick };
       }
 
       function renderHomePath() {
@@ -8086,6 +8198,7 @@
         document.querySelectorAll(".panel").forEach((p) => {
           p.classList.toggle("active", p.id === "panel-" + name);
         });
+        document.body.classList.toggle("tab-passport", name === "passport");
         if (name === "godreply") renderGodReply();
         if (name === "passport") renderPassport();
       }
