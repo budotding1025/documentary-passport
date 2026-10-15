@@ -82,7 +82,7 @@ window.DOC_CATALOG = {
         {
           "phase": "optional",
           "label": "选看 · TED-Ed 经济短片",
-          "why": "丝路、纸币、供需：比 Crash Course 更短的动画课",
+          "why": "丝路、纸币、供需、钞票价值、商铺扎堆：比 Crash Course 更短的动画课",
           "titleId": "tededecon"
         },
         {
@@ -109,7 +109,7 @@ window.DOC_CATALOG = {
       "id": "microbe",
       "name": "微生物小世界",
       "short": "微生物",
-      "blurb": "从洗手小故事到巴斯德，再进基因密码与细胞战场。短集优先，适合工作日。",
+      "blurb": "从洗手小故事到巴斯德（第6集讲基因遗传），再进细胞战场。短集优先，适合工作日。",
       "home": false,
       "wishCategory": "nature",
       "steps": [
@@ -126,22 +126,10 @@ window.DOC_CATALOG = {
           "titleId": "pasteur"
         },
         {
-          "phase": "optional",
-          "label": "选看 · 了不起的生命密码",
-          "why": "基因入门：豌豆→DNA→突变；第8–10集陪看或跳过",
-          "titleId": "lifecode"
-        },
-        {
           "phase": "now",
           "label": "③ 细胞的暗战",
           "why": "身体怎样「打仗」保卫自己",
           "titleId": "cellwar"
-        },
-        {
-          "phase": "optional",
-          "label": "选看 · 破解细菌的秘密",
-          "why": "细菌怎样被看见、被理解",
-          "titleId": "bacteriasecret"
         },
         {
           "phase": "later",
@@ -201,7 +189,7 @@ window.DOC_CATALOG = {
       "id": "china-story",
       "name": "中国故事短线",
       "short": "中国",
-      "blurb": "国宝五分钟、超级工程五分钟，再展开地理。短、好入口。",
+      "blurb": "国宝五分钟、超级工程五分钟，再展开诗画与地理。短、好入口。",
       "home": false,
       "wishCategory": "human",
       "steps": [
@@ -236,6 +224,18 @@ window.DOC_CATALOG = {
           "titleId": "palace100"
         },
         {
+          "phase": "optional",
+          "label": "选看 · 诗画中国",
+          "why": "名画走进舞台：诗、乐、舞一块讲，可只看 1–2 个画段",
+          "titleId": "shihua"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 跟着书本去旅行（诗词）",
+          "why": "课本里的诗走到现场：渡口、白帝城、东坡美食",
+          "titleId": "booktravel"
+        },
+        {
           "phase": "later",
           "label": "稍后 · 我在故宫修文物",
           "why": "匠人怎样把国宝一点点修好",
@@ -246,6 +246,52 @@ window.DOC_CATALOG = {
           "label": "稍后 · 美丽中国",
           "why": "地理风景片，接国宝与工程看「这片土地」",
           "titleId": "wildchina"
+        }
+      ]
+    },
+    {
+      "id": "eng-make",
+      "name": "工程与造物",
+      "short": "工程",
+      "blurb": "先短工程故事，再工厂怎么做，再高铁与港口。周末长片可后补。",
+      "home": false,
+      "wishCategory": "finance",
+      "steps": [
+        {
+          "phase": "now",
+          "label": "① 奇妙中国",
+          "why": "五分钟一个超级工程：火箭、盾构、高铁",
+          "titleId": "qimiao"
+        },
+        {
+          "phase": "now",
+          "label": "② 造物小百科",
+          "why": "铝箔、牛仔裤：东西是被做出来的",
+          "titleId": "howmade"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 超级工程Ⅱ（精选）",
+          "why": "只收两集：中国车、中国港",
+          "titleId": "supereng2"
+        },
+        {
+          "phase": "optional",
+          "label": "选看 · 超级工程",
+          "why": "港珠澳、上海中心、地铁：工程师怎么解题",
+          "titleId": "supereng"
+        },
+        {
+          "phase": "later",
+          "label": "稍后 · 跨越（桥梁）",
+          "why": "桥怎样跨过去",
+          "titleId": "bridges"
+        },
+        {
+          "phase": "later",
+          "label": "稍后 · 青藏铁路",
+          "why": "冻土上怎样修铁路",
+          "titleId": "qingzang"
         }
       ]
     }
@@ -621,6 +667,113 @@ window.DOC_CATALOG = {
       "official": []
     },
     {
+      "id": "jamesmaysci",
+      "heroArt": "./covers/hero/jamesmaysci.jpg",
+      "title": "你最想知道的科学（第二季）",
+      "category": "nature",
+      "slot": "B",
+      "role": "side",
+      "duration": "约 30 分钟 × 6 集",
+      "episodeHint": "周末 1 集 · 建议陪看",
+      "muscle": "数理",
+      "kid": {
+        "understand": "think",
+        "watch": "together"
+      },
+      "blurb": "James May 用动画拆科学大问题：爱因斯坦、大脑、进化、速度、工程、化学。比课堂轻松，比短实验片更「讲清楚」。",
+      "link": "https://www.163.com/opencourse/detail/video-BHJTU1EDH-HHJTU1EHJ",
+      "linkLabel": "网易公开课",
+      "play": "ok",
+      "shareable": false,
+      "playNote": "尚无正版备份 · 自用 watchLink；合集含两季，第二季从爱因斯坦段起",
+      "mapPin": "通识 · 动画讲解",
+      "parentNote": "英式幽默；化学集含信息素等玩笑，建议陪看；进化集表述偏成人",
+      "episodes": [
+        {
+          "id": "jamesmaysci-1",
+          "n": 1,
+          "title": "爱因斯坦",
+          "blurb": "E=mc²、时空与量子：爱因斯坦到底在吵什么。",
+          "duration": "约 30 分钟",
+          "link": "https://www.163.com/opencourse/detail/video-BHJTU1EDH-HHJTU1EHJ",
+          "hints": [
+            "相对论",
+            "量子",
+            "爱因斯坦"
+          ]
+        },
+        {
+          "id": "jamesmaysci-2",
+          "n": 2,
+          "title": "大脑",
+          "blurb": "记忆、疼痛、决策：脑子里到底在忙什么。",
+          "duration": "约 30 分钟",
+          "link": "https://www.163.com/opencourse/detail/video-BHJTU1EDH-HHJTU1EHJ",
+          "hints": [
+            "大脑",
+            "记忆",
+            "神经"
+          ]
+        },
+        {
+          "id": "jamesmaysci-3",
+          "n": 3,
+          "title": "进化",
+          "blurb": "自然选择怎样解释「我们为什么长这样」。",
+          "duration": "约 30 分钟",
+          "link": "https://www.163.com/opencourse/detail/video-BHJTU1EDH-HHJTU1EHJ",
+          "hints": [
+            "进化",
+            "达尔文",
+            "适应"
+          ]
+        },
+        {
+          "id": "jamesmaysci-4",
+          "n": 4,
+          "title": "速度",
+          "blurb": "从蜗牛到光：速度怎样改变世界。",
+          "duration": "约 30 分钟",
+          "link": "https://www.163.com/opencourse/detail/video-BHJTU1EDH-HHJTU1EHJ",
+          "hints": [
+            "速度",
+            "运动",
+            "极限"
+          ]
+        },
+        {
+          "id": "jamesmaysci-5",
+          "n": 5,
+          "title": "工程",
+          "blurb": "桥、飞机、建筑：工程怎样把想法立起来。",
+          "duration": "约 30 分钟",
+          "link": "https://www.163.com/opencourse/detail/video-BHJTU1EDH-HHJTU1EHJ",
+          "hints": [
+            "工程",
+            "结构",
+            "建造"
+          ]
+        },
+        {
+          "id": "jamesmaysci-6",
+          "n": 6,
+          "title": "化学",
+          "blurb": "元素、反应与身边的化学；部分玩笑偏成人，建议陪看。",
+          "duration": "约 30 分钟",
+          "link": "https://www.163.com/opencourse/detail/video-BHJTU1EDH-HHJTU1EHJ",
+          "hints": [
+            "化学",
+            "元素",
+            "反应"
+          ]
+        }
+      ],
+      "watchLink": "https://www.163.com/opencourse/detail/video-BHJTU1EDH-HHJTU1EHJ",
+      "watchLabel": "网易公开课",
+      "watchNote": "自用：网易公开课「两季全」合集；第二季从「爱因斯坦」段起（约第10段）。工具上线前须补 official，否则标「片源暂缺」。",
+      "official": []
+    },
+    {
       "id": "allusionsci",
       "heroArt": "./covers/hero/allusionsci.jpg",
       "title": "典故里的科学（第二季）",
@@ -834,104 +987,274 @@ window.DOC_CATALOG = {
       ]
     },
     {
-      "id": "starshift",
-      "heroArt": "./covers/hero/starshift.jpg",
-      "title": "斗转星移",
+      "id": "planetguide",
+      "heroArt": "./covers/hero/planetguide.jpg",
+      "title": "行星旅行指南",
       "category": "nature",
-      "slot": "A",
+      "slot": "B",
       "role": "side",
-      "duration": "约 10 分钟 / 集 × 52",
-      "episodeHint": "一晚 1–2 集 · 先看前 6",
+      "duration": "约 50 分钟 × 6 集",
+      "episodeHint": "周末 1 集 · 可拆两晚",
       "muscle": "数理",
       "kid": {
         "understand": "think",
         "watch": "solo"
       },
-      "blurb": "央视天文启蒙：从踏上旅途到月球、行星。短集连续看，不急于追完全部。",
-      "link": "https://www.bilibili.com/video/BV1kg411X7zA/?p=1",
-      "linkLabel": "B 站直达",
+      "blurb": "从水星到冥航：一颗颗行星长什么样、为什么那样冷或热。太阳系启蒙，画面比旧天文片新。",
+      "link": "https://www.bilibili.com/video/BV1rK4y1m7jP/?p=1",
+      "linkLabel": "B 站高清",
       "play": "ok",
       "shareable": false,
-      "playNote": "尚无正版备份 · 自用 watchLink；工具上线前须补或下架",
-      "mapPin": "天文 · 太阳系",
+      "playNote": "尚无正版备份 · 自用 watchLink；又名星际旅行指南 / 太空旅行手册",
+      "mapPin": "天文 · 行星",
+      "altLink": "https://www.bilibili.com/video/BV1m4411Q7f8/?p=1",
+      "altLabel": "B 站备链（按距太阳排序）",
       "episodes": [
         {
-          "id": "starshift-1",
+          "id": "planetguide-1",
           "n": 1,
-          "title": "踏上旅途",
-          "blurb": "出发看天空：这部片要带你去哪。",
-          "duration": "约 10 分钟",
-          "link": "https://www.bilibili.com/video/BV1kg411X7zA/?p=1",
+          "title": "木星",
+          "blurb": "气态巨行星：大红斑、强磁场与众多卫星。",
+          "duration": "约 50–55 分钟",
+          "link": "https://www.bilibili.com/video/BV1rK4y1m7jP/?p=1",
           "hints": [
-            "天空",
-            "旅程"
+            "木星",
+            "卫星",
+            "风暴"
           ]
         },
         {
-          "id": "starshift-2",
+          "id": "planetguide-2",
           "n": 2,
-          "title": "遨游太阳系",
-          "blurb": "太阳系大家族：谁绕谁转。",
-          "duration": "约 10 分钟",
-          "link": "https://www.bilibili.com/video/BV1kg411X7zA/?p=2",
+          "title": "火星",
+          "blurb": "红色星球：峡谷、极冠，以及人类为何总想去。",
+          "duration": "约 50–55 分钟",
+          "link": "https://www.bilibili.com/video/BV1rK4y1m7jP/?p=2",
           "hints": [
-            "太阳系",
-            "行星"
+            "火星",
+            "探测",
+            "红色"
           ]
         },
         {
-          "id": "starshift-3",
+          "id": "planetguide-3",
           "n": 3,
-          "title": "月球——我们的旅伴",
-          "blurb": "月亮怎样跟着地球，影响潮汐。",
-          "duration": "约 10 分钟",
-          "link": "https://www.bilibili.com/video/BV1kg411X7zA/?p=3",
+          "title": "土星",
+          "blurb": "光环从哪来：冰与尘怎样围成一条带。",
+          "duration": "约 50–55 分钟",
+          "link": "https://www.bilibili.com/video/BV1rK4y1m7jP/?p=3",
           "hints": [
-            "月球",
-            "潮汐"
+            "土星",
+            "光环",
+            "冰"
           ]
         },
         {
-          "id": "starshift-4",
+          "id": "planetguide-4",
           "n": 4,
-          "title": "水星、满月",
-          "blurb": "离太阳最近的星球，和满月的样子。",
-          "duration": "约 10 分钟",
-          "link": "https://www.bilibili.com/video/BV1kg411X7zA/?p=4",
+          "title": "冥王星及其外太空",
+          "blurb": "太阳系边缘：矮行星与更远的黑暗。",
+          "duration": "约 50–55 分钟",
+          "link": "https://www.bilibili.com/video/BV1rK4y1m7jP/?p=4",
           "hints": [
-            "水星",
-            "满月"
+            "冥王星",
+            "矮行星",
+            "边缘"
           ]
         },
         {
-          "id": "starshift-5",
+          "id": "planetguide-5",
           "n": 5,
-          "title": "地球的自转",
-          "blurb": "为什么有白天黑夜：地球在转。",
-          "duration": "约 10 分钟",
-          "link": "https://www.bilibili.com/video/BV1kg411X7zA/?p=5",
+          "title": "天王星与海王星",
+          "blurb": "冰巨星：远处的蓝与绿，极端寒冷。",
+          "duration": "约 50–55 分钟",
+          "link": "https://www.bilibili.com/video/BV1rK4y1m7jP/?p=5",
           "hints": [
-            "自转",
-            "昼夜"
+            "天王星",
+            "海王星",
+            "冰巨星"
           ]
         },
         {
-          "id": "starshift-6",
+          "id": "planetguide-6",
           "n": 6,
-          "title": "行星的旅行",
-          "blurb": "行星各自的轨道旅行。",
-          "duration": "约 10 分钟",
-          "link": "https://www.bilibili.com/video/BV1kg411X7zA/?p=6",
+          "title": "水星与金星",
+          "blurb": "离太阳最近的两颗：极热、干涸与奇特的一天。",
+          "duration": "约 50–55 分钟",
+          "link": "https://www.bilibili.com/video/BV1rK4y1m7jP/?p=6",
           "hints": [
-            "轨道",
-            "公转"
+            "金星",
+            "水星",
+            "太阳"
           ]
         }
       ],
-      "watchLink": "https://www.bilibili.com/video/BV1kg411X7zA/?p=1",
-      "watchLabel": "B 站直达",
-      "watchNote": "自用：央视 2004 天文片；官网旧档难播，现用高播放量 B 站合集（非大会员投稿）。工具上线前须补 official，否则标「片源暂缺」。",
+      "watchLink": "https://www.bilibili.com/video/BV1rK4y1m7jP/?p=1",
+      "watchLabel": "B 站高清",
+      "watchNote": "自用：B 站国语 1080P60 合集（分P 顺序为木星→火星→土星→冥航→天海→水金）。备链 BV1m4411Q7f8 按距太阳排序。工具上线前须补 official，否则标「片源暂缺」。",
       "official": []
+    },
+    {
+      "id": "himars",
+      "heroArt": "./covers/hero/himars.jpg",
+      "title": "Hi，火星",
+      "category": "nature",
+      "slot": "A",
+      "role": "side",
+      "duration": "约 5 分钟 × 10 集",
+      "episodeHint": "工作日 1–2 集",
+      "muscle": "数理",
+      "kid": {
+        "understand": "easy",
+        "watch": "solo"
+      },
+      "blurb": "天问一号发射倒计时：短片看火星探测怎么准备、怎么飞。当代航天，适合接在行星片后面。",
+      "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=1",
+      "linkLabel": "B 站直达",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份 1 条 · 自用走 watchLink；工具前可再补 1 条",
+      "mapPin": "火星 · 天问一号",
+      "altLink": "https://tv.cctv.com/2020/07/28/VIDEJixQARrJZgF93MUpJ8Mk200728.shtml",
+      "altLabel": "央视网 · 第1集",
+      "episodes": [
+        {
+          "id": "himars-1",
+          "n": 1,
+          "title": "通信延迟与勇气",
+          "blurb": "火星探测失败率高：23 分钟延迟意味着什么。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=1",
+          "hints": [
+            "延迟",
+            "探测",
+            "风险"
+          ]
+        },
+        {
+          "id": "himars-2",
+          "n": 2,
+          "title": "火星车怎么走",
+          "blurb": "砂石地形上，祝融号怎样设计步态。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=2",
+          "hints": [
+            "火星车",
+            "设计"
+          ]
+        },
+        {
+          "id": "himars-3",
+          "n": 3,
+          "title": "地面听得到吗",
+          "blurb": "地面应用系统：信号怎样从火星回到地球。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=3",
+          "hints": [
+            "信号",
+            "地面站"
+          ]
+        },
+        {
+          "id": "himars-4",
+          "n": 4,
+          "title": "载荷合体",
+          "blurb": "探测器与火箭对接：模拟考试般的检测。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=4",
+          "hints": [
+            "合体",
+            "检测"
+          ]
+        },
+        {
+          "id": "himars-5",
+          "n": 5,
+          "title": "文昌日常",
+          "blurb": "发射场的人：数月离家的准备日常。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=5",
+          "hints": [
+            "文昌",
+            "发射场"
+          ]
+        },
+        {
+          "id": "himars-6",
+          "n": 6,
+          "title": "火箭转运",
+          "blurb": "长征五号垂直转运：准备就绪的标志。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=6",
+          "hints": [
+            "长征五号",
+            "转运"
+          ]
+        },
+        {
+          "id": "himars-7",
+          "n": 7,
+          "title": "总检查",
+          "blurb": "第四次总检查：问题出现时怎样一起扛。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=7",
+          "hints": [
+            "检查",
+            "保障"
+          ]
+        },
+        {
+          "id": "himars-8",
+          "n": 8,
+          "title": "发射前夜",
+          "blurb": "通宵准备：离起飞只差最后几小时。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=8",
+          "hints": [
+            "倒计时",
+            "前夜"
+          ]
+        },
+        {
+          "id": "himars-9",
+          "n": 9,
+          "title": "升空",
+          "blurb": "2020年7月23日：天问一号踏上奔火之旅。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=9",
+          "hints": [
+            "发射",
+            "升空"
+          ]
+        },
+        {
+          "id": "himars-10",
+          "n": 10,
+          "title": "为什么去火星",
+          "blurb": "科学目标与文明视野：探测为了什么。",
+          "duration": "约 5 分钟",
+          "link": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=10",
+          "hints": [
+            "目标",
+            "科学"
+          ]
+        }
+      ],
+      "watchLink": "https://www.bilibili.com/video/BV1Xf4y1Q7y3/?p=1",
+      "watchLabel": "B 站直达",
+      "watchNote": "自用：B 站十集合集连播更方便；正版备链走央视网系列页 / 第1集。工具模式改走 official。",
+      "official": [
+        {
+          "kind": "cctv",
+          "url": "https://tv.cctv.com/2020/07/24/VIDA55RAmS0s5Gi8RTHLjCFL200724.shtml",
+          "label": "央视网 · 系列页"
+        },
+        {
+          "kind": "cctv",
+          "url": "https://tv.cctv.com/2020/07/28/VIDEJixQARrJZgF93MUpJ8Mk200728.shtml",
+          "label": "央视网 · 第1集"
+        }
+      ]
     },
     {
       "id": "mathchosen",
@@ -2007,17 +2330,18 @@ window.DOC_CATALOG = {
           "id": "pasteur-6",
           "n": 6,
           "title": "未来的我们会是谁",
-          "blurb": "生物技术向前看：未来人会怎样。",
+          "blurb": "护照里的基因课：遗传、基因密码与「种瓜得瓜」——少儿向遗传学入门。",
           "duration": "约 30 分钟",
           "link": "https://tv.cctv.com/2023/08/24/VIDEx9IzVfiOo20PT1rvxBzZ230824.shtml",
           "hints": [
-            "未来",
-            "生物技术"
+            "基因",
+            "遗传",
+            "DNA"
           ],
           "discuss": [
             {
-              "at": "片尾前",
-              "ask": "你希望未来生物技术先解决哪一件小事？"
+              "at": "遗传段落后",
+              "ask": "「种瓜得瓜」和基因密码，你觉得哪句更好记？"
             }
           ]
         }
@@ -2112,38 +2436,6 @@ window.DOC_CATALOG = {
       "watchLabel": "B 站直达",
       "watchNote": "自用：仅自家备用：暂无 B 站正版番剧；投稿合集可能下架。工具上线前须补 official，否则标「片源暂缺」。",
       "official": []
-    },
-    {
-      "id": "bacteriasecret",
-      "heroArt": "./covers/hero/bacteriasecret.jpg",
-      "title": "破解细菌的秘密",
-      "category": "nature",
-      "slot": "B",
-      "role": "side",
-      "duration": "约 30 分钟",
-      "episodeHint": "周末 1 集",
-      "muscle": "生物",
-      "kid": {
-        "understand": "think",
-        "watch": "solo"
-      },
-      "blurb": "《解码科技史》微观篇：细菌怎样被看见、被理解。",
-      "link": "https://tv.cctv.com/2022/11/13/VIDEysn1jha46UFtJZVVmNhy221113.shtml",
-      "linkLabel": "央视网",
-      "play": "stable",
-      "shareable": true,
-      "playNote": "正版备份 1 条 · 自用走 watchLink；工具前可再补 1 条",
-      "mapPin": "细菌 · 微观",
-      "watchLink": "https://tv.cctv.com/2022/11/13/VIDEysn1jha46UFtJZVVmNhy221113.shtml",
-      "watchLabel": "央视网",
-      "watchNote": "自用现开此链（央视网《解码科技史》正片；手机建议央视影音 App）。工具模式改走 official。",
-      "official": [
-        {
-          "kind": "cctv",
-          "url": "https://tv.cctv.com/2022/11/13/VIDEysn1jha46UFtJZVVmNhy221113.shtml",
-          "label": "央视 / 纪录片网"
-        }
-      ]
     },
     {
       "id": "microcosmos",
@@ -3888,7 +4180,7 @@ window.DOC_CATALOG = {
       "slot": "B",
       "role": "main",
       "duration": "约 40–50 分钟 / 集",
-      "episodeHint": "周末 1 集 · 优先大桥 / 大厦 / 地铁",
+      "episodeHint": "周末 1 集 · 优先大桥 / 大厦 / 地铁；Ⅱ见「超级工程Ⅱ（精选）」",
       "muscle": "工程",
       "kid": {
         "understand": "think",
@@ -3901,6 +4193,7 @@ window.DOC_CATALOG = {
       "shareable": true,
       "playNote": "正版备份 1 条 · 自用走 watchLink；工具前可再补 1 条",
       "mapPin": "难题 · 材料 · 精度",
+      "parentNote": "本条为Ⅰ；高铁与港口见 side「超级工程Ⅱ（精选）」中国车 / 中国港",
       "altLink": "https://www.bilibili.com/video/BV1x7411j7sc/",
       "altLabel": "B 站合集（备）",
       "episodes": [
@@ -3956,13 +4249,14 @@ window.DOC_CATALOG = {
         {
           "id": "supereng-5",
           "n": 5,
-          "title": "第5集",
-          "blurb": "继续超级工程：材料、精度与极限条件。",
+          "title": "超级LNG船",
+          "blurb": "造船皇冠上的明珠：殷瓦舱、毫米级精度，怎样造出超级 LNG 船。",
           "duration": "约 50 分钟",
-          "link": "https://tv.cctv.com/2012/09/28/VIDE1355097938588270.shtml",
+          "link": "https://tv.cctv.com/2014/10/01/VIDE1415241548409363.shtml",
           "hints": [
-            "工程",
-            "极限"
+            "LNG",
+            "造船",
+            "精度"
           ]
         }
       ],
@@ -3974,6 +4268,74 @@ window.DOC_CATALOG = {
           "kind": "cctv",
           "url": "https://tv.cctv.com/2013/03/07/VIDE1362620723304281.shtml",
           "label": "央视 / 纪录片网"
+        }
+      ]
+    },
+    {
+      "id": "supereng2",
+      "heroArt": "./covers/hero/supereng2.jpg",
+      "title": "超级工程Ⅱ（精选）",
+      "category": "finance",
+      "slot": "B",
+      "role": "side",
+      "duration": "约 50 分钟 × 2 集",
+      "episodeHint": "看完Ⅰ后周末 1 集 · 先车后港",
+      "muscle": "工程",
+      "kid": {
+        "understand": "think",
+        "watch": "solo"
+      },
+      "blurb": "Ⅱ里只收两集：高铁网怎么连城，港口怎么连世界。路与桥整季可后补。",
+      "link": "https://tv.cctv.com/2016/10/03/VIDE4HiIXxs10J4AjBO8QgN8161003.shtml",
+      "linkLabel": "央视网",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份 1 条 · 自用走 watchLink；工具前可再补 1 条",
+      "mapPin": "高铁 · 港口",
+      "parentNote": "Ⅱ共路/桥/车/港四集；护照精选中国车、中国港。",
+      "altLink": "https://jishi.cctv.com/special/cjgc/",
+      "altLabel": "央视纪实台专题",
+      "episodes": [
+        {
+          "id": "supereng2-1",
+          "n": 1,
+          "title": "中国车",
+          "blurb": "两万公里高铁网：车怎么造、线怎么延、极限环境怎么跑。",
+          "duration": "约 50 分钟",
+          "link": "https://tv.cctv.com/2016/10/03/VIDE4HiIXxs10J4AjBO8QgN8161003.shtml",
+          "hints": [
+            "高铁",
+            "路网",
+            "速度"
+          ]
+        },
+        {
+          "id": "supereng2-2",
+          "n": 2,
+          "title": "中国港",
+          "blurb": "全球前十港口七个在中国：码头、机械与水道怎样把货送出海。",
+          "duration": "约 50 分钟",
+          "link": "https://tv.cctv.com/2016/10/04/VIDEVuXZGfM1zi6nqRS5hGJo161004.shtml",
+          "hints": [
+            "港口",
+            "物流",
+            "水道"
+          ]
+        }
+      ],
+      "watchLink": "https://tv.cctv.com/2016/10/03/VIDE4HiIXxs10J4AjBO8QgN8161003.shtml",
+      "watchLabel": "央视网",
+      "watchNote": "自用现开此链（Ⅱ·中国车正片；下一集中国港见 episodes）。工具模式改走 official。",
+      "official": [
+        {
+          "kind": "cctv",
+          "url": "https://tv.cctv.com/2016/10/03/VIDE4HiIXxs10J4AjBO8QgN8161003.shtml",
+          "label": "央视 · 中国车"
+        },
+        {
+          "kind": "cctv",
+          "url": "https://tv.cctv.com/2016/10/04/VIDEVuXZGfM1zi6nqRS5hGJo161004.shtml",
+          "label": "央视 · 中国港"
         }
       ]
     },
@@ -3994,10 +4356,11 @@ window.DOC_CATALOG = {
       "blurb": "铝箔、蜂蜜、牛仔裤怎么从工厂里出来。接材料片：看见「东西是被做出来的」。",
       "link": "https://www.bilibili.com/video/BV11z4y1e7MM/",
       "linkLabel": "B 站直达",
-      "play": "ok",
-      "shareable": false,
-      "playNote": "尚无正版备份 · 自用 watchLink；工具上线前须补或下架",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份已满 2 条 · 自用走 watchLink（大陆常走 B 站合集；外网走 Science / discovery+）",
       "mapPin": "工厂 · 怎么做出来",
+      "parentNote": "大陆暂无稳定会员正版页；官方页在 Science Channel / discovery+，需外网或订阅。投稿合集可能下架，家长先点开确认。",
       "episodes": [
         {
           "id": "howmade-1",
@@ -4074,8 +4437,19 @@ window.DOC_CATALOG = {
       ],
       "watchLink": "https://www.bilibili.com/video/BV11z4y1e7MM/",
       "watchLabel": "B 站直达",
-      "watchNote": "自用：仅自家备用：Discovery《造物》暂无大陆稳定正版页；投稿可能下架。工具上线前须补 official，否则标「片源暂缺」。",
-      "official": []
+      "watchNote": "自用现开此链（B 站合集分P；投稿可能下架）。工具模式改走 official（Science Channel / discovery+，需外网）。",
+      "official": [
+        {
+          "kind": "official_site",
+          "url": "https://www.sciencechannel.com/show/how-its-made-science",
+          "label": "Science Channel · How It's Made"
+        },
+        {
+          "kind": "official_site",
+          "url": "https://www.discoveryplus.com/show/ef833c95-bddf-4204-8e34-bc231327ec4a",
+          "label": "discovery+ · How It's Made"
+        }
+      ]
     },
     {
       "id": "materialsecret",
@@ -5877,6 +6251,198 @@ window.DOC_CATALOG = {
       ]
     },
     {
+      "id": "shihua",
+      "heroArt": "./covers/hero/shihua.jpg",
+      "title": "诗画中国",
+      "category": "human",
+      "slot": "B",
+      "role": "side",
+      "duration": "约 90 分钟 × 精选",
+      "episodeHint": "周末 1 期 · 可只看 1–2 个画段",
+      "muscle": "审美",
+      "kid": {
+        "understand": "think",
+        "watch": "together"
+      },
+      "blurb": "名画走进舞台：诗、乐、舞一块讲。像会动的画册，先挑熟诗熟画看。",
+      "link": "https://tv.cctv.com/2022/08/28/VIDEdVIHXq9ZZehKSYSsnA2U220828.shtml",
+      "linkLabel": "央视网",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份 1 条 · 自用走 watchLink；工具前可再补 1 条",
+      "mapPin": "诗画 · 舞台",
+      "parentNote": "单期偏长；孩子坐不住时可跳到具体画作段落。第一季共 11 期，护照先收前几期入口。",
+      "altLink": "https://arts.cctv.com/program/shzg/index.shtml",
+      "altLabel": "央博节目页",
+      "episodes": [
+        {
+          "id": "shihua-1",
+          "n": 1,
+          "title": "溪山行旅 · 墨梅 · 水图",
+          "blurb": "开篇：走进《溪山行旅图》《墨梅图》《水图》。",
+          "duration": "约 90 分钟",
+          "link": "https://tv.cctv.com/2022/08/28/VIDEdVIHXq9ZZehKSYSsnA2U220828.shtml",
+          "hints": [
+            "名画",
+            "诗画"
+          ]
+        },
+        {
+          "id": "shihua-2",
+          "n": 2,
+          "title": "竹石 · 万壑松风 · 快雪时晴",
+          "blurb": "竹石、雪霁、松风：画里的劲与静。",
+          "duration": "约 90 分钟",
+          "link": "https://tv.cctv.com/2022/09/04/VIDENssqTBeF1I7mq06KwrWX220904.shtml",
+          "hints": [
+            "竹石",
+            "松风"
+          ]
+        },
+        {
+          "id": "shihua-3",
+          "n": 3,
+          "title": "五牛图 · 琵琶行 · 江山秋色",
+          "blurb": "五牛耕春、琵琶行、江山秋色：诗与画对上话。",
+          "duration": "约 90 分钟",
+          "link": "https://tv.cctv.com/2022/09/12/VIDExrPt0mC4dO0iI1QTO78u220912.shtml",
+          "hints": [
+            "五牛",
+            "琵琶行"
+          ]
+        }
+      ],
+      "watchLink": "https://tv.cctv.com/2022/08/28/VIDEdVIHXq9ZZehKSYSsnA2U220828.shtml",
+      "watchLabel": "央视网",
+      "watchNote": "自用现开此链（央视网正片；更多期见央博节目页）。工具模式改走 official。",
+      "official": [
+        {
+          "kind": "cctv",
+          "url": "https://tv.cctv.com/2022/08/28/VIDEdVIHXq9ZZehKSYSsnA2U220828.shtml",
+          "label": "央视网 · 首期"
+        },
+        {
+          "kind": "cctv",
+          "url": "https://arts.cctv.com/program/shzg/index.shtml",
+          "label": "央博 · 诗画中国"
+        }
+      ]
+    },
+    {
+      "id": "booktravel",
+      "heroArt": "./covers/hero/booktravel.jpg",
+      "title": "跟着书本去旅行（诗词精选）",
+      "category": "human",
+      "slot": "A",
+      "role": "side",
+      "duration": "约 25–30 分钟 / 集",
+      "episodeHint": "饭后或周末 1 集",
+      "muscle": "叙事",
+      "kid": {
+        "understand": "easy",
+        "watch": "solo"
+      },
+      "blurb": "课本里的诗，走到现场看：渡口、白帝城、东坡美食。读万卷书，也行一小段路。",
+      "link": "https://tv.cctv.com/2020/02/01/VIDES83dHd8altATsPqC5u3m200201.shtml",
+      "linkLabel": "央视网",
+      "play": "stable",
+      "shareable": true,
+      "playNote": "正版备份 1 条 · 自用走 watchLink；工具前可再补 1 条",
+      "mapPin": "诗词 · 实地",
+      "parentNote": "栏目很长；本条只收诗词向精选。更多可从栏目页跳。",
+      "altLink": "https://tv.cctv.com/lm/gzsbqlx/index.shtml",
+      "altLabel": "栏目官网",
+      "episodes": [
+        {
+          "id": "booktravel-1",
+          "n": 1,
+          "title": "诗人与渡口",
+          "blurb": "野渡无人舟自横：诗里的渡口，实地怎样看。",
+          "duration": "约 25 分钟",
+          "link": "https://tv.cctv.com/2020/02/01/VIDES83dHd8altATsPqC5u3m200201.shtml",
+          "hints": [
+            "渡口",
+            "诗词"
+          ]
+        },
+        {
+          "id": "booktravel-2",
+          "n": 2,
+          "title": "杜甫的登高诗情",
+          "blurb": "白帝城与登高：杜甫怎样把景写成诗。",
+          "duration": "约 25 分钟",
+          "link": "https://tv.cctv.com/2020/06/08/VIDEOblUzJLqGuoawz8tqTv2200608.shtml",
+          "hints": [
+            "杜甫",
+            "登高"
+          ]
+        },
+        {
+          "id": "booktravel-3",
+          "n": 3,
+          "title": "杜甫在夔州",
+          "blurb": "夔州两年：无边落木从哪一眼望出来。",
+          "duration": "约 25 分钟",
+          "link": "https://tv.cctv.com/2020/06/30/VIDEoymiELsPWlEOqaZ1c2ct200630.shtml",
+          "hints": [
+            "夔州",
+            "杜甫"
+          ]
+        },
+        {
+          "id": "booktravel-4",
+          "n": 4,
+          "title": "苏轼与美食",
+          "blurb": "东坡肉背后：诗人怎样把日子过成味道。",
+          "duration": "约 25 分钟",
+          "link": "https://tv.cctv.com/2020/06/19/VIDEUPdbd9h5rWEelfM9p8Xw200619.shtml",
+          "hints": [
+            "苏轼",
+            "美食"
+          ]
+        },
+        {
+          "id": "booktravel-5",
+          "n": 5,
+          "title": "杜甫草堂和白帝城",
+          "blurb": "茅屋与白帝：两处地方，两种诗心。",
+          "duration": "约 25 分钟",
+          "link": "https://tv.cctv.com/2021/09/07/VIDEbVC4b7fUfTKuqpzGGVHV210907.shtml",
+          "hints": [
+            "草堂",
+            "白帝城"
+          ]
+        },
+        {
+          "id": "booktravel-6",
+          "n": 6,
+          "title": "书本中的诗词（导视）",
+          "blurb": "春节诗词专线入口：围炉夜话，先摸清路线。",
+          "duration": "约 5 分钟",
+          "link": "https://tv.cctv.com/2020/01/22/VIDEJme7A3d7SeSWZDZeKap7200122.shtml",
+          "hints": [
+            "导视",
+            "诗词"
+          ]
+        }
+      ],
+      "watchLink": "https://tv.cctv.com/2020/02/01/VIDES83dHd8altATsPqC5u3m200201.shtml",
+      "watchLabel": "央视网",
+      "watchNote": "自用现开此链（诗人与渡口）；其余集见 episodes，栏目总入口见 altLink。工具模式改走 official。",
+      "official": [
+        {
+          "kind": "cctv",
+          "url": "https://tv.cctv.com/2020/02/01/VIDES83dHd8altATsPqC5u3m200201.shtml",
+          "label": "央视 · 诗人与渡口"
+        },
+        {
+          "kind": "cctv",
+          "url": "https://tv.cctv.com/lm/gzsbqlx/index.shtml",
+          "label": "央视 · 栏目官网"
+        }
+      ]
+    },
+    {
       "id": "qianxuesen",
       "heroArt": "./covers/hero/qianxuesen.jpg",
       "title": "钱学森",
@@ -6773,24 +7339,24 @@ window.DOC_CATALOG = {
       "category": "finance",
       "slot": "A",
       "role": "side",
-      "duration": "约 4–6 分钟 × 3 集",
+      "duration": "约 4–6 分钟 × 5 集",
       "episodeHint": "工作日 1 集 · 建议先丝路再货币",
       "muscle": "商业",
       "kid": {
         "understand": "think",
         "watch": "together"
       },
-      "blurb": "三集动画短片：丝路怎样连通世界、钱从哪来、供需怎样定价钱。比 Crash Course 更短。",
+      "blurb": "五集动画短片：丝路、纸币、供需、钞票价值、商铺为什么挨着开。比 Crash Course 更短。",
       "link": "https://ed.ted.com/lessons/what-gave-the-silk-road-its-name-shannon-harris-castelo",
       "linkLabel": "TED-Ed 官网",
       "play": "ok",
       "shareable": false,
       "playNote": "正版页走 TED-Ed；中字可走 B 站投稿，可能下架",
-      "mapPin": "丝路 · 货币 · 供需",
+      "mapPin": "丝路 · 货币 · 供需 · 选址",
       "parentNote": "英文原声+字幕；建议家长陪看第一集确认孩子跟得上",
       "watchLink": "https://www.bilibili.com/video/BV1CE411Y7us/",
       "watchLabel": "B 站 · TED-Ed 中字（备）",
-      "watchNote": "自用：官网英文字幕最稳；B 站中字为投稿合集入口，优先换丝路/货币相关分P。工具上线前须核 official。",
+      "watchNote": "自用：官网英文字幕最稳；B 站中字为投稿合集入口。新补两集也可走「钱越多麻烦越多」合集对应分P（BV1Wi4y1d7fW）。工具上线前须核 official。",
       "official": [
         {
           "kind": "teded",
@@ -6841,6 +7407,32 @@ window.DOC_CATALOG = {
             "供需",
             "价钱",
             "稀缺"
+          ]
+        },
+        {
+          "id": "tededecon-4",
+          "n": 4,
+          "title": "谁赋予钞票价值",
+          "blurb": "钞票为什么值钱：流通多少、信用怎样撑住面额。",
+          "duration": "约 4 分钟",
+          "link": "https://ed.ted.com/lessons/what-gives-a-dollar-bill-its-value-doug-levinson",
+          "hints": [
+            "钞票",
+            "价值",
+            "信用"
+          ]
+        },
+        {
+          "id": "tededecon-5",
+          "n": 5,
+          "title": "为什么商铺开在一起",
+          "blurb": "加油站、咖啡店为什么扎堆：竞争怎样挤到同一个路口。",
+          "duration": "约 4 分钟",
+          "link": "https://ed.ted.com/lessons/why-do-competitors-open-their-stores-next-to-one-another-jac-de-haan",
+          "hints": [
+            "选址",
+            "竞争",
+            "扎堆"
           ]
         }
       ]
@@ -7463,224 +8055,6 @@ window.DOC_CATALOG = {
             {
               "at": "数字货币前",
               "ask": "钱从硬币变成数字，变的是样子还是信任？"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "lifecode",
-      "heroArt": "./covers/hero/lifecode.jpg",
-      "title": "了不起的生命密码",
-      "category": "nature",
-      "slot": "A",
-      "role": "side",
-      "duration": "约 15–25 分钟 × 10 集",
-      "episodeHint": "工作日 1 集 · 先第1–4集；第8–10集必须陪看",
-      "muscle": "生物",
-      "kid": {
-        "understand": "think",
-        "watch": "together"
-      },
-      "blurb": "少儿向基因入门：豌豆遗传、DNA、突变，再到克隆与编辑边界。巴斯德看完后的下一条生命线。",
-      "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81",
-      "linkLabel": "B站搜索",
-      "play": "ok",
-      "shareable": false,
-      "playNote": "自用走 B 站搜索投稿；尚未核到央视/爱奇艺/腾讯稳定正版页，official 里放 B 站搜索入口作备份标记，家长台仍见「片源待补」直至补上正版。",
-      "mapPin": "基因 · DNA · 遗传",
-      "parentNote": "第1–6集四年级可陪看；第7集谈检测信息；第8–10集涉及基因编辑、克隆、永生，必须陪看、可跳过。",
-      "watchLink": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81",
-      "watchLabel": "B站搜索",
-      "watchNote": "自用：搜「了不起的生命密码」核投稿合集再开；优先选清晰、无夸张标题的完整期。手机建议 B 站 App。",
-      "official": [
-        {
-          "kind": "bilibili",
-          "url": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81",
-          "label": "B站搜索 · 了不起的生命密码（待核）"
-        }
-      ],
-      "episodes": [
-        {
-          "id": "lifecode-1",
-          "n": 1,
-          "title": "一颗豌豆能做什么？",
-          "blurb": "孟德尔与豌豆：遗传规律怎样被发现。",
-          "duration": "约 15–25 分钟",
-          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E4%B8%80%E9%A2%97%E8%B1%8C%E8%B1%86%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88",
-          "hints": [
-            "豌豆",
-            "遗传",
-            "孟德尔"
-          ],
-          "discuss": [
-            {
-              "at": "片头后",
-              "ask": "父母的「特征」会怎样传到孩子身上？"
-            }
-          ]
-        },
-        {
-          "id": "lifecode-2",
-          "n": 2,
-          "title": "基因的前世今生",
-          "blurb": "基因一词从哪来，为什么成了生命说明书。",
-          "duration": "约 15–25 分钟",
-          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E5%9F%BA%E5%9B%A0%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F",
-          "hints": [
-            "基因",
-            "历史"
-          ],
-          "discuss": [
-            {
-              "at": "讲完后",
-              "ask": "基因更像说明书，还是更像开关？"
-            }
-          ]
-        },
-        {
-          "id": "lifecode-3",
-          "n": 3,
-          "title": "细菌和病毒告诉你：基因是什么？",
-          "blurb": "用微生物看清：基因怎样指挥生命。",
-          "duration": "约 15–25 分钟",
-          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E7%BB%86%E8%8F%8C%E5%92%8C%E7%97%85%E6%AF%92%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%9A%E5%9F%BA%E5%9B%A0%E6%98%AF%E4%BB%80%E4%B9%88",
-          "hints": [
-            "细菌",
-            "病毒",
-            "基因"
-          ],
-          "discuss": [
-            {
-              "at": "讲完后",
-              "ask": "细菌和人，基因「说明书」哪里一样？"
-            }
-          ]
-        },
-        {
-          "id": "lifecode-4",
-          "n": 4,
-          "title": "破解DNA结构的“国际竞赛”",
-          "blurb": "双螺旋怎样被拼出来：一场科学竞赛。",
-          "duration": "约 15–25 分钟",
-          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E7%A0%B4%E8%A7%A3DNA%E7%BB%93%E6%9E%84%E7%9A%84%E2%80%9C%E5%9B%BD%E9%99%85%E7%AB%9E%E8%B5%9B%E2%80%9D",
-          "hints": [
-            "DNA",
-            "双螺旋"
-          ],
-          "discuss": [
-            {
-              "at": "竞赛段落后",
-              "ask": "为什么结构被解开，比「谁先抢到」更重要？"
-            }
-          ]
-        },
-        {
-          "id": "lifecode-5",
-          "n": 5,
-          "title": "玉米中的跳跃基因",
-          "blurb": "基因也会搬家：跳跃基因改变性状。",
-          "duration": "约 15–25 分钟",
-          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E7%8E%89%E7%B1%B3%E4%B8%AD%E7%9A%84%E8%B7%B3%E8%B7%83%E5%9F%BA%E5%9B%A0",
-          "hints": [
-            "玉米",
-            "跳跃基因"
-          ],
-          "discuss": [
-            {
-              "at": "讲完后",
-              "ask": "基因「跳来跳去」会带来惊喜还是麻烦？"
-            }
-          ]
-        },
-        {
-          "id": "lifecode-6",
-          "n": 6,
-          "title": "基因也会有bug",
-          "blurb": "突变像程序出错：有的有害，有的带来新可能。",
-          "duration": "约 15–25 分钟",
-          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E5%9F%BA%E5%9B%A0%E4%B9%9F%E4%BC%9A%E6%9C%89bug",
-          "hints": [
-            "突变",
-            "bug"
-          ],
-          "discuss": [
-            {
-              "at": "讲完后",
-              "ask": "身体里的「小错误」一定都是坏事吗？"
-            }
-          ]
-        },
-        {
-          "id": "lifecode-7",
-          "n": 7,
-          "title": "基因检测能告诉你的秘密",
-          "blurb": "检测能说什么、不能说什么。",
-          "duration": "约 15–25 分钟",
-          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E5%9F%BA%E5%9B%A0%E6%A3%80%E6%B5%8B%E8%83%BD%E5%91%8A%E8%AF%89%E4%BD%A0%E7%9A%84%E7%A7%98%E5%AF%86",
-          "hints": [
-            "检测",
-            "信息"
-          ],
-          "discuss": [
-            {
-              "at": "讲完后",
-              "ask": "如果检测说你会怎样，你还想知道吗？"
-            }
-          ]
-        },
-        {
-          "id": "lifecode-8",
-          "n": 8,
-          "title": "人们可以扮演上帝吗？",
-          "blurb": "基因编辑与「改写生命」：能力与边界。",
-          "duration": "约 15–25 分钟",
-          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E4%BA%BA%E4%BB%AC%E5%8F%AF%E4%BB%A5%E6%89%AE%E6%BC%94%E4%B8%8A%E5%B8%9D%E5%90%97",
-          "hints": [
-            "编辑",
-            "伦理",
-            "陪看"
-          ],
-          "discuss": [
-            {
-              "at": "伦理段落后",
-              "ask": "能改基因，就应该改吗？"
-            }
-          ]
-        },
-        {
-          "id": "lifecode-9",
-          "n": 9,
-          "title": "为什么不复制一万个爱因斯坦",
-          "blurb": "克隆与「复制天才」：为什么行不通。",
-          "duration": "约 15–25 分钟",
-          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%A4%8D%E5%88%B6%E4%B8%80%E4%B8%87%E4%B8%AA%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6",
-          "hints": [
-            "克隆",
-            "陪看"
-          ],
-          "discuss": [
-            {
-              "at": "讲完后",
-              "ask": "复制一个人的身体，等于复制他的想法吗？"
-            }
-          ]
-        },
-        {
-          "id": "lifecode-10",
-          "n": 10,
-          "title": "人是否可以永生？",
-          "blurb": "延寿与永生幻想：科学走到哪一步。",
-          "duration": "约 15–25 分钟",
-          "link": "https://search.bilibili.com/all?keyword=%E4%BA%86%E4%B8%8D%E8%B5%B7%E7%9A%84%E7%94%9F%E5%91%BD%E5%AF%86%E7%A0%81%20%E4%BA%BA%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E6%B0%B8%E7%94%9F",
-          "hints": [
-            "永生",
-            "陪看"
-          ],
-          "discuss": [
-            {
-              "at": "片尾前",
-              "ask": "活得更久，和活得更好，你更在意哪个？"
             }
           ]
         }

@@ -2940,7 +2940,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261010-lifecode"></script>
+  <script src="./data.js?v=20261015-covers-live"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -3011,7 +3011,6 @@
           "germsquad",
           "pasteur",
           "cellwar",
-          "bacteriasecret",
           "bodymicro",
           "curiosity",
         ];
@@ -4979,7 +4978,6 @@
           money: "货币",
           germsquad: "细菌特工队",
           cellwar: "细胞暗战",
-          lifecode: "生命密码",
           howmade: "造物",
           kidmoney: "财商",
           silkmoney: "丝路货币",
@@ -5165,10 +5163,9 @@
 
         // 2) 同主题延伸：微观战斗 / 免疫（巴斯德 → 细胞暗战等）
         const THEME_BOOST = {
-          pasteur: { ids: ["cellwar", "germsquad", "bacteriasecret", "bodymicro"], label: "微观攻防" },
-          germsquad: { ids: ["cellwar", "pasteur", "bacteriasecret"], label: "细菌病毒" },
-          cellwar: { ids: ["pasteur", "bodymicro", "bacteriasecret"], label: "细胞免疫" },
-          bacteriasecret: { ids: ["cellwar", "germsquad", "pasteur"], label: "细菌微观" },
+          pasteur: { ids: ["cellwar", "germsquad", "bodymicro"], label: "微观攻防" },
+          germsquad: { ids: ["cellwar", "pasteur"], label: "细菌病毒" },
+          cellwar: { ids: ["pasteur", "bodymicro"], label: "细胞免疫" },
           bodymicro: { ids: ["cellwar", "pasteur"], label: "人体微观" },
         };
         const seedId = recs[0] ? recs[0].t.id : inProgress[0] && inProgress[0].t.id;
@@ -5194,7 +5191,6 @@
           const preferIds = (theme && theme.ids) || [
             "cellwar",
             "germsquad",
-            "bacteriasecret",
             "bodymicro",
           ];
           let picked = null;
@@ -5516,12 +5512,12 @@
       function heroArtUrl(t) {
         if (!t) return "";
         const base = t.heroArt || "./covers/hero/" + t.id + ".jpg";
-        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=6";
+        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=11";
       }
 
       function thumbArtUrl(t) {
         if (!t || !t.id) return "";
-        return "./covers/thumb/" + t.id + ".jpg?v=8";
+        return "./covers/thumb/" + t.id + ".jpg?v=12";
       }
 
       /** List / plate cards: always prefer small thumbs so covers paint fast. */
@@ -5858,7 +5854,6 @@
           ["capitalstory", "资本故事", "capitalstory-1"],
           ["germsquad", "微生物"],
           ["pasteur", "巴斯德"],
-          ["bacteriasecret", "细菌秘密"],
           ["cellwar", "细胞暗战"],
           ["bodymicro", "微观人体"],
           ["englishadv", "英语史"],
