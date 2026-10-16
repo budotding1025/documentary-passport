@@ -541,29 +541,6 @@
       color: #f3efe6 !important;
     }
     .home-continue-card.layout-bar .cta:hover { background: #333 !important; }
-    .home-continue-layouts {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      font-size: 0.72rem;
-      color: rgba(17, 17, 17, 0.45);
-    }
-    .home-continue-layouts button {
-      appearance: none;
-      border: 0;
-      background: transparent;
-      padding: 0;
-      font: inherit;
-      color: rgba(17, 17, 17, 0.45);
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .home-continue-layouts button.on {
-      color: #111;
-      font-weight: 700;
-      text-decoration: none;
-    }
     .home-continue-more {
       display: flex;
       gap: 10px;
@@ -2871,11 +2848,7 @@
       <section class="home-continue" id="homeContinue" hidden>
         <div class="home-discover-head">
           <h2>接着看</h2>
-          <div class="home-continue-layouts" aria-label="接着看排版">
-            <span class="mono" id="homeContinueHint">今天这一部</span>
-            <button type="button" data-continue-layout="overlay" class="on">叠字</button>
-            <button type="button" data-continue-layout="bar">底栏</button>
-          </div>
+          <span class="mono" id="homeContinueHint">今天这一部</span>
         </div>
         <div class="home-continue-row" id="homeContinueRow"></div>
         <div class="home-continue-more" id="homeContinueMore"></div>
@@ -3338,7 +3311,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261016-cont3"></script>
+  <script src="./data.js?v=20261016-cont4"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5382,35 +5355,15 @@
           (locked ? " locked" : "") +
           (needsStamp ? " pin-pending" : "");
         const ctaLabel = needsStamp && !locked ? "去盖印" : locked ? "周末再看" : "继续看";
-        const layout =
-          localStorage.getItem("doc-passport-continue-layout") === "bar"
-            ? "bar"
-            : "overlay";
-        if (layout === "bar") card.classList.add("layout-bar");
-        // 版A：操作叠在封面上；版B：纸色底栏在封面下，不重复片名
-        if (layout === "bar") {
-          card.innerHTML =
-            '<div class="media"><img class="bg" alt="" decoding="async"></div>' +
-            '<div class="body"><div class="name"></div><div class="tag"></div>' +
-            '<button type="button" class="cta"></button></div>';
-        } else {
-          card.innerHTML =
-            '<div class="media">' +
-            '<img class="bg" alt="" decoding="async">' +
-            '<div class="body"><div class="name"></div><div class="tag"></div>' +
-            '<button type="button" class="cta"></button></div>' +
-            "</div>";
-        }
+        // 固定：封面叠字，集信息靠左，「去盖印」靠右
+        card.innerHTML =
+          '<div class="media">' +
+          '<img class="bg" alt="" decoding="async">' +
+          '<div class="body"><div class="name"></div><div class="tag"></div>' +
+          '<button type="button" class="cta"></button></div>' +
+          "</div>";
         revealImg(card.querySelector(".bg"), heroArtUrl(t));
         card.setAttribute("aria-label", t.title + " · " + ctaLabel);
-        document
-          .querySelectorAll("[data-continue-layout]")
-          .forEach((btn) => {
-            btn.classList.toggle(
-              "on",
-              btn.getAttribute("data-continue-layout") === layout
-            );
-          });
         const tag = card.querySelector(".tag");
         if (needsStamp) {
           tag.classList.add("pending");
@@ -9320,14 +9273,6 @@
         hideReturnNudge();
         renderContinueRow();
         toast("先放一放 · 未盖印仍在「接着看」置顶");
-      });
-      document.querySelectorAll("[data-continue-layout]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const mode = btn.getAttribute("data-continue-layout") || "overlay";
-          localStorage.setItem("doc-passport-continue-layout", mode);
-          renderContinueRow();
-          toast(mode === "bar" ? "接着看：纸色底栏" : "接着看：封面叠字");
-        });
       });
       window.addEventListener("resize", placeBuddyArrow);
       document.querySelectorAll("[data-go-tab]").forEach((btn) => {
