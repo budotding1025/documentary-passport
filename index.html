@@ -63,9 +63,10 @@
       align-items: center;
       gap: 8px 14px;
       padding: 8px 2.5vw;
-      border-bottom: 1px solid rgba(17,17,17,0.12);
-      background: rgba(255,255,255,0.96);
-      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #111;
+      background: #111;
+      color: #f3efe6;
+      backdrop-filter: none;
     }
     .brand {
       font-weight: 700;
@@ -73,9 +74,10 @@
       font-size: 0.98rem;
       white-space: nowrap;
       flex-shrink: 0;
+      color: #f3efe6;
     }
     .brand span {
-      color: var(--muted);
+      color: rgba(243, 239, 230, 0.55);
       font-weight: 400;
       margin-left: 6px;
       font-size: 0.72rem;
@@ -86,7 +88,8 @@
     .week-chip {
       font-family: "JetBrains Mono", monospace;
       font-size: 0.75rem;
-      border: 1px solid var(--ink);
+      border: 1px solid rgba(243, 239, 230, 0.55);
+      color: #f3efe6;
       padding: 4px 10px;
       white-space: nowrap;
     }
@@ -98,7 +101,7 @@
     }
     .music-btn {
       appearance: none;
-      border: 1px solid var(--ink);
+      border: 1px solid rgba(243, 239, 230, 0.55);
       background: transparent;
       width: 36px;
       height: 32px;
@@ -107,22 +110,22 @@
       font-size: 0.7rem;
       letter-spacing: 0.04em;
       cursor: pointer;
-      color: var(--ink);
+      color: #f3efe6;
       transition: background 0.25s var(--ease), color 0.25s var(--ease);
     }
-    .music-btn:hover { background: var(--ink); color: var(--bg); }
+    .music-btn:hover { background: #f3efe6; color: #111; }
     .music-btn.is-muted {
-      color: var(--muted);
-      border-color: var(--muted);
+      color: rgba(243, 239, 230, 0.45);
+      border-color: rgba(243, 239, 230, 0.35);
     }
     .music-btn.is-muted:hover {
-      background: var(--muted);
-      color: var(--bg);
+      background: rgba(243, 239, 230, 0.2);
+      color: #f3efe6;
     }
     .music-credit {
       font-family: "JetBrains Mono", monospace;
       font-size: 0.65rem;
-      color: var(--muted);
+      color: rgba(243, 239, 230, 0.45);
       letter-spacing: 0.02em;
       max-width: 28vw;
       overflow: hidden;
@@ -151,7 +154,7 @@
     }
     nav.tabs::-webkit-scrollbar { display: none; }
     nav.tabs.moleskine-nav button {
-      color: rgba(17, 17, 17, 0.55);
+      color: rgba(243, 239, 230, 0.55);
       font-weight: 600;
       letter-spacing: 0.02em;
       background: transparent;
@@ -162,22 +165,22 @@
       flex: 0 0 auto;
     }
     nav.tabs.moleskine-nav button:hover {
-      color: #111;
+      color: #f3efe6;
     }
     nav.tabs.moleskine-nav button.active {
-      color: #111;
+      color: #f3efe6;
       background: transparent;
       font-weight: 700;
     }
     nav.tabs.moleskine-nav button.active::after {
-      background: #111;
+      background: #f3efe6;
       left: 22%;
       right: 22%;
-      height: 3px;
+      height: 2px;
     }
     nav.tabs.moleskine-nav .tab-badge {
-      background: #111;
-      color: #f3efe6;
+      background: #f3efe6;
+      color: #111;
     }
 
     .home-today {
@@ -362,7 +365,7 @@
     .home-continue {
       flex: none;
       padding: 0 0 8px;
-      background: #f3efe6;
+      background: var(--paper);
       border-top: 0;
       width: 100%;
       display: flex;
@@ -384,27 +387,26 @@
       overflow: visible;
       padding: 0;
     }
-    /* 接着看：整张封面完整可见（含题字），禁止裁切 */
+    /* 接着看：封面放大铺满、题字完整；操作条叠在封面底部，去掉突兀白底 */
     .home-continue-card.home-trio-card {
       display: block;
       width: 100% !important;
-      max-width: none !important;
+      max-width: min(1480px, 96vw) !important;
+      margin: 0 auto;
       flex: none;
       aspect-ratio: auto;
       min-height: 0;
       max-height: none;
       height: auto;
       border: 0;
-      background: #ebe4d6;
+      background: transparent;
       overflow: hidden;
       outline: none;
     }
     .home-continue-card .media,
     .home-continue-card.home-trio-card .media {
       position: relative !important;
-      display: flex !important;
-      align-items: center;
-      justify-content: center;
+      display: block !important;
       width: 100% !important;
       height: auto !important;
       min-height: 0 !important;
@@ -426,7 +428,7 @@
       width: auto !important;
       height: auto !important;
       max-width: 100% !important;
-      max-height: min(56vh, 640px) !important;
+      max-height: min(46vh, 520px) !important;
       object-fit: contain !important;
       object-position: center center !important;
       background: #ebe4d6;
@@ -436,51 +438,66 @@
     .home-continue-card .bg.is-in { opacity: 1; }
     .home-continue-card .veil { display: none; }
     .home-continue-card .body {
-      position: static;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      gap: 10px 16px;
-      padding: 14px 3vw 16px;
-      background: #fff;
-      color: var(--ink);
-      max-width: min(1480px, 96vw);
-      margin: 0 auto;
+      gap: 10px 14px;
+      padding: 48px 3vw 16px;
+      background: linear-gradient(
+        180deg,
+        rgba(17, 17, 17, 0) 0%,
+        rgba(17, 17, 17, 0.55) 55%,
+        rgba(17, 17, 17, 0.82) 100%
+      );
+      color: #f3efe6;
+      max-width: none;
+      margin: 0;
       box-sizing: border-box;
       width: 100%;
     }
     .home-continue-card .tag {
-      color: var(--muted);
+      color: rgba(243, 239, 230, 0.9);
       font-size: 0.88rem;
       letter-spacing: 0.02em;
       margin: 0;
       opacity: 1;
       flex: 1 1 auto;
+      border-color: rgba(243, 239, 230, 0.45) !important;
+      background: transparent !important;
     }
     .home-continue-card .name {
-      font-size: clamp(1.35rem, 2.8vw, 2rem);
-      color: var(--ink);
-      width: 100%;
-      order: -1;
-      margin: 0;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
     .home-continue-card .cta {
       appearance: none;
       border: 0;
-      background: #111;
-      color: #f3efe6;
-      padding: 14px 28px;
+      background: #f3efe6;
+      color: #111;
+      padding: 12px 24px;
       font: inherit;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       margin-left: auto;
       flex: 0 0 auto;
     }
-    .home-continue-card .cta:hover { background: #333; }
+    .home-continue-card .cta:hover { background: #fff; }
     .home-continue-card.locked { opacity: 1; filter: none; }
-    .home-continue-card.locked .cta { background: #666; }
+    .home-continue-card.locked .cta { background: rgba(243,239,230,0.75); color: #333; }
     .home-continue-more {
       display: flex;
       gap: 10px;
@@ -800,16 +817,14 @@
     .home-trio-card .bg.is-in {
       opacity: 1;
     }
-    /* 接着看：题字完整 + 高度受限，首屏露出下方推荐一截 */
+    /* 接着看覆盖 trio 限高：封面放大、题字完整（contain） */
     .home-continue-card.home-trio-card .media {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
+      display: block !important;
       width: 100% !important;
       height: auto !important;
       min-height: 0 !important;
       aspect-ratio: auto !important;
-      max-height: min(34vh, 360px) !important;
+      max-height: none !important;
       overflow: hidden !important;
       line-height: 0 !important;
       background: #ebe4d6 !important;
@@ -825,10 +840,22 @@
       width: auto !important;
       height: auto !important;
       max-width: 100% !important;
-      max-height: min(34vh, 360px) !important;
+      max-height: min(46vh, 520px) !important;
       object-fit: contain !important;
       object-position: center center !important;
       margin: 0 auto !important;
+    }
+    .home-continue-card.home-trio-card .body {
+      position: absolute !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      background: linear-gradient(
+        180deg,
+        rgba(17, 17, 17, 0) 0%,
+        rgba(17, 17, 17, 0.55) 55%,
+        rgba(17, 17, 17, 0.82) 100%
+      ) !important;
     }
     .home-trio-parent {
       color: #b45309;
@@ -1122,13 +1149,13 @@
       font-family: inherit;
       font-size: 0.88rem;
       cursor: pointer;
-      color: rgba(17, 17, 17, 0.5);
+      color: rgba(243, 239, 230, 0.55);
       position: relative;
       transition: color 0.25s var(--ease);
     }
     nav.tabs button:last-child { border-right: 0; }
     nav.tabs button.active {
-      color: #111;
+      color: #f3efe6;
       background: transparent;
       font-weight: 700;
     }
@@ -1139,7 +1166,7 @@
       right: 18%;
       bottom: 2px;
       height: 2px;
-      background: #111;
+      background: #f3efe6;
       transform: scaleX(1);
       animation: none;
     }
@@ -2304,7 +2331,7 @@
       outline-offset: 2px;
     }
     .home-continue-card .tag.pending {
-      color: #9a3412;
+      color: #fdba74;
     }
 
     .day-gate-chip {
@@ -3272,7 +3299,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261016-mmk1"></script>
+  <script src="./data.js?v=20261016-navdark"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5317,10 +5344,13 @@
           (needsStamp ? " pin-pending" : "");
         const ctaLabel = needsStamp && !locked ? "去盖印" : locked ? "周末再看" : "继续看";
         card.innerHTML =
-          '<div class="media"><img class="bg" alt="" decoding="async"></div>' +
+          '<div class="media">' +
+          '<img class="bg" alt="" decoding="async">' +
           '<div class="body"><div class="name"></div><div class="tag"></div>' +
-          '<button type="button" class="cta"></button></div>';
+          '<button type="button" class="cta"></button></div>' +
+          "</div>";
         revealImg(card.querySelector(".bg"), heroArtUrl(t));
+        card.setAttribute("aria-label", t.title + " · " + ctaLabel);
         const tag = card.querySelector(".tag");
         if (needsStamp) {
           tag.classList.add("pending");
