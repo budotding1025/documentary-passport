@@ -378,39 +378,20 @@
       overflow: visible;
       padding: 0;
     }
-    .home-continue-card .continue-kicker {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 3;
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      pointer-events: none;
-      padding: 5px 10px;
-      background: rgba(243, 239, 230, 0.92);
-      color: #111;
-      max-width: calc(100% - 20px);
-    }
-    .home-continue-card .continue-kicker strong {
-      font-size: clamp(1.05rem, 2vw, 1.35rem);
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-    .home-continue-card .continue-kicker span {
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: rgba(17, 17, 17, 0.55);
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-    }
-    /* 接着看：媒体盒贴紧封面，避免米色外框；标题贴封面左上 */
+    /* 接着看：左侧文案 + 右侧封面（字不在封面里/上） */
     .home-continue-card.home-trio-card {
-      display: block !important;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+      gap: 16px 20px;
       grid-template-rows: none !important;
       width: 100% !important;
-      max-width: none !important;
-      margin: 0;
+      max-width: min(1600px, 96vw) !important;
+      margin: 0 auto;
+      padding: 12px 2.5vw 8px;
+      box-sizing: border-box;
       flex: none;
       aspect-ratio: auto;
       min-height: 0;
@@ -422,39 +403,73 @@
       outline: none !important;
       box-shadow: none !important;
     }
-    .home-continue-card.home-trio-card.pin-pending {
+    .home-continue-card.home-trio-card.pin-pending,
+    .home-continue-card.pin-pending {
       outline: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+    .home-continue-card .continue-side {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding-top: 4px;
+      min-width: 4.5em;
+      color: #111;
+    }
+    .home-continue-card .continue-side strong {
+      font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+    .home-continue-card .continue-side span {
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: rgba(17, 17, 17, 0.5);
+      letter-spacing: 0.04em;
+    }
+    .home-continue-card .continue-main {
+      flex: 1 1 auto;
+      min-width: 0;
+      position: relative;
     }
     .home-continue-card .media,
     .home-continue-card.home-trio-card .media {
       position: relative !important;
       display: block !important;
-      width: max-content !important;
-      max-width: min(96vw, 1600px) !important;
+      width: 100% !important;
+      max-width: 100% !important;
       height: auto !important;
       min-height: 0 !important;
       aspect-ratio: auto !important;
       max-height: none !important;
-      margin: 0 auto !important;
+      margin: 0 !important;
       background: transparent !important;
       overflow: hidden;
       line-height: 0;
+      border: 0 !important;
+      outline: none !important;
+      box-shadow: none !important;
     }
     .home-continue-card .bg,
     .home-continue-card.home-trio-card .bg {
       position: relative !important;
       inset: auto !important;
       display: block !important;
-      width: auto !important;
+      width: 100% !important;
       height: auto !important;
-      /* 不用 %，避免父级被撑成整行宽、封面两侧留出米色框 */
-      max-width: min(96vw, 1600px) !important;
+      max-width: 100% !important;
       max-height: min(70vh, 720px) !important;
       object-fit: contain !important;
-      object-position: center center !important;
+      object-position: left center !important;
       background: transparent !important;
       opacity: 0;
       margin: 0 !important;
+      border: 0 !important;
+      outline: none !important;
     }
     .home-continue-card .bg.is-in { opacity: 1; }
     .home-continue-card .veil { display: none; }
@@ -826,20 +841,12 @@
     }
     .home-trio {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 14px 10px;
       width: 100%;
       max-width: min(1480px, 96vw);
       margin: 0 auto;
       box-sizing: border-box;
-    }
-    .home-trio:has(> :nth-child(2):last-child) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: min(980px, 96vw);
-    }
-    .home-trio:has(> :only-child) {
-      grid-template-columns: minmax(0, 1fr);
-      max-width: min(560px, 96vw);
     }
     .home-trio-card {
       position: relative;
@@ -865,21 +872,21 @@
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
-      max-height: 160px;
-      background: #ebe4d6;
+      max-height: none;
+      background: transparent;
       overflow: hidden;
     }
-    /* 封面题字完整可见，禁止左右放大裁切 */
+    /* 铺满卡片，去掉左右卡其色 letterbox */
     .home-trio-card .bg {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center center;
       display: block;
       opacity: 0;
-      background: #ebe4d6;
+      background: transparent;
     }
     .home-trio-card .bg.is-in {
       opacity: 1;
@@ -887,12 +894,15 @@
     /* 接着看覆盖 trio 限高 */
     .home-continue-card.home-trio-card .bg {
       max-height: min(70vh, 720px) !important;
+      width: 100% !important;
     }
     .home-continue-card.home-trio-card .media {
-      width: max-content !important;
-      max-width: min(96vw, 1600px) !important;
-      margin: 0 auto !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
       background: transparent !important;
+      border: 0 !important;
+      outline: none !important;
     }
     .home-trio-parent {
       color: #b45309;
@@ -980,17 +990,31 @@
       max-width: 1100px;
       margin: 0 auto;
     }
+    @media (max-width: 1100px) {
+      .home-trio {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
     @media (max-width: 860px) {
       .home-stage { height: auto; min-height: 0; overflow: visible; }
-      .home-trio,
-      .home-trio:has(> :nth-child(2):last-child),
-      .home-trio:has(> :only-child) {
-        grid-template-columns: 1fr;
+      .home-trio {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         max-width: none;
-        gap: 18px;
+        gap: 12px 8px;
       }
-      .home-continue { padding: 16px 4vw 22px; }
-      .home-continue-card.home-trio-card { width: 100%; }
+      .home-continue { padding: 8px 0 16px; }
+      .home-continue-card.home-trio-card {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px;
+        padding: 8px 4vw;
+      }
+      .home-continue-card .continue-side {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 8px;
+        min-width: 0;
+      }
       .home-continue-card .body { flex-direction: column; align-items: flex-start; }
       .home-continue-card .cta { margin-left: 0; width: 100%; text-align: center; }
       .home-hero { flex: none; min-height: 36vh; aspect-ratio: 16 / 9; }
@@ -2197,6 +2221,9 @@
       box-shadow: none;
     }
     @media (max-width: 520px) {
+      .home-trio {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
       .doc-card {
         grid-template-columns: 108px minmax(0, 1fr);
         gap: 10px;
@@ -3337,7 +3364,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261016-cont7"></script>
+  <script src="./data.js?v=20261016-shelf6"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5381,14 +5408,15 @@
           (locked ? " locked" : "") +
           (needsStamp ? " pin-pending" : "");
         const ctaLabel = needsStamp && !locked ? "去盖印" : locked ? "周末再看" : "继续看";
-        // 标题左上叠在封面；集信息左下；按钮右下 — 不单独占标题行
+        // 文案在封面左侧空白，不叠在封面上
         card.innerHTML =
+          '<div class="continue-side"><strong>接着看</strong><span>今天这一部</span></div>' +
+          '<div class="continue-main">' +
           '<div class="media">' +
           '<img class="bg" alt="" decoding="async">' +
-          '<div class="continue-kicker"><strong>接着看</strong><span>今天这一部</span></div>' +
           '<div class="body"><div class="name"></div><div class="tag"></div>' +
           '<button type="button" class="cta"></button></div>' +
-          "</div>";
+          "</div></div>";
         revealImg(card.querySelector(".bg"), heroArtUrl(t));
         card.setAttribute("aria-label", "接着看 · " + t.title + " · " + ctaLabel);
         const tag = card.querySelector(".tag");
@@ -5788,7 +5816,7 @@
           }
         }
 
-        return recs.slice(0, 3);
+        return recs.slice(0, 8);
       }
 
       function renderRecCard(rec, i) {
@@ -6414,8 +6442,8 @@
         });
         const orderedPool = sortOpenFirstRecs(pool);
         const batches = [];
-        for (let i = 0; i < orderedPool.length; i += 3) {
-          batches.push(orderedPool.slice(i, i + 3));
+        for (let i = 0; i < orderedPool.length; i += 6) {
+          batches.push(orderedPool.slice(i, i + 6));
         }
         if (!batches.length && hero) {
           batches.push([]);
@@ -6438,11 +6466,11 @@
             }
           }
         }
-        // 同主题：续看延伸；优选：焦点片单补满 3 部（排除接着看与同主题）
+        // 同主题：续看延伸；优选：焦点片单补满 6 部（排除接着看与同主题）
         const daily = buildDailyRecs();
         const theme = daily
           .filter((r) => r.kind === "similar" || r.kind === "gap")
-          .slice(0, 3);
+          .slice(0, 6);
         const heroId = hero && hero.t ? hero.t.id : "";
         const used = new Set(heroId ? [heroId] : []);
         theme.forEach((r) => {
@@ -6451,7 +6479,7 @@
         const pick = [];
         const takePick = (list) => {
           (list || []).forEach((r) => {
-            if (pick.length >= 3) return;
+            if (pick.length >= 6) return;
             if (!r || !r.t || used.has(r.t.id)) return;
             used.add(r.t.id);
             pick.push(
@@ -6464,10 +6492,10 @@
         };
         batches.forEach((batch) => takePick(batch));
         takePick(daily);
-        // 同主题不足时，用焦点片单补
-        if (theme.length < 2) {
+        // 同主题不足时，用焦点片单补满一排
+        if (theme.length < 6) {
           pool.forEach((r) => {
-            if (theme.length >= 3) return;
+            if (theme.length >= 6) return;
             if (!r.t || used.has(r.t.id)) return;
             used.add(r.t.id);
             theme.push(
