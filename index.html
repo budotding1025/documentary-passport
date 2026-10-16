@@ -372,20 +372,37 @@
       flex-direction: column;
       gap: 0;
     }
-    .home-continue .home-discover-head {
-      padding: 14px 3vw 8px;
-      margin-bottom: 0;
-      max-width: min(1480px, 96vw);
-    }
-    .home-continue .home-discover-head h2 {
-      font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-      letter-spacing: 0.01em;
-    }
     .home-continue-row {
       display: block;
       width: 100%;
       overflow: visible;
       padding: 0;
+    }
+    .home-continue-card .continue-kicker {
+      position: absolute;
+      top: 12px;
+      left: 2.5vw;
+      z-index: 3;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      pointer-events: none;
+      padding: 6px 12px;
+      background: rgba(243, 239, 230, 0.9);
+      color: #111;
+      max-width: calc(100% - 5vw);
+    }
+    .home-continue-card .continue-kicker strong {
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .home-continue-card .continue-kicker span {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: rgba(17, 17, 17, 0.55);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
     }
     /* 接着看：两版文案排版（默认 A 叠字）；禁止白底条 */
     .home-continue-card.home-trio-card {
@@ -425,7 +442,7 @@
       width: auto !important;
       height: auto !important;
       max-width: 100% !important;
-      max-height: min(52vh, 580px) !important;
+      max-height: min(58vh, 640px) !important;
       object-fit: contain !important;
       object-position: center center !important;
       background: #ebe4d6;
@@ -862,7 +879,7 @@
     }
     /* 接着看覆盖 trio 限高 */
     .home-continue-card.home-trio-card .bg {
-      max-height: min(52vh, 580px) !important;
+      max-height: min(58vh, 640px) !important;
     }
     .home-trio-parent {
       color: #b45309;
@@ -2844,12 +2861,8 @@
         </div>
       </div>
 
-      <!-- ① 接着看 -->
+      <!-- ① 接着看：标题叠在封面左上，不占独立标题行 -->
       <section class="home-continue" id="homeContinue" hidden>
-        <div class="home-discover-head">
-          <h2>接着看</h2>
-          <span class="mono" id="homeContinueHint">今天这一部</span>
-        </div>
         <div class="home-continue-row" id="homeContinueRow"></div>
         <div class="home-continue-more" id="homeContinueMore"></div>
       </section>
@@ -3311,7 +3324,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261016-cont4"></script>
+  <script src="./data.js?v=20261016-cont5"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5355,15 +5368,16 @@
           (locked ? " locked" : "") +
           (needsStamp ? " pin-pending" : "");
         const ctaLabel = needsStamp && !locked ? "去盖印" : locked ? "周末再看" : "继续看";
-        // 固定：封面叠字，集信息靠左，「去盖印」靠右
+        // 标题左上叠在封面；集信息左下；按钮右下 — 不单独占标题行
         card.innerHTML =
           '<div class="media">' +
           '<img class="bg" alt="" decoding="async">' +
+          '<div class="continue-kicker"><strong>接着看</strong><span>今天这一部</span></div>' +
           '<div class="body"><div class="name"></div><div class="tag"></div>' +
           '<button type="button" class="cta"></button></div>' +
           "</div>";
         revealImg(card.querySelector(".bg"), heroArtUrl(t));
-        card.setAttribute("aria-label", t.title + " · " + ctaLabel);
+        card.setAttribute("aria-label", "接着看 · " + t.title + " · " + ctaLabel);
         const tag = card.querySelector(".tag");
         if (needsStamp) {
           tag.classList.add("pending");
