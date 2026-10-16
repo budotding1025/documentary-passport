@@ -614,30 +614,20 @@
       margin: 0 auto;
     }
     .home-path-card {
-      position: relative;
-      isolation: isolate;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
       overflow: hidden;
       border: 0;
-      background: #111 center / cover no-repeat;
-      padding: 18px 16px;
+      padding: 0;
+      background: var(--paper, #f3efe6);
+      color: #111;
+      font: inherit;
       cursor: pointer;
       text-align: left;
-      min-height: 168px;
-      aspect-ratio: 16 / 9;
-      color: #fff;
       box-shadow: none;
       transition: transform 0.25s var(--ease);
-    }
-    .home-path-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 0;
-    }
-    .home-path-card > * {
-      position: relative;
-      z-index: 1;
     }
     .home-path-card:hover {
       transform: translateY(-2px);
@@ -647,16 +637,24 @@
     }
     .home-path-card.wish {
       cursor: default;
-      background: rgba(255,255,255,0.45);
-      color: inherit;
-      aspect-ratio: auto;
-      min-height: 120px;
     }
-    .home-path-card.wish::before { display: none; }
+    .home-path-card .step-cover {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      object-position: center center;
+      background: #ebe4d6;
+    }
+    .home-path-card .step-body {
+      padding: 12px 12px 14px;
+      background: var(--paper, #f3efe6);
+      color: #111;
+    }
     .home-path-card .step-n {
       font-size: 0.68rem;
       letter-spacing: 0.04em;
-      color: rgba(255,255,255,0.78);
+      color: rgba(17,17,17,0.55);
       margin-bottom: 4px;
     }
     .home-path-card .step-title {
@@ -664,24 +662,18 @@
       font-size: 0.95rem;
       line-height: 1.3;
       margin-bottom: 4px;
-      color: #fff;
+      color: #111;
     }
     .home-path-card .step-why {
       font-size: 0.78rem;
-      color: rgba(255,255,255,0.88);
+      color: rgba(17,17,17,0.68);
       line-height: 1.35;
     }
     .home-path-card .step-meta {
       margin-top: 8px;
       font-size: 0.72rem;
-      color: rgba(255,255,255,0.72);
+      color: rgba(17,17,17,0.5);
     }
-    .home-path-card.wish .step-n,
-    .home-path-card.wish .step-why,
-    .home-path-card.wish .step-meta {
-      color: rgba(17,17,17,0.55);
-    }
-    .home-path-card.wish .step-title { color: inherit; }
     .home-path-more {
       margin: 8px 2px 0;
       font-size: 0.82rem;
@@ -3426,7 +3418,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261017-pathcover40"></script>
+  <script src="./data.js?v=20261017-pathsplit"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -6640,11 +6632,14 @@
               : r.ep
                 ? "第" + r.ep.n + "集 · 约" + episodeMinutes(r.ep, r.t) + "分"
                 : "去看";
+          const cover = r.t && !r.wish
+            ? '<img class="step-cover" alt="" decoding="async">'
+            : "";
           card.innerHTML =
-            '<div class="step-n"></div><div class="step-title"></div><div class="step-why"></div><div class="step-meta"></div>';
-          if (r.t && !r.wish) {
-            card.style.backgroundImage =
-              'url("' + heroArtUrl(r.t).replace(/"/g, "") + '")';
+            cover +
+            '<div class="step-body"><div class="step-n"></div><div class="step-title"></div><div class="step-why"></div><div class="step-meta"></div></div>';
+          if (cover) {
+            card.querySelector(".step-cover").src = heroArtUrl(r.t);
           }
           card.querySelector(".step-n").textContent =
             phaseLabel(r.step.phase) +
