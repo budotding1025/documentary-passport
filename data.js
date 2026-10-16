@@ -172,6 +172,12 @@ window.DOC_CATALOG = {
           "titleId": "blueplanet2"
         },
         {
+          "phase": "optional",
+          "label": "选看 · 小动物大旅行",
+          "why": "六只小动物各走一条回家、活命、留后的路；一集约一小时，假日看",
+          "titleId": "littlejourney"
+        },
+        {
           "phase": "later",
           "label": "稍后 · 与恐龙同行",
           "why": "点播高频：恐龙怎样走路与捕猎",
@@ -8057,6 +8063,85 @@ window.DOC_CATALOG = {
               "ask": "钱从硬币变成数字，变的是样子还是信任？"
             }
           ]
+        }
+      ]
+    },
+    {
+      "id": "littlejourney",
+      "heroArt": "./covers/hero/littlejourney.jpg",
+      "title": "小动物大旅行",
+      "category": "nature",
+      "slot": "B",
+      "role": "side",
+      "duration": "约 59 分钟 × 3 集",
+      "episodeHint": "假日 1 集 · 建议陪看",
+      "muscle": "生物",
+      "kid": {
+        "understand": "easy",
+        "watch": "together"
+      },
+      "blurb": "BBC《Big Little Journeys》：海龟、婴猴、穿山甲、狮狨、变色龙、水鼠，各自走完一段又小又远的路。",
+      "link": "https://www.bilibili.com/bangumi/play/ep831240",
+      "linkLabel": "B 站直达",
+      "play": "ok",
+      "shareable": false,
+      "playNote": "自用走 B 站纪录片页（全 3 集）；正版页为 BBC Earth / BBC Two。",
+      "mapPin": "小动物 · 回家与生存",
+      "parentNote": "每集约 59 分钟，工作日排到假日再看。有捕食与自然死亡画面，建议陪看。",
+      "episodes": [
+        {
+          "id": "littlejourney-1",
+          "n": 1,
+          "title": "找一个家",
+          "blurb": "加拿大小海龟和南非婴猴，各自去找一个安全的新家。",
+          "duration": "约 59 分钟",
+          "link": "https://www.bilibili.com/bangumi/play/ep831240",
+          "hints": [
+            "海龟",
+            "婴猴",
+            "家"
+          ]
+        },
+        {
+          "id": "littlejourney-2",
+          "n": 2,
+          "title": "活下去",
+          "blurb": "台湾穿山甲和巴西金头狮狨，走进一块陌生的地方。",
+          "duration": "约 59 分钟",
+          "link": "https://www.bilibili.com/video/BV1vZ421N7js/?p=2",
+          "hints": [
+            "穿山甲",
+            "狮狨",
+            "生存"
+          ]
+        },
+        {
+          "id": "littlejourney-3",
+          "n": 3,
+          "title": "把家族留下",
+          "blurb": "马达加斯加变色龙和苏格兰水鼠，走去把下一代安顿好。",
+          "duration": "约 59 分钟",
+          "link": "https://www.bilibili.com/video/BV1vZ421N7js/?p=3",
+          "hints": [
+            "变色龙",
+            "水鼠",
+            "后代"
+          ]
+        }
+      ],
+      "watchLink": "https://www.bilibili.com/bangumi/play/ep831240",
+      "watchLabel": "B 站直达",
+      "watchNote": "自用现开 B 站第 1 集页，页内可切第 2、3 集。正版看 BBC Earth。",
+      "official": [
+        {
+          "kind": "official_site",
+          "url": "https://www.bbcearth.com/shows/big-little-journeys",
+          "label": "BBC Earth · Big Little Journeys"
+        },
+        {
+          "kind": "official_site",
+          "url": "https://www.bbc.co.uk/programmes/m001rcj5",
+          "label": "BBC Two · Series 1"
         }
       ]
     }

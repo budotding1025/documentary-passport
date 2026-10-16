@@ -3401,7 +3401,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261016-cont11"></script>
+  <script src="./data.js?v=20261017-theme"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5947,33 +5947,12 @@
 
       function renderHomeTask() {
         const box = $("homeTask");
+        if (box) box.hidden = true;
         const p = state.pendingWatch;
-        if (!p) {
-          box.hidden = true;
-          placeBuddyArrow();
-          return;
-        }
+        if (!p) return;
         if (episodeStamped(p.titleId, p.episodeId)) {
           clearPendingWatch();
-          box.hidden = true;
-          placeBuddyArrow();
-          return;
         }
-        const t = titleById(p.titleId);
-        const ep = t ? episodeById(t, p.episodeId) : null;
-        if (!t || !ep) {
-          clearPendingWatch();
-          box.hidden = true;
-          return;
-        }
-        box.hidden = false;
-        $("homeTaskText").textContent =
-          "待盖印：《" +
-          t.title +
-          "》第" +
-          ep.n +
-          "集 · 点「去盖印」收进护照";
-        placeBuddyArrow();
       }
 
       function paintShelfCards(el, list, emptyText) {
@@ -6524,16 +6503,49 @@
             }
           }
         }
-        // 同主题：续看延伸；优选：焦点片单补满 6 部（排除接着看与同主题）
+        // 同主题：跟「接着看 / 最近一部」同一肌肉，不再用换格或混杂焦点片单凑数
         const daily = buildDailyRecs();
-        const theme = daily
-          .filter((r) => r.kind === "similar" || r.kind === "gap")
-          .slice(0, 6);
-        const heroId = hero && hero.t ? hero.t.id : "";
-        const used = new Set(heroId ? [heroId] : []);
-        theme.forEach((r) => {
-          if (r.t) used.add(r.t.id);
-        });
+        const contNow = continueWatching(1);
+        const themeSeed =
+          (contNow[0] && contNow[0].t) ||
+          (hero && hero.kind === "continue" && hero.t) ||
+          null;
+        const theme = [];
+        const used = new Set();
+        if (themeSeed) used.add(themeSeed.id);
+        if (hero && hero.t) used.add(hero.t.id);
+        const unstampedEp = (t) => {
+          if (!t || titleFullyDone(t)) return null;
+          return episodesOf(t).find((e) => !episodeStamped(t.id, e.id)) || null;
+        };
+        const pushTheme = (t) => {
+          if (theme.length >= 6 || !t || used.has(t.id)) return;
+          const ep = unstampedEp(t);
+          if (!ep) return;
+          used.add(t.id);
+          theme.push({
+            kind: "similar",
+            label: themeSeed && themeSeed.muscle ? themeSeed.muscle : "同主题",
+            reason: "",
+            t: t,
+            ep: ep,
+          });
+        };
+        if (themeSeed && themeSeed.muscle) {
+          titles.forEach((t) => {
+            if (t.muscle === themeSeed.muscle) pushTheme(t);
+          });
+        }
+        const scienceMuscles = { 工程: 1, 生物: 1, 实验: 1, 数理: 1, 人体: 1 };
+        if (
+          theme.length < 6 &&
+          themeSeed &&
+          scienceMuscles[themeSeed.muscle]
+        ) {
+          titles.forEach((t) => {
+            if (scienceMuscles[t.muscle]) pushTheme(t);
+          });
+        }
         const pick = [];
         const takePick = (list) => {
           (list || []).forEach((r) => {
@@ -6550,17 +6562,6 @@
         };
         batches.forEach((batch) => takePick(batch));
         takePick(daily);
-        // 同主题不足时，用焦点片单补满一排
-        if (theme.length < 6) {
-          pool.forEach((r) => {
-            if (theme.length >= 6) return;
-            if (!r.t || used.has(r.t.id)) return;
-            used.add(r.t.id);
-            theme.push(
-              Object.assign({}, r, { label: r.label || "同主题", kind: "similar" })
-            );
-          });
-        }
         return { hero: hero, batches: batches, theme: theme, pick: pick };
       }
 
@@ -7520,31 +7521,11 @@
         }
       }
 
-      function showReturnNudge(pending) {
+      function showReturnNudge() {
+        // 进页不再弹「回护照盖印」。未盖印仍留在「接着看」的按钮上。
+        hideReturnNudge();
         renderHomeTask();
         renderContinueRow();
-        switchTab("passport");
-        const t = pending ? titleById(pending.titleId) : null;
-        const ep = t ? episodeById(t, pending.episodeId) : null;
-        const modal = $("returnStamp");
-        if (modal && t && ep) {
-          $("returnStampTitle").textContent =
-            "《" + t.title + "》第" + ep.n + "集";
-          $("returnStampText").textContent =
-            "看完先盖印打分，这一集才会记进护照；不盖印的话会一直顶在「接着看」。";
-          modal.classList.add("show");
-          modal.setAttribute("aria-hidden", "false");
-        }
-        if (t) {
-          const npc = npcForTitle(t);
-          if (typeof showNpcBuddy === "function") {
-            showNpcBuddy(
-              t,
-              pickNpcLine(npc) + " 看完了吗？先盖个印再选下一集。",
-              { sticky: true, force: true }
-            );
-          }
-        }
       }
 
       function checkReturnNudge() {
