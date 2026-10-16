@@ -429,8 +429,8 @@
     .home-continue-card.home-trio-card .media {
       position: relative !important;
       display: block !important;
-      width: fit-content !important;
-      max-width: 100% !important;
+      width: max-content !important;
+      max-width: min(96vw, 1600px) !important;
       height: auto !important;
       min-height: 0 !important;
       aspect-ratio: auto !important;
@@ -447,7 +447,8 @@
       display: block !important;
       width: auto !important;
       height: auto !important;
-      max-width: min(100vw, 1600px) !important;
+      /* 不用 %，避免父级被撑成整行宽、封面两侧留出米色框 */
+      max-width: min(96vw, 1600px) !important;
       max-height: min(70vh, 720px) !important;
       object-fit: contain !important;
       object-position: center center !important;
@@ -888,8 +889,8 @@
       max-height: min(70vh, 720px) !important;
     }
     .home-continue-card.home-trio-card .media {
-      width: fit-content !important;
-      max-width: 100% !important;
+      width: max-content !important;
+      max-width: min(96vw, 1600px) !important;
       margin: 0 auto !important;
       background: transparent !important;
     }
@@ -3336,7 +3337,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261016-cont6"></script>
+  <script src="./data.js?v=20261016-cont7"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
