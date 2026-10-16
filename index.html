@@ -6098,12 +6098,12 @@
       function heroArtUrl(t) {
         if (!t) return "";
         const base = t.heroArt || "./covers/hero/" + t.id + ".jpg";
-        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=21";
+        return base + (base.indexOf("?") >= 0 ? "&" : "?") + "v=23";
       }
 
       function thumbArtUrl(t) {
         if (!t || !t.id) return "";
-        return "./covers/thumb/" + t.id + ".jpg?v=22";
+        return "./covers/thumb/" + t.id + ".jpg?v=23";
       }
 
       /** List / plate cards: always prefer small thumbs so covers paint fast. */
