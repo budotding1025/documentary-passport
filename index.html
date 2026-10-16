@@ -364,7 +364,7 @@
     }
     .home-continue {
       flex: none;
-      padding: 0 0 8px;
+      padding: 16px 0 10px;
       background: var(--paper);
       border-top: 0;
       width: 100%;
@@ -378,19 +378,19 @@
       overflow: visible;
       padding: 0;
     }
-    /* 接着看：左侧文案 + 右侧封面（字不在封面里/上） */
+    /* 接着看：封面按图幅居中收缩，文案在侧，按钮在图下，无黑底/无渐变 */
     .home-continue-card.home-trio-card {
       display: flex !important;
       flex-direction: row !important;
       flex-wrap: nowrap !important;
       align-items: flex-start !important;
-      justify-content: flex-start !important;
-      gap: 16px 20px;
+      justify-content: center !important;
+      gap: 16px 22px;
       grid-template-rows: none !important;
       width: 100% !important;
-      max-width: min(1600px, 96vw) !important;
+      max-width: min(1480px, 96vw) !important;
       margin: 0 auto;
-      padding: 12px 2.5vw 8px;
+      padding: 8px 2.5vw 4px;
       box-sizing: border-box;
       flex: none;
       aspect-ratio: auto;
@@ -415,7 +415,7 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 4px;
-      padding-top: 4px;
+      padding-top: 6px;
       min-width: 4.5em;
       color: #111;
     }
@@ -432,23 +432,28 @@
       letter-spacing: 0.04em;
     }
     .home-continue-card .continue-main {
-      flex: 1 1 auto;
+      flex: 0 1 auto;
+      width: max-content;
+      max-width: min(100%, 1100px);
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
       position: relative;
     }
     .home-continue-card .media,
     .home-continue-card.home-trio-card .media {
       position: relative !important;
       display: block !important;
-      width: 100% !important;
+      width: max-content !important;
       max-width: 100% !important;
       height: auto !important;
       min-height: 0 !important;
       aspect-ratio: auto !important;
       max-height: none !important;
-      margin: 0 !important;
+      margin: 0 auto !important;
       background: transparent !important;
-      overflow: hidden;
+      overflow: visible;
       line-height: 0;
       border: 0 !important;
       outline: none !important;
@@ -459,17 +464,18 @@
       position: relative !important;
       inset: auto !important;
       display: block !important;
-      width: 100% !important;
+      width: auto !important;
       height: auto !important;
       max-width: 100% !important;
-      max-height: min(70vh, 720px) !important;
+      max-height: min(58vh, 560px) !important;
       object-fit: contain !important;
-      object-position: left center !important;
+      object-position: center center !important;
       background: transparent !important;
       opacity: 0;
-      margin: 0 !important;
+      margin: 0 auto !important;
       border: 0 !important;
       outline: none !important;
+      box-shadow: none !important;
     }
     .home-continue-card .bg.is-in { opacity: 1; }
     .home-continue-card .veil { display: none; }
@@ -484,30 +490,21 @@
       white-space: nowrap !important;
       border: 0 !important;
     }
-    /* 版 A：叠在封面底部；文案靠左、高对比 */
+    /* 信息与按钮在封面下方，纸色底，不要叠黑渐变 */
     .home-continue-card .body,
     .home-continue-card.home-trio-card .body {
-      position: absolute !important;
-      left: 0 !important;
-      right: 0 !important;
-      bottom: 0 !important;
-      top: auto !important;
-      inset: auto 0 0 0 !important;
-      z-index: 2 !important;
+      position: static !important;
+      inset: auto !important;
+      z-index: 1 !important;
       display: flex !important;
       flex-direction: row !important;
       flex-wrap: nowrap !important;
       justify-content: flex-start !important;
       align-items: center !important;
       gap: 12px 16px !important;
-      padding: 56px 14px 16px !important;
-      background: linear-gradient(
-        180deg,
-        rgba(17, 17, 17, 0) 0%,
-        rgba(17, 17, 17, 0.62) 42%,
-        rgba(17, 17, 17, 0.92) 100%
-      ) !important;
-      color: #f3efe6 !important;
+      padding: 12px 0 2px !important;
+      background: transparent !important;
+      color: var(--ink) !important;
       max-width: none !important;
       margin: 0 !important;
       box-sizing: border-box !important;
@@ -516,8 +513,8 @@
       box-shadow: none !important;
     }
     .home-continue-card .tag {
-      color: #f3efe6 !important;
-      font-size: 0.95rem !important;
+      color: rgba(17, 17, 17, 0.62) !important;
+      font-size: 0.9rem !important;
       font-weight: 600 !important;
       letter-spacing: 0.03em;
       margin: 0 !important;
@@ -530,7 +527,7 @@
       box-shadow: none !important;
       background: transparent !important;
       padding: 0 !important;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+      text-shadow: none !important;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -538,48 +535,22 @@
     .home-continue-card .cta {
       appearance: none;
       border: 0;
-      background: #f3efe6 !important;
-      color: #111 !important;
-      padding: 12px 26px;
+      background: #111 !important;
+      color: #f3efe6 !important;
+      padding: 10px 22px;
       font: inherit;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       cursor: pointer;
       margin-left: auto;
       flex: 0 0 auto;
     }
-    .home-continue-card .cta:hover { background: #fff !important; }
+    .home-continue-card .cta:hover { background: #333 !important; }
     .home-continue-card.locked { opacity: 1; filter: none; }
     .home-continue-card.locked .cta {
-      background: rgba(243, 239, 230, 0.78) !important;
-      color: #333 !important;
-    }
-    /* 版 B：封面下纸色细栏（同页底色，不是白条），不重复片名 */
-    .home-continue-card.layout-bar .media {
-      margin-bottom: 0;
-    }
-    .home-continue-card.layout-bar .body,
-    .home-continue-card.home-trio-card.layout-bar .body {
-      position: static !important;
-      inset: auto !important;
-      display: flex !important;
-      flex-direction: row !important;
-      align-items: center !important;
-      gap: 12px 16px !important;
-      padding: 14px 0 4px !important;
-      background: transparent !important;
-      color: var(--ink) !important;
-      width: 100% !important;
-    }
-    .home-continue-card.layout-bar .tag {
-      color: rgba(17, 17, 17, 0.62) !important;
-      font-size: 0.88rem !important;
-    }
-    .home-continue-card.layout-bar .cta {
-      background: #111 !important;
+      background: rgba(17, 17, 17, 0.55) !important;
       color: #f3efe6 !important;
     }
-    .home-continue-card.layout-bar .cta:hover { background: #333 !important; }
     .home-continue-more {
       display: flex;
       gap: 10px;
@@ -891,15 +862,15 @@
     .home-trio-card .bg.is-in {
       opacity: 1;
     }
-    /* 接着看覆盖 trio 限高 */
+    /* 接着看：勿再拉满宽度（否则两侧会露出底色框） */
     .home-continue-card.home-trio-card .bg {
-      max-height: min(70vh, 720px) !important;
-      width: 100% !important;
+      width: auto !important;
+      max-width: 100% !important;
     }
     .home-continue-card.home-trio-card .media {
-      width: 100% !important;
+      width: max-content !important;
       max-width: 100% !important;
-      margin: 0 !important;
+      margin: 0 auto !important;
       background: transparent !important;
       border: 0 !important;
       outline: none !important;
@@ -1002,10 +973,10 @@
         max-width: none;
         gap: 12px 8px;
       }
-      .home-continue { padding: 8px 0 16px; }
+      .home-continue { padding: 10px 0 14px; }
       .home-continue-card.home-trio-card {
         flex-direction: column !important;
-        align-items: stretch !important;
+        align-items: center !important;
         gap: 8px;
         padding: 8px 4vw;
       }
@@ -1014,8 +985,22 @@
         align-items: baseline;
         gap: 8px;
         min-width: 0;
+        align-self: flex-start;
       }
-      .home-continue-card .body { flex-direction: column; align-items: flex-start; }
+      .home-continue-card .continue-main {
+        width: 100%;
+        max-width: 100%;
+      }
+      .home-continue-card .media,
+      .home-continue-card.home-trio-card .media {
+        width: 100% !important;
+      }
+      .home-continue-card .bg,
+      .home-continue-card.home-trio-card .bg {
+        width: 100% !important;
+        max-height: min(42vh, 360px) !important;
+      }
+      .home-continue-card .body { flex-direction: column; align-items: stretch; }
       .home-continue-card .cta { margin-left: 0; width: 100%; text-align: center; }
       .home-hero { flex: none; min-height: 36vh; aspect-ratio: 16 / 9; }
       .home-path { padding: 22px 4vw; }
@@ -2362,14 +2347,15 @@
     .home-stage.has-continue .journey-strip {
       margin: 0;
       border: 0;
+      border-top: 1px solid rgba(17, 17, 17, 0.08);
       border-radius: 0;
-      background: #111;
-      color: #f3efe6;
+      background: var(--paper);
+      color: var(--ink);
       padding: 12px 4vw;
       font-weight: 500;
     }
     .home-stage.has-continue .journey-strip .journey-label {
-      color: rgba(243,239,230,0.65);
+      color: rgba(17, 17, 17, 0.45);
     }
     .journey-strip {
       margin: 12px 4vw 0;
@@ -2391,16 +2377,13 @@
       margin-bottom: 4px;
     }
     .home-continue-card.pin-pending {
-      outline: 2px solid var(--stamp);
-      outline-offset: 2px;
+      outline: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
     }
     .home-continue-card .tag.pending {
-      color: #fff7ed !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
-    }
-    .home-continue-card.layout-bar .tag.pending {
       color: #9a3412 !important;
-      text-shadow: none;
+      text-shadow: none !important;
     }
 
     .day-gate-chip {
@@ -3364,7 +3347,7 @@
     <div class="seal-caption" id="sealCaption">PASSPORT STAMPED</div>
   </div>
 
-  <script src="./data.js?v=20261016-shelf6"></script>
+  <script src="./data.js?v=20261016-cont8"></script>
   <script>
     (function () {
       const STORE_KEY = "doc-passport-g4-v2";
@@ -5408,15 +5391,14 @@
           (locked ? " locked" : "") +
           (needsStamp ? " pin-pending" : "");
         const ctaLabel = needsStamp && !locked ? "去盖印" : locked ? "周末再看" : "继续看";
-        // 文案在封面左侧空白，不叠在封面上
+        // 文案在侧；封面居中收缩；按钮在图下（不叠黑渐变）
         card.innerHTML =
           '<div class="continue-side"><strong>接着看</strong><span>今天这一部</span></div>' +
           '<div class="continue-main">' +
-          '<div class="media">' +
-          '<img class="bg" alt="" decoding="async">' +
+          '<div class="media"><img class="bg" alt="" decoding="async"></div>' +
           '<div class="body"><div class="name"></div><div class="tag"></div>' +
           '<button type="button" class="cta"></button></div>' +
-          "</div></div>";
+          "</div>";
         revealImg(card.querySelector(".bg"), heroArtUrl(t));
         card.setAttribute("aria-label", "接着看 · " + t.title + " · " + ctaLabel);
         const tag = card.querySelector(".tag");
